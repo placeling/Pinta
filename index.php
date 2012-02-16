@@ -1,7 +1,7 @@
 
 <?php
 /*
-Plugin Name: Placeling-2
+Plugin Name: Placeling
 Plugin URI: https://www.placeling.com
 Description: Tag your posts with location data from Placeling!
 Version: 0.1
@@ -38,8 +38,8 @@ if (!class_exists("Placeling")) {
 		function placeling_media_button($context) {
 	        $path = $this->path;
 	        
-	        $placesApi_media_button_image = $this->path . 'img/MyMarker.png';
-	        $placesApi_media_button = ' %s' . "<a id='add_place' href='{$path}/page/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img src='" . $placesApi_media_button_image . "' /></a>";
+	        $placesApi_media_button_image = $this->path . 'img/EmptyMarker.png';
+	        $placesApi_media_button = ' %s' . "<a id='add_place' href='{$path}/page/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img height=16 width=16 src='" . $placesApi_media_button_image . "' /></a>";
 	        return sprintf($context, $placesApi_media_button);
 	    }
 
