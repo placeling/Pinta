@@ -3,72 +3,63 @@
 	include('../OAuthSimple.php');
 	//check if logged in
 	
-	$accessToken = get_option("placeling_access_token");
-	$secretToken = get_option("placeling_access_secret");
+	$accessToken = get_option('placeling_access_token');
+	$secretToken = get_option('placeling_access_secret');
 	
 	$oauthObject = new OAuthSimple();
 	
 	$signatures = array( 'consumer_key'     => 'IR3hVvWRYBp1ah3PJUiPirgFzKlMHTeujbORNzAK',
                      'shared_secret'    => 'PqsYkO2smE7gkz9txhzN0bHoPMtDLfp73kIc3RSY');
 	
-	if ( empty($accessToken) || empty($secretToken) ) {	
+	if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {	
+
+	    ///////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	    // Step 1: Get a Request Token
+	    //
+	    $result = $oauthObject->sign(array(
+	        'path'      =>'http://localhost:3000/oauth/request_token',
+	        'parameters'=> array(
+	            'oauth_callback'=> 'http://localhost/~imack/wp-content/plugins/Pinta/popup/callback.php'),
+	        'signatures'=> $signatures));
 	
-		if (!isset($_GET['oauth_verifier'])) {
-		    ///////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-		    // Step 1: Get a Request Token
-		    //
-		    // Get a temporary request token to facilitate the user authorization 
-		    // in step 2. We make a request to the OAuthGetRequestToken endpoint,
-		    // submitting the scope of the access we need (in this case, all the 
-		    // user's calendars) and also tell Google where to go once the token
-		    // authorization on their side is finished.
-		    //
-		    $result = $oauthObject->sign(array(
-		        'path'      =>'http://localhost:3000/oauth/request_token',
-		        'parameters'=> array(
-		            'oauth_callback'=> 'http://localhost/~imack/wp-content/plugins/Pinta/popup/callback.php'),
-		        'signatures'=> $signatures));
-		
-		    // The above object generates a simple URL that includes a signature, the 
-		    // needed parameters, and the web page that will handle our request.  I now
-		    // "load" that web page into a string variable.
-		    $ch = curl_init();
-		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		    curl_setopt($ch, CURLOPT_URL, $result['signed_url']);
-		    $r = curl_exec($ch);
-		    curl_close($ch);
-		
-		    // We parse the string for the request token and the matching token
-		    // secret. Again, I'm not handling any errors and just plough ahead 
-		    // assuming everything is hunky dory.
-		    parse_str($r, $returned_items);
-		    $request_token = $returned_items['oauth_token'];
-		    $request_token_secret = $returned_items['oauth_token_secret'];
-		
-		    // We will need the request token and secret after the authorization.
-		    // Google will forward the request token, but not the secret.
-		    // Set a cookie, so the secret will be available once we return to this page.
-		    setcookie("oauth_token_secret", $request_token_secret, time()+3600);
-		    //
-		    //////////////////////////////////////////////////////////////////////
-		    
-		    ///////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-		    // Step 2: Authorize the Request Token
-		    //
-		    // Generate a URL for an authorization request, then redirect to that URL
-		    // so the user can authorize our access request.  The user could also deny
-		    // the request, so don't forget to add something to handle that case.
-		    $result = $oauthObject->sign(array(
-		        'path'      =>'http://localhost:3000/oauth/authorize',
-		        'parameters'=> array(
-		            'oauth_token' => $request_token),
-		        'signatures'=> $signatures));
-		
-		    // See you in a sec in step 3.
-		    header("Location:$result[signed_url]");
-		    exit;
-		    //////////////////////////////////////////////////////////////////////
-		}		
+	    // The above object generates a simple URL that includes a signature, the 
+	    // needed parameters, and the web page that will handle our request.  I now
+	    // "load" that web page into a string variable.
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_URL, $result['signed_url']);
+	    $r = curl_exec($ch);
+	    curl_close($ch);
+	
+	    // We parse the string for the request token and the matching token
+	    // secret. Again, I'm not handling any errors and just plough ahead 
+	    // assuming everything is hunky dory.
+	    parse_str($r, $returned_items);
+	    $request_token = $returned_items['oauth_token'];
+	    $request_token_secret = $returned_items['oauth_token_secret'];
+	
+	    // We will need the request token and secret after the authorization.
+	    // Google will forward the request token, but not the secret.
+	    // Set a cookie, so the secret will be available once we return to this page.
+	    setcookie("oauth_token_secret", $request_token_secret, time()+3600);
+	    //
+	    //////////////////////////////////////////////////////////////////////
+	    
+	    ///////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	    // Step 2: Authorize the Request Token
+	    //
+	    // Generate a URL for an authorization request, then redirect to that URL
+	    // so the user can authorize our access request.  The user could also deny
+	    // the request, so don't forget to add something to handle that case.
+	    $result = $oauthObject->sign(array(
+	        'path'      =>'http://localhost:3000/oauth/authorize',
+	        'parameters'=> array(
+	            'oauth_token' => $request_token),
+	        'signatures'=> $signatures));
+	
+	    // See you in a sec in step 3.
+	    header("Location:$result[signed_url]");
+	    exit;		
 		
 		//header("Location: http://localhost:3000/oauth/request_token"); 	
 	} else {
@@ -92,7 +83,8 @@
     </style>
     
     <div id="wrapper" class="mapEnabled">
-
+		<p>Access Token: <?php echo $accessToken; ?> <BR>
+                  Token Secret: <?php echo get_option('placeling_access_secret'); ?></p>
         <div id="headerStep1">
             <h1>Search for the place or address</h1>
             <div id="searchBox"></div>
