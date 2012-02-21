@@ -39,7 +39,7 @@ if (!class_exists("Placeling")) {
 	        $path = $this->path;
 	        
 	        $placesApi_media_button_image = $this->path . 'img/EmptyMarker.png';
-	        $placesApi_media_button = ' %s' . "<a id='add_place' href='{$path}/page/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img height=16 width=16 src='" . $placesApi_media_button_image . "' /></a>";
+	        $placesApi_media_button = ' %s' . "<a id='add_place' href='{$path}/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img height=16 width=16 src='" . $placesApi_media_button_image . "' /></a>";
 	        return sprintf($context, $placesApi_media_button);
 	    }
 
