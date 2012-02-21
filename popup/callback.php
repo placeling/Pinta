@@ -1,4 +1,5 @@
 <?php
+	include('../../../../wp-config.php');
 	include ('../OAuthSimple.php');
 	//require 'oauth.php';
 	//check if logged in
@@ -6,26 +7,14 @@
 	$oauthObject = new OAuthSimple();
 	$signatures = array( 'consumer_key'     => 'IR3hVvWRYBp1ah3PJUiPirgFzKlMHTeujbORNzAK',
                      'shared_secret'    => 'PqsYkO2smE7gkz9txhzN0bHoPMtDLfp73kIc3RSY');
-                     
-	    ///////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    // Step 3: Exchange the Authorized Request Token for a Long-Term
-    //         Access Token.
-    //
-    // We just returned from the user authorization process on Google's site.
-    // The token returned is the same request token we got in step 1.  To 
-    // sign this exchange request, we also need the request token secret that
-    // we baked into a cookie earlier. 
-    //
-
-    // Fetch the cookie and amend our signature array with the request
-    // token and secret.
+    
+    if ( !isset( $_COOKIE['oauth_token_secret'] )){
+    	//cookie we set there maxs out at an hour, should check
+    	header("Location:index.php");
+    	exit;
+    }
     $signatures['oauth_secret'] = $_COOKIE['oauth_token_secret'];
     $signatures['oauth_token'] = $_GET['oauth_token'];
-    
-    
-    
-    echo "<br><br>\n\n";
-    var_dump($signatures);
     
     // Build the request-URL...
     $result = $oauthObject->sign(array(
@@ -43,9 +32,6 @@
 
     // Voila, we've got a long-term access token.
     parse_str($r, $returned_items);     
-    
-    echo "STAGE 3 RETURN DUMP:"; 
-    var_dump($r);
       
     $access_token = $returned_items['oauth_token'];
     $access_token_secret = $returned_items['oauth_token_secret'];
@@ -72,21 +58,14 @@
     // http://googlecodesamples.com/oauth_playground/
     //
     //curl_setopt($ch, CURLOPT_URL, $result['signed_url']);
-    $output = "<p>Access Token: $access_token<BR>
-                  Token Secret: $access_token_secret</p>
-               <p><a href='$result[signed_url]'>List of Calendars</a></p>";
     curl_close($ch);
-    echo $output;
 
-	/*
-	$accessToken = get_option("placeling_access_token");
-	$secretToken = get_option("placeling_access_secret");
+	update_option('placeling_access_token', $access_token);
+	update_option('placeling_access_secret', $access_token_secret);
 	
-
-	update_option("placeling_access_token", $accessToken);
-	update_option("placeling_access_secret", $secretToken);
+	echo "<p>Access Token: "+ get_option('placeling_access_token') + "<BR>
+                  Token Secret:"+ get_option('placeling_access_secret') +"</p>";
 	
-	header( 'Location: /popup/index.php' ) ;	*/
+	//header( 'Location:index.php' ) ;	
 
 ?>
-GOT OAUTH
