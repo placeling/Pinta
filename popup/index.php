@@ -110,7 +110,7 @@
         // http://developer.netflix.com
         //
             // Some easy defines
-            var places_json = '<?php echo json_encode( $recent_places ); ?>';
+            var places_json = '<?php echo addslashes( json_encode( $recent_places ) ); ?>';
             var apiKey = "<?php echo $signatures['consumer_key']; ?>";
             var sharedSecret = "<?php echo $signatures['shared_secret']; ?>";
             var accessToken =  "<?php echo $signatures['oauth_token']; ?>";
@@ -124,16 +124,13 @@
 		
 		<script type="text/javascript">
 			
-			def drawPreview( place ){
-				
-				
-				var lat = place->location[0];
-				var lng = place->location[1];
+			function drawPreview( place ){
+				var lat = place['location'][0];
+				var lng = place['location'][1];
 				var url = "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=15&size=40x40&&markers=color:red%%7C"+lat+"," +lng+"&sensor=false";
 				$("#static_map").attr("src", url);
 			
 			}
-			
 			
 			var $recent_places;
 			$(document).ready(function(){
