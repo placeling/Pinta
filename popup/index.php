@@ -3,6 +3,7 @@
 	include('../OAuthSimple.php');
 	//check if logged in
 	
+	
 	$accessToken = get_option('placeling_access_token');
 	$secretToken = get_option('placeling_access_secret');
 	
@@ -59,108 +60,150 @@
 	
 	    // See you in a sec in step 3.
 	    header("Location:$result[signed_url]");
-	    exit;		
-		
-		//header("Location: http://localhost:3000/oauth/request_token"); 	
+	    exit;			
 	} else {
-		echo "TEST";
+		$signatures['oauth_token'] = $accessToken;
+    	$signatures['oauth_secret'] = $secretToken;
+    	
+    	$result = $oauthObject->sign(array(
+	        'path'      =>'http://localhost:3000/users/me.json',
+	        'signatures'=> $signatures));
+
+		$ch = curl_init();	        
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_URL, $result['signed_url']);	    
+	    $r = curl_exec($ch);
+	    $info = curl_getinfo($ch);
+	    curl_close($ch);
+	
+		if ( $info['http_code'] == 401 ){
+			delete_option('placeling_access_token');
+			delete_option('placeling_access_secret');
+			header("Location:index.php");	
+		}
+		
+	    // We parse the string for the request token and the matching token
+	    // secret. Again, I'm not handling any errors and just plough ahead 
+	    $user = json_decode( $r );
+		
+	    $lat = $user->location[0];
+	    $lng = $user->location[1];
+	    
+	    $recent_perspectives = $user->perspectives;
+	    $recent_places = array();
+	    
+	    foreach ( $recent_perspectives as $perspective){
+	    	$recent_places[] = $perspective->place;
+	    }   
 	}
 	
-	
-	//if (!current_user_can('edit_pages') && !current_user_can('edit_posts')){
-    	//wp_die(__("You are not allowed to be here"));
-    	//echo "BLAHBLAH";
-    //}
 
 ?>
 <html>
     <head>
+		<script src="../js/OAuthSimple.js" ></script>
+        <script>
 
+        // To get results in all their magnificent glory (rather than some error)
+        // fill these out with your own magical Netflix API keys.
+        // Don't have a magical Netflix API key yet?
+        // http://developer.netflix.com
+        //
+            // Some easy defines
+            var places_json = '<?php echo json_encode( $recent_places ); ?>';
+            var apiKey = "<?php echo $signatures['consumer_key']; ?>";
+            var sharedSecret = "<?php echo $signatures['shared_secret']; ?>";
+            var accessToken =  "<?php echo $signatures['oauth_token']; ?>";
+            var tokenSecret =  "<?php echo $signatures['oauth_secret']; ?>";
+            var path="http://localhost:3000/users/me.json";
+            
+         </script>
+		<link rel='stylesheet' id='colors-css'  href='../css/style.css' type='text/css' media='all' />
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		
+		<script type="text/javascript">
+			
+			def drawPreview( place ){
+				
+				
+				var lat = place->location[0];
+				var lng = place->location[1];
+				var url = "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=15&size=40x40&&markers=color:red%%7C"+lat+"," +lng+"&sensor=false";
+				$("#static_map").attr("src", url);
+			
+			}
+			
+			
+			var $recent_places;
+			$(document).ready(function(){
+				var defaultBounds = new google.maps.LatLngBounds(
+				new google.maps.LatLng(<?php echo $lat;?>, <?php echo $lng;?>),
+				new google.maps.LatLng(<?php echo $lat;?>, <?php echo $lng;?>));
+				
+				var input = document.getElementById('searchTextField');
+				var options = {
+				  bounds: defaultBounds,
+				  types: ['establishment']
+				};
+				
+				var recent_places = JSON.parse(places_json);
+				for(var i=0; i<recent_places.length; i++) {
+					var place = recent_places[i];
+					$("ul#recent_places").append('<li>'+ place.name +'</li>');
+				}
+
+				
+				autocomplete = new google.maps.places.Autocomplete(input, options);
+			
+				google.maps.event.addListener(autocomplete, 'place_changed', function() {
+				  var place = autocomplete.getPlace();
+				  if (place.geometry.viewport) {
+				    map.fitBounds(place.geometry.viewport);
+				  } else {
+				    map.setCenter(place.geometry.location);
+				    map.setZoom(17);
+				  }
+				  var image = new google.maps.MarkerImage(
+				      place.icon, new google.maps.Size(71, 71),
+				      new google.maps.Point(0, 0), new google.maps.Point(17, 34),
+				      new google.maps.Size(35, 35));
+				  marker.setIcon(image);
+				  marker.setPosition(place.geometry.location);
+				  
+				  infowindow.setContent(place.name);
+				  infowindow.open(map, marker);
+				});
+			
+			});
+
+		</script>
     </head>
     <body>
-    <style>
-
-    </style>
     
-    <div id="wrapper" class="mapEnabled">
-		<p>Access Token: <?php echo $accessToken; ?> <BR>
-                  Token Secret: <?php echo get_option('placeling_access_secret'); ?></p>
-        <div id="headerStep1">
-            <h1>Search for the place or address</h1>
-            <div id="searchBox"></div>
-        </div>
-        <div id="headerStep2" class="hidden">
-            <h1>Customize your map</h1>
-            <a id="changePlace">Change Place / Address</a>
+    <div class="wrap mapEnabled" style="width:660px;height:500px; background-color:yellow;padding: 10 10 10 10;">
+        <h2>Attach Place to post</h2>
+        <div class="place_pick" style="display:block;width:600px">
+        		<div class="search_top">
+        			<input id="searchTextField" type="text" class="search_box ui-autocomplete-input" style="width:100%;">
+        		</div>
+        		<div class="search_results">
+					<ul id="recent_places">
+        			</ul>   
+        		</div>
+        	</div>
+        	     
         </div>
         
-        <input class="insert_place" id="insertPlace" type="button" Value="Insert">
-        <div id="placeContainer">
-            
-            
-            <div id="placeList" class="hidden"></div>
-            <div id="map"></div>
-            <div id="placeWidgetContainer" class="hidden">
-                <div id="placeWidget"></div>
-                
-            <div class="settings">
-
-                <div id="layoutTab" class="tab">
-                    <h5>Layout</h5>
-                    <div class="contentLeft">
-                        <ul id="layoutOptions">
-                            <li id="layoutCompact" rel="nokia.blue.compact"></li>
-                            <li id="layoutMap" rel="nokia.blue.map"></li>
-                            <li id="layoutBasic" class="active" rel="nokia.blue.place"></li>
-                            <li id="layoutAdvanced" rel="nokia.blue.extended"></li>
-<!--
-                            <li id="layoutFull" rel="nokia.blue.full"></li>
--->
-                        </ul>
-                        
-                    </div>
-                    <div class="contentRight">
-<!--
-                        <input type="radio" name="theme" checked="1" value="dark"> Dark 
-                        <input type="radio" name="theme" value="bright"> Bright 
--->
-                    </div>
-                </div>
-                <div class="tab">
-                    <h5>Display</h5>
-                    <div class="contentLeft checkboxContainer">
-                        <div rel="actions"><input type="checkbox" name="elements" value="actions"> Actions</div>
-                        <div rel="contact"><input type="checkbox" name="elements" value="contact"> Contact info</div>
-                        <div rel="description"><input type="checkbox" name="elements" value="description"> Description</div>
-                        <div rel="reviews"><input type="checkbox" name="elements" value="reviews"> Reviews</div>
-                        <div rel="thumbnail"><input type="checkbox" name="elements" value="thumbnail"> Photo</div>
-                        <div rel="thumbnailList"><input type="checkbox" name="elements" value="thumbnailList"> Thumbnail list</div>
-                        <div rel="controls"><input type="checkbox" name="elements" value="controls"> Map controls</div>
-                    </div>
-                    <div class="contentRight">
-<!--
-                        <input type="radio" name="theme" value="map"> Map 
-                        <input type="radio" name="theme" value="image"> Image
--->
-                    </div>
-                </div>
-                <div class="tab">
-                    <h5>Size</h5>
-                    <div class="contentLeft  fixedSizes" id="fixedSizes">
-                    </div>
-                    <div class="contentRight sizes">
-                        <input id="customSizeWidth" type="text" name="width" value="width" class="labelText"> x <input id="customSizeHeight" type="text" name="height" value="height" class="labelText"> pixels 
-                    </div>
-                </div>
-
-            </div>
-                
-            </div>
-            
-            <a type="button" class="button" id="cancelAction">Cancel</a>
-            <a type="button" class="button-primary" id="insertAction">Finish</a>
-            
+        <div id="display">
+        	<img id="static_map"/>
+        
         </div>
+        
+        <div id="actions">
+        	<input class="button-primary" type="submit" name="Save" value="Save" id="submitbutton" style="float:right;" />   
+        </div>
+        
     </div>
 
 </body>
