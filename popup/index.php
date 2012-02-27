@@ -101,76 +101,112 @@
 ?>
 <html>
     <head>
-		<script src="../js/OAuthSimple.js" ></script>
-        <script>
-
-        // To get results in all their magnificent glory (rather than some error)
-        // fill these out with your own magical Netflix API keys.
-        // Don't have a magical Netflix API key yet?
-        // http://developer.netflix.com
-        //
-            // Some easy defines
-            var places_json = '<?php echo addslashes( json_encode( $recent_places ) ); ?>';
-            var apiKey = "<?php echo $signatures['consumer_key']; ?>";
-            var sharedSecret = "<?php echo $signatures['shared_secret']; ?>";
-            var accessToken =  "<?php echo $signatures['oauth_token']; ?>";
-            var tokenSecret =  "<?php echo $signatures['oauth_secret']; ?>";
-            var path="http://localhost:3000/users/me.json";
-            
-         </script>
 		<link rel='stylesheet' id='colors-css'  href='../css/style.css' type='text/css' media='all' />
-		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+		<link rel="stylesheet" href="../css/jquery-ui-1.8.18.custom.css" type="text/css"/>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 		
 		<script type="text/javascript">
 			
+			var places_json = '<?php echo addslashes( json_encode( $recent_places ) ); ?>';
+            var apiKey = "<?php echo $signatures['consumer_key']; ?>";
+            var sharedSecret = "<?php echo $signatures['shared_secret']; ?>";
+            var accessToken =  "<?php echo $signatures['oauth_token']; ?>";            
+            var tokenSecret =  "<?php echo $signatures['oauth_secret']; ?>";
+            var lat = "<?php echo $lat;?>";
+            var lng = "<?php echo $lng;?>";
+            var path="http://localhost:3000/users/me.json";
+            var places_dictionary;
+            var autocomplete;
+			
+			
 			function drawPreview( place ){
-				var lat = place['location'][0];
-				var lng = place['location'][1];
-				var url = "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=15&size=40x40&&markers=color:red%%7C"+lat+"," +lng+"&sensor=false";
+			
+				if (place.geometry){
+					alert( place.geometry.location );
+					var lat = place.geometry.location.lat();
+					var lng = place.geometry.location.lng();
+				
+				} else {
+					var lat = place['location'][0];
+					var lng = place['location'][1];
+				}
+				
+				var url = "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=15&size=100x100&&markers=color:red%%7C"+lat+"," +lng+"&sensor=false";
 				$("#static_map").attr("src", url);
 			
 			}
 			
 			var $recent_places;
 			$(document).ready(function(){
-				var defaultBounds = new google.maps.LatLngBounds(
-				new google.maps.LatLng(<?php echo $lat;?>, <?php echo $lng;?>),
-				new google.maps.LatLng(<?php echo $lat;?>, <?php echo $lng;?>));
-				
-				var input = document.getElementById('searchTextField');
-				var options = {
-				  bounds: defaultBounds,
-				  types: ['establishment']
-				};
-				
-				var recent_places = JSON.parse(places_json);
-				for(var i=0; i<recent_places.length; i++) {
-					var place = recent_places[i];
-					$("ul#recent_places").append('<li>'+ place.name +'</li>');
+				places_dictionary = JSON.parse(places_json);
+				var data = [];
+				for(var i=0; i<places_dictionary.length; i++) {
+					var place = places_dictionary[i];
+					data.push(  { label: place.name, value: place.google_id } );
 				}
-
 				
-				autocomplete = new google.maps.places.Autocomplete(input, options);
-			
-				google.maps.event.addListener(autocomplete, 'place_changed', function() {
-				  var place = autocomplete.getPlace();
-				  if (place.geometry.viewport) {
-				    map.fitBounds(place.geometry.viewport);
-				  } else {
-				    map.setCenter(place.geometry.location);
-				    map.setZoom(17);
-				  }
-				  var image = new google.maps.MarkerImage(
-				      place.icon, new google.maps.Size(71, 71),
-				      new google.maps.Point(0, 0), new google.maps.Point(17, 34),
-				      new google.maps.Size(35, 35));
-				  marker.setIcon(image);
-				  marker.setPosition(place.geometry.location);
-				  
-				  infowindow.setContent(place.name);
-				  infowindow.open(map, marker);
+				$( "#searchTextField" ).autocomplete({
+					source: data, 
+					minLength: 0
+				}).focus(function(){
+					if ($(this).val() == ""){
+						$(this).trigger('keydown.autocomplete');
+					}
 				});
+				
+				$('#searchTextField').focus();
+				
+				
+				$( "#searchTextField" ).keyup(function() {
+					var text = $( "#searchTextField" ).val();
+					
+					if ( text.length >= 0 ){
+						$( "#searchTextField" ).autocomplete({
+							source: function( request, response ) {
+								$.ajax({
+									url: "autocomplete.php",
+									dataType: "json",
+									data: {
+										input: text,
+										location: lat + "," + lng,
+										types: "establishment"
+									},
+									success: function( data ) {
+							            response( $.map( data.predictions, function( item ) {
+											return {
+												label: item.description,
+												value: item.id
+											}
+										}));
+							            
+									}
+								});
+							},
+							minLength: 2,
+							select: function( event, ui ) {
+								console.debug( ui.item ?
+									"Selected: " + ui.item.label :
+									"Nothing selected, input was " + this.value);
+							},
+							open: function() {
+								$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+							},
+							close: function() {
+								$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+							}
+						});
+					} else {					
+						$( "#searchTextField" ).autocomplete({
+							source: data, 
+							minLength: 0
+						}).focus(function(){
+							if ($(this).val() == ""){
+								$(this).trigger('keydown.autocomplete');
+							}
+						});
+					}
+				});	
 			
 			});
 
@@ -189,16 +225,15 @@
         			</ul>   
         		</div>
         	</div>
-        	     
-        </div>
         
-        <div id="display">
-        	<img id="static_map"/>
-        
-        </div>
-        
-        <div id="actions">
-        	<input class="button-primary" type="submit" name="Save" value="Save" id="submitbutton" style="float:right;" />   
+	        <div id="display">
+	        	<img id="static_map"/>
+	        
+	        </div>
+	        
+	        <div id="actions">
+	        	<input class="button-primary" type="submit" name="Save" value="Save" id="submitbutton" style="float:right;" />   
+	        </div>
         </div>
         
     </div>
