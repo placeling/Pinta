@@ -6,6 +6,7 @@
 	
 	$accessToken = get_option('placeling_access_token');
 	$secretToken = get_option('placeling_access_secret');
+	$hostname = "http://localhost:3000";
 	
 	$oauthObject = new OAuthSimple();
 	
@@ -18,7 +19,7 @@
 	    // Step 1: Get a Request Token
 	    //
 	    $result = $oauthObject->sign(array(
-	        'path'      =>'http://localhost:3000/oauth/request_token',
+	        'path'      =>$hostname . '/oauth/request_token',
 	        'parameters'=> array(
 	            'oauth_callback'=> 'http://localhost/~imack/wp-content/plugins/Pinta/popup/callback.php'),
 	        'signatures'=> $signatures));
@@ -53,7 +54,7 @@
 	    // so the user can authorize our access request.  The user could also deny
 	    // the request, so don't forget to add something to handle that case.
 	    $result = $oauthObject->sign(array(
-	        'path'      =>'http://localhost:3000/oauth/authorize',
+	        'path'      => $hostname . '/oauth/authorize',
 	        'parameters'=> array(
 	            'oauth_token' => $request_token),
 	        'signatures'=> $signatures));
@@ -66,7 +67,7 @@
     	$signatures['oauth_secret'] = $secretToken;
     	
     	$result = $oauthObject->sign(array(
-	        'path'      =>'http://localhost:3000/users/me.json',
+	        'path'      => $hostname.'/users/me.json',
 	        'signatures'=> $signatures));
 
 		$ch = curl_init();	        
@@ -80,6 +81,8 @@
 			delete_option('placeling_access_token');
 			delete_option('placeling_access_secret');
 			header("Location:index.php");	
+		} else if ( $info['http_code'] != 200 ){
+			die("can't connect to Placeling server");
 		}
 		
 	    // We parse the string for the request token and the matching token
@@ -105,7 +108,9 @@
 		<link rel="stylesheet" href="../css/jquery-ui-1.8.18.custom.css" type="text/css"/>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-		
+		<style type="text/css">
+			.ui-progressbar-value { background-image: url(../css/images/pbar-ani.gif); }
+		</style>
 		<script type="text/javascript">
 			
 			var places_json = '<?php echo addslashes( json_encode( $recent_places ) ); ?>';
@@ -115,10 +120,29 @@
             var tokenSecret =  "<?php echo $signatures['oauth_secret']; ?>";
             var lat = "<?php echo $lat;?>";
             var lng = "<?php echo $lng;?>";
-            var path="http://localhost:3000/users/me.json";
+            var hostname = "<?php echo $hostname;?>";
+            var path= hostname +"/users/me.json";
             var places_dictionary;
             var autocomplete;
 			
+			
+			function showRecentlyBookmarked(){
+			
+				$("ul#recent_places li").remove();
+				for (var i=0; i < places_dictionary.length; i++){
+					var place = places_dictionary[i];
+					$("ul#recent_places").append('<li class="place_option"><a data-id=' + place.google_id + ' href="#">' + place.name + ", " + place.city_data + '</a></li>');			
+				}
+				
+				$('#searchTextField').focus();
+			}
+			
+			function selectSuggestedPlace( event, ui ) {
+				if ( ui.item ){
+					console.debug( "Selected: ", ui.item.label );
+					
+				}
+			}
 			
 			function drawPreview( place ){
 			
@@ -132,81 +156,66 @@
 					var lng = place['location'][1];
 				}
 				
-				var url = "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=15&size=100x100&&markers=color:red%%7C"+lat+"," +lng+"&sensor=false";
+				var url = "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=14&size=100x100&&markers=color:red%%7C"+lat+"," +lng+"&sensor=false";
 				$("#static_map").attr("src", url);
+				$("#place_name").html( place.name );
 			
 			}
 			
 			var $recent_places;
 			$(document).ready(function(){
 				places_dictionary = JSON.parse(places_json);
-				var data = [];
-				for(var i=0; i<places_dictionary.length; i++) {
-					var place = places_dictionary[i];
-					data.push(  { label: place.name, value: place.google_id } );
-				}
 				
-				$( "#searchTextField" ).autocomplete({
-					source: data, 
-					minLength: 0
-				}).focus(function(){
-					if ($(this).val() == ""){
-						$(this).trigger('keydown.autocomplete');
-					}
-				});
-				
-				$('#searchTextField').focus();
-				
+				showRecentlyBookmarked();
 				
 				$( "#searchTextField" ).keyup(function() {
 					var text = $( "#searchTextField" ).val();
 					
-					if ( text.length >= 0 ){
-						$( "#searchTextField" ).autocomplete({
-							source: function( request, response ) {
-								$.ajax({
-									url: "autocomplete.php",
-									dataType: "json",
-									data: {
-										input: text,
-										location: lat + "," + lng,
-										types: "establishment"
-									},
-									success: function( data ) {
-							            response( $.map( data.predictions, function( item ) {
-											return {
-												label: item.description,
-												value: item.id
-											}
-										}));
-							            
-									}
-								});
+					if ( text.length >= 1 ){
+						$.ajax({
+							url: "autocomplete.php",
+							dataType: "json",
+							data: {
+								input: text,
+								location: lat + "," + lng,
+								types: "establishment"
 							},
-							minLength: 2,
-							select: function( event, ui ) {
-								console.debug( ui.item ?
-									"Selected: " + ui.item.label :
-									"Nothing selected, input was " + this.value);
-							},
-							open: function() {
-								$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-							},
-							close: function() {
-								$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+							success: function( data ) {
+								$("ul#recent_places li").remove();
+								$.each(data.predictions, function(i, item){
+						          $("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" data-ref="'+ item.reference + '" >'+ item.description + '</a></li>');  
+						        });													            
 							}
 						});
 					} else {					
-						$( "#searchTextField" ).autocomplete({
-							source: data, 
-							minLength: 0
-						}).focus(function(){
-							if ($(this).val() == ""){
-								$(this).trigger('keydown.autocomplete');
-							}
-						});
+						showRecentlyBookmarked();
 					}
 				});	
+				
+				
+				$("li.place_option a").live('click', function(){
+			    	var place_id = $(this).attr('data-id');
+			    	var data_ref = $(this).attr('data-ref');
+					$( "#progressbar" ).progressbar({
+						value: 50
+					});
+		    		$.ajax({
+						url: hostname + "/places/" + place_id + ".json",
+						dataType: "jsonp",
+						data: {
+							id: place_id,
+							google_ref:data_ref, 
+							key: "<?php echo $signatures['consumer_key']; ?>"
+						},
+						success: function( data ) {	
+							$( "#progressbar" ).progressbar({ value: 100 });					
+							drawPreview( data );	
+							$( "#progressbar" ).progressbar( "destroy" );																	            
+						}
+					});
+					return false;
+			    });
+			    
 			
 			});
 
@@ -226,8 +235,13 @@
         		</div>
         	</div>
         
+        	<div id="progressbar" style="width:100%;"></div>
 	        <div id="display">
+	        	<div id="stats">
+	        		<div id="place_name"></div>
+	        	</div>
 	        	<img id="static_map"/>
+	        	
 	        
 	        </div>
 	        
