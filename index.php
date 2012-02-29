@@ -18,9 +18,10 @@ if (!class_exists("Placeling")) {
 			$this->path = WP_PLUGIN_URL . '/Pinta/';
 			
 			// Add Options Page
-			add_action('admin_menu',  array(&$this, 'admin_menu'));
+			add_action( 'admin_menu',  array(&$this, 'admin_menu') );
 			add_action( 'save_post', array( &$this, 'save_post') );
-			add_filter('media_buttons_context', array(&$this, 'placeling_media_button'));
+			add_filter( 'media_buttons_context', array(&$this, 'placeling_media_button') );
+			add_filter( 'the_content', array(&$this, 'addPlacelingFooter') );
 			
 		}
 		
@@ -30,33 +31,56 @@ if (!class_exists("Placeling")) {
 		} 
 		
 		
+		function addPlacelingFooter( $content ){
+		  	$post_ID = $GLOBALS['post']->ID;
+			
+		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
+			
+			
+			
+			if ( strlen( $meta_value ) > 0 ){
+				$place_json = urldecode( $meta_value );
+				$place = json_decode( $place_json );
+				
+				$lat = $place->lat;
+				$lng = $place->lng;
+				
+				$url = "http://maps.google.com/maps/api/staticmap?center=".$lat.",".$lng."&zoom=14&size=100x100&&markers=color:red%%7C".$lat."," .$lng."&sensor=false";
+			
+		  		$content = $content.'<img src="'.$url.'"/>"'.$place->name;
+		  	}
+		  	
+		  	return $content;
+		}
+		
 		function draw_placeling(){
 			global $post_ID;
 						
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script('postnew', $this->path.'/js/postnew.js', array('jquery'));
-						
+			
 			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 			
-			if ( !isset( $meta_values ) ){
+			if ( strlen($meta_value) == 0 ){
 			 	$path = $this->path;
 				$placesApi_media_button_image = $this->path . 'img/EmptyMarker.png';
 				
 				?>
 					<div class="empty_place">
 						<input id="placeling_place_json" name="placeling_place_json" type="hidden"/>
-						<a id='add_place' href='<?php echo $path; ?>/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><imgsrc='<?php echo $placesApi_media_button_image; ?>' />Attach a place</a>
+						<a id='add_place' href='<?php echo $path; ?>/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img src='<?php echo $placesApi_media_button_image; ?>' />Attach a place</a>
 					</div>
 				<?php
 			
 			} else {
-				$user = json_decode( $meta_value );
-				var_dump( $user );
+				$place_json = urldecode( $meta_value );
+				$place = json_decode( $place_json );
+				
 				?>
-					<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo url_encode( $meta_value ); ?>" />
-					<img id="placeling_map_image"/>
+					<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo urlencode( $meta_value ); ?>" />
+					<img id="placeling_map_image" src=""/>
+					
 				<?php
-
 			}
 		}
 		
@@ -70,7 +94,9 @@ if (!class_exists("Placeling")) {
 			if ( array_key_exists( 'placeling_place_json', $_POST ) ){
 				$place_json = $_POST['placeling_place_json'];
 				if ( strlen( $place_json ) > 0 ){
-					update_post_meta( $post_ID, '_placeling_place_json', $place_json, true );
+					update_post_meta( $post_ID, '_placeling_place_json', $place_json );
+				} else {
+					delete_post_meta( $post_ID, '_placeling_place_json' );
 				}
 			}
 		}
