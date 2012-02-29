@@ -3,7 +3,9 @@
 	include('../OAuthSimple.php');
 	//check if logged in
 	
-	
+	if (!current_user_can('edit_pages') && !current_user_can('edit_posts'))
+    	wp_die(__("You are not allowed to be here"));
+    
 	$accessToken = get_option('placeling_access_token');
 	$secretToken = get_option('placeling_access_secret');
 	$hostname = "http://localhost:3000";
@@ -98,6 +100,11 @@
 	    foreach ( $recent_perspectives as $perspective){
 	    	$recent_places[] = $perspective->place;
 	    }   
+	
+		if ( array_key_exists( 'post_id', $_GET ) ){
+			$meta_values = get_post_meta( $_GET['post_ID'], '_placeling_place_json', true );
+		}
+	    
 	}
 	
 
@@ -108,6 +115,7 @@
 		<link rel="stylesheet" href="../css/jquery-ui-1.8.18.custom.css" type="text/css"/>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="../js/pinta.js"></script>
 		<style type="text/css">
 			.ui-progressbar-value { background-image: url(../css/images/pbar-ani.gif); }
 		</style>
@@ -123,8 +131,7 @@
             var hostname = "<?php echo $hostname;?>";
             var path= hostname +"/users/me.json";
             var places_dictionary;
-            var autocomplete;
-			
+            var autocomplete;			
 			
 			function showRecentlyBookmarked(){
 			
@@ -137,12 +144,6 @@
 				$('#searchTextField').focus();
 			}
 			
-			function selectSuggestedPlace( event, ui ) {
-				if ( ui.item ){
-					console.debug( "Selected: ", ui.item.label );
-					
-				}
-			}
 			
 			function drawPreview( place ){
 			
@@ -159,6 +160,7 @@
 				var url = "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=14&size=100x100&&markers=color:red%%7C"+lat+"," +lng+"&sensor=false";
 				$("#static_map").attr("src", url);
 				$("#place_name").html( place.name );
+				$("#selected_place_json").val( JSON.stringify( place ) );
 			
 			}
 			
@@ -217,6 +219,16 @@
 			    });
 			    
 			
+				$('#submitbutton').click( function(){
+					alert( "insert action click" );
+					var win = window.dialogArguments || opener || parent || top;
+			        win.attach_placeling_place( $("#selected_place_json").val() );
+			
+			        parent.tb_remove();
+			        return;
+				
+				
+				} );
 			});
 
 		</script>
@@ -236,13 +248,22 @@
         	</div>
         
         	<div id="progressbar" style="width:100%;"></div>
+        	<?php
+        		if ( isset( $meta_values ) ){
+        	?>
+        		<input type="hidden" id="selected_place_json" name="selected_place_json" value="<?php echo $meta_values; ?>"/>
+        	<?php 
+        		} else{
+        	?>
+        		<input type="hidden" id="selected_place_json" name="selected_place_json"/>
+        	<?php 
+        		}
+        	?>
 	        <div id="display">
 	        	<div id="stats">
 	        		<div id="place_name"></div>
 	        	</div>
 	        	<img id="static_map"/>
-	        	
-	        
 	        </div>
 	        
 	        <div id="actions">
