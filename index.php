@@ -47,7 +47,7 @@ if (!class_exists("Placeling")) {
 				
 				$url = "http://maps.google.com/maps/api/staticmap?center=".$lat.",".$lng."&zoom=14&size=100x100&&markers=color:red%%7C".$lat."," .$lng."&sensor=false";
 			
-		  		$content = $content.'<img src="'.$url.'"/>"'.$place->name;
+		  		$content = $content.'<img src="'.$url.'"/>'.$place->name;
 		  	}
 		  	
 		  	return $content;
