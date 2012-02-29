@@ -36,8 +36,6 @@ if (!class_exists("Placeling")) {
 			
 		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 			
-			
-			
 			if ( strlen( $meta_value ) > 0 ){
 				$place_json = urldecode( $meta_value );
 				$place = json_decode( $place_json );
@@ -102,10 +100,22 @@ if (!class_exists("Placeling")) {
 		}
 		
 		function placeling_media_button($context) {
+			global $post_ID;
 	        $path = $this->path;
 	        
-	        $placesApi_media_button_image = $this->path . 'img/EmptyMarker.png';
-	        $placesApi_media_button = ' %s' . "<a id='add_place' href='{$path}/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img height=16 width=16 src='" . $placesApi_media_button_image . "' /></a>";
+			
+		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
+		  	
+		  	if ( strlen($meta_value) > 0 ){
+		  		$place_json = urldecode( $meta_value );
+				$place = json_decode( $place_json );
+		  		$placesApi_media_button_image = $this->path . 'img/MyMarker.png';
+		  		$name = $place->name;
+		  	} else {
+	        	$placesApi_media_button_image = $this->path . 'img/EmptyMarker.png';
+	        	$name = "";
+	        }
+	        $placesApi_media_button = ' %s' . "<a id='add_place' href='{$path}/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img height=16 width=16 src='" . $placesApi_media_button_image . "' /><span class='placeling_place_name'>".$name."</span></a>";
 	        return sprintf($context, $placesApi_media_button);
 	    }
 
