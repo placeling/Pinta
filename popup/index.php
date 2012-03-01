@@ -5,9 +5,11 @@
 	
 	if (!current_user_can('edit_pages') && !current_user_can('edit_posts'))
     	wp_die(__("You are not allowed to be here"));
+    	
+    $current_user = wp_get_current_user();
     
-	$accessToken = get_option('placeling_access_token');
-	$secretToken = get_option('placeling_access_secret');
+	$accessToken = get_user_meta($current_user->ID, 'placeling_access_token');
+	$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret');
 	$hostname = "http://localhost:3000";
 	
 	$oauthObject = new OAuthSimple();
@@ -80,8 +82,8 @@
 	    curl_close($ch);
 	
 		if ( $info['http_code'] == 401 ){
-			delete_option('placeling_access_token');
-			delete_option('placeling_access_secret');
+			delete_user_meta($current_user->ID, 'placeling_access_token');
+			delete_user_meta($current_user->ID, 'placeling_access_secret');
 			header("Location:index.php");	
 		} else if ( $info['http_code'] != 200 ){
 			die("can't connect to Placeling server");
@@ -122,10 +124,6 @@
 		<script type="text/javascript">
 			
 			var places_json = '<?php echo addslashes( json_encode( $recent_places ) ); ?>';
-            var apiKey = "<?php echo $signatures['consumer_key']; ?>";
-            var sharedSecret = "<?php echo $signatures['shared_secret']; ?>";
-            var accessToken =  "<?php echo $signatures['oauth_token']; ?>";            
-            var tokenSecret =  "<?php echo $signatures['oauth_secret']; ?>";
             var lat = "<?php echo $lat;?>";
             var lng = "<?php echo $lng;?>";
             var hostname = "<?php echo $hostname;?>";

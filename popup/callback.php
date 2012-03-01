@@ -4,6 +4,8 @@
 	//require 'oauth.php';
 	//check if logged in
 	
+	$current_user = wp_get_current_user();
+	
 	$oauthObject = new OAuthSimple();
 	$signatures = array( 'consumer_key'     => 'IR3hVvWRYBp1ah3PJUiPirgFzKlMHTeujbORNzAK',
                      'shared_secret'    => 'PqsYkO2smE7gkz9txhzN0bHoPMtDLfp73kIc3RSY');
@@ -49,8 +51,8 @@
     // This will build a link to an RSS feed of the users calendars.
     $oauthObject->reset();
 
-	update_option('placeling_access_token', $access_token);
-	update_option('placeling_access_secret', $access_token_secret);
+	update_user_meta( $current_user->ID, 'placeling_access_token', $access_token);
+	update_user_meta( $current_user->ID, 'placeling_access_secret', $access_token_secret);
 	
 	header( 'Location:index.php' ) ;	
 ?>
