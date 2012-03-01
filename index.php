@@ -56,7 +56,7 @@ if (!class_exists("Placeling")) {
 						
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'postnew', $this->path.'/js/postnew.js', array('jquery', 'underscore'));
-			wp_enqueue_script( 'underscore', $this->path.'/js/underscore.js', array('jquery'));
+			wp_enqueue_script( 'underscore', $this->path.'/js/underscore-min.js', array('jquery'));
 			wp_enqueue_style( 'pinta', $this->path.'/css/pinta.css' );
 			
 			$path = $this->path;

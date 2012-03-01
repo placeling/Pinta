@@ -198,9 +198,8 @@
 				$("li.place_option a").live('click', function(){
 			    	var place_id = $(this).attr('data-id');
 			    	var data_ref = $(this).attr('data-ref');
-					$( "#progressbar" ).progressbar({
-						value: 50
-					});
+					$( "#spinwait" ).show();
+					$( "#display_place" ).hide();	
 		    		$.ajax({
 						url: hostname + "/places/" + place_id + ".json",
 						dataType: "jsonp",
@@ -210,9 +209,10 @@
 							key: "<?php echo $signatures['consumer_key']; ?>"
 						},
 						success: function( data ) {	
-							$( "#progressbar" ).progressbar({ value: 100 });					
-							drawPreview( data );	
-							$( "#progressbar" ).progressbar( "destroy" );																	            
+							console.debug( data );					
+							drawPreview( data );
+							$( "#spinwait" ).hide();	
+							$( "#display_place" ).show();																            
 						}
 					});
 					return false;
@@ -225,8 +225,7 @@
 			        win.attach_placeling_place( $("#selected_place_json").val() );
 			
 			        parent.tb_remove();
-			        return;
-				
+			        return;				
 				
 				} );
 			});
@@ -247,7 +246,7 @@
         		</div>
         	</div>
         
-        	<div id="progressbar" style="width:100%;"></div>
+        	<div id="spinwait" style="width:100%;text-align:center;display:none;"><img src="../img/spinner.gif"/></div>
         	<?php
         		if ( isset( $meta_values ) ){
         	?>
@@ -259,7 +258,7 @@
         	<?php 
         		}
         	?>
-	        <div id="display">
+	        <div id="display_place" style="display:none;">
 	        	<div id="stats">
 	        		<div id="place_name"></div>
 	        	</div>
