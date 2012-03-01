@@ -55,31 +55,27 @@ if (!class_exists("Placeling")) {
 			global $post_ID;
 						
 			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script('postnew', $this->path.'/js/postnew.js', array('jquery'));
+			wp_enqueue_script( 'postnew', $this->path.'/js/postnew.js', array('jquery', 'underscore'));
+			wp_enqueue_script( 'underscore', $this->path.'/js/underscore.js', array('jquery'));
+			wp_enqueue_style( 'pinta', $this->path.'/css/pinta.css' );
+			
+			$path = $this->path;
+			$empty_marker_button = $path . 'img/EmptyMarker.png';
 			
 			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 			
-			if ( strlen($meta_value) == 0 ){
-			 	$path = $this->path;
-				$placesApi_media_button_image = $this->path . 'img/EmptyMarker.png';
+			?>
+				<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo $meta_value ; ?>" />		
 				
-				?>
-					<div class="empty_place">
-						<input id="placeling_place_json" name="placeling_place_json" type="hidden"/>
-						<a id='add_place' href='<?php echo $path; ?>/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img src='<?php echo $placesApi_media_button_image; ?>' />Attach a place</a>
-					</div>
-				<?php
-			
-			} else {
-				$place_json = urldecode( $meta_value );
-				$place = json_decode( $place_json );
+				<div id="empty_place">
+					<a id='add_place' href='<?php echo $path; ?>/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img src='<?php echo $empty_marker_button; ?>' />Attach a place</a>
+				</div>
 				
-				?>
-					<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo urlencode( $meta_value ); ?>" />
-					<img id="placeling_map_image" src=""/>
+				<div id="placeling_tagged_place" style="display:none;">
+
+				</div>
 					
-				<?php
-			}
+			<?php
 		}
 		
 		
@@ -102,20 +98,19 @@ if (!class_exists("Placeling")) {
 		function placeling_media_button($context) {
 			global $post_ID;
 	        $path = $this->path;
-	        
 			
 		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 		  	
+		  	$empty_button_image = $this->path . 'img/EmptyMarker.png';
+		  	$placed_button_image = $this->path . 'img/MyMarker.png';
 		  	if ( strlen($meta_value) > 0 ){
 		  		$place_json = urldecode( $meta_value );
 				$place = json_decode( $place_json );
-		  		$placesApi_media_button_image = $this->path . 'img/MyMarker.png';
 		  		$name = $place->name;
 		  	} else {
-	        	$placesApi_media_button_image = $this->path . 'img/EmptyMarker.png';
 	        	$name = "";
 	        }
-	        $placesApi_media_button = ' %s' . "<a id='add_place' href='{$path}/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img height=16 width=16 src='" . $placesApi_media_button_image . "' /><span class='placeling_place_name'>".$name."</span></a>";
+	        $placesApi_media_button = ' %s' . "<a id='add_place' href='{$path}/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img id='placeling_untagged' style='display:none;' height=16 width=16 src='" . $empty_button_image . "' /><img id='placeling_tagged' height=16 width=16 style='display:none;' src='" . $placed_button_image . "' /><span class='placeling_place_name'>".$name."</span></a>";
 	        return sprintf($context, $placesApi_media_button);
 	    }
 
