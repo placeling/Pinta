@@ -34,7 +34,7 @@ if (!class_exists("Placeling")) {
 		function addPlacelingFooter( $content ){
 		
 			if ( !is_single() ){
-				//we only want to show on single views, for now, so as not to crowd
+				//we only want to show on single views, for now,  so as not to crowd
 				return $content;
 			}
 		
@@ -73,17 +73,6 @@ if (!class_exists("Placeling")) {
 			?>
 				<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo $meta_value ; ?>" />	
 				<input id="placeling_placemarker_post" name="placeling_placemarker_post" type="hidden" value="" />		
-
-				<div id="palceling-dialog-form" title="Preview of Post on Placemark">
-					<p class="validateTips">All form fields are required.</p>
-				
-					<form>
-					<fieldset>
-						
-					</fieldset>
-					</form>
-				</div>
-
 				
 				<div id="empty_place">
 					<a id='add_place' href='<?php echo $path; ?>/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img src='<?php echo $empty_marker_button; ?>' />Attach a place</a>
