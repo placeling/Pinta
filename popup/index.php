@@ -8,8 +8,8 @@
     	
     $current_user = wp_get_current_user();
     
-	$accessToken = get_user_meta($current_user->ID, 'placeling_access_token');
-	$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret');
+	$accessToken = get_user_meta($current_user->ID, 'placeling_access_token', true);
+	$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret', true);
 	$hostname = "http://localhost:3000";
 	
 	$oauthObject = new OAuthSimple();
@@ -84,7 +84,8 @@
 		if ( $info['http_code'] == 401 ){
 			delete_user_meta($current_user->ID, 'placeling_access_token');
 			delete_user_meta($current_user->ID, 'placeling_access_secret');
-			header("Location:index.php");	
+			//die("no good access_key");	
+			header("Location:index.php");
 		} else if ( $info['http_code'] != 200 ){
 			die("can't connect to Placeling server");
 		}

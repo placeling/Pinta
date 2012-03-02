@@ -50,7 +50,8 @@
     // Example Google API Access:
     // This will build a link to an RSS feed of the users calendars.
     $oauthObject->reset();
-
+	echo $current_user->ID."\n<br>";
+	echo $access_token;
 	update_user_meta( $current_user->ID, 'placeling_access_token', $access_token);
 	update_user_meta( $current_user->ID, 'placeling_access_secret', $access_token_secret);
 	
