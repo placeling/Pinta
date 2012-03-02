@@ -1,14 +1,25 @@
 <?php
 
 function footerHtml( $place, $add_url ){
-	$lat = $place->lat;
-	$lng = $place->lng;
-	$pid = $place->id;
-	
-	$url = $place->map_url;
-	$thirdparty_url = $place->google_url;
-	$place_url = "http://www.placeling.com/places/$pid?src=plugin";
-	$name = $place->name;				
+
+	if ( isset( $place ) ){
+		$lat = $place->lat;
+		$lng = $place->lng;
+		$pid = $place->id;
+		
+		$url = $place->map_url;
+		$thirdparty_url = $place->google_url;
+		$place_url = "http://www.placeling.com/places/$pid?src=plugin";
+		$name = $place->name;	
+	} else {
+		$lat = 0;
+		$lng = 0;
+		$pid = "";		
+		$url = "";
+		$thirdparty_url = "#";
+		$place_url ="#";
+		$name = "";		
+	}			
 				
 	return "
 	<div id='placeling_footer'>
@@ -19,7 +30,7 @@ function footerHtml( $place, $add_url ){
 		</div>
 		<div id='placeling_middle_footer'>
 			<div id='placeling_place_title'>
-				<a href='$place_url'>$name</a>
+				<a href='$place_url'><span id='placeling_place_name'>$name</span></a>
 			</div>
 			<div id='placeling_contact_info'>
 				<a href='$thirdparty_url'>hours, directions, and contact</a>

@@ -105,9 +105,8 @@
 	    }   
 	
 		if ( array_key_exists( 'post_id', $_GET ) ){
-			$meta_values = get_post_meta( $_GET['post_ID'], '_placeling_place_json', true );
-		}
-	    
+			$meta_values = get_post_meta( $_GET['post_id'], '_placeling_place_json', true );
+		}   
 	}
 	
 
@@ -115,6 +114,8 @@
 <html>
     <head>
 		<link rel='stylesheet' id='colors-css'  href='../css/style.css' type='text/css' media='all' />
+		<link rel='stylesheet' href='../css/footer.css' type='text/css' />
+		<link rel='stylesheet' href='../css/popup.css' type='text/css' />
 		<link rel="stylesheet" href="../css/jquery-ui-1.8.18.custom.css" type="text/css"/>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
@@ -145,26 +146,20 @@
 			
 			
 			function drawPreview( place ){
-			
-				if (place.geometry){
-					alert( place.geometry.location );
-					var lat = place.geometry.location.lat();
-					var lng = place.geometry.location.lng();
-				
-				} else {
-					var lat = place['location'][0];
-					var lng = place['location'][1];
-				}
-				
-				var url = "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=14&size=100x100&&markers=color:red%%7C"+lat+"," +lng+"&sensor=false";
-				$("#static_map").attr("src", url);
-				$("#place_name").html( place.name );
 				$("#selected_place_json").val( JSON.stringify( place ) );
-			
+				
+				if ( place ){
+					$("#placeling_footer").show();
+					$("#placeling_map_image").attr( "src", place.map_url );
+					$("#placeling_place_name").html( place.name );
+				} else {
+					$("#placeling_footer").hide();
+				}
 			}
 			
 			var $recent_places;
 			$(document).ready(function(){
+				$("#placeling_footer").hide();
 				places_dictionary = JSON.parse(places_json);
 				
 				showRecentlyBookmarked();
@@ -198,7 +193,7 @@
 			    	var place_id = $(this).attr('data-id');
 			    	var data_ref = $(this).attr('data-ref');
 					$( "#spinwait" ).show();
-					$( "#display_place" ).hide();	
+					$( "#placeling_footer" ).hide();	
 		    		$.ajax({
 						url: hostname + "/places/" + place_id + ".json",
 						dataType: "jsonp",
@@ -208,10 +203,8 @@
 							key: "<?php echo $signatures['consumer_key']; ?>"
 						},
 						success: function( data ) {	
-							console.debug( data );					
-							drawPreview( data );
-							$( "#spinwait" ).hide();	
-							$( "#display_place" ).show();																            
+							$( "#spinwait" ).hide();					
+							drawPreview( data );															            
 						}
 					});
 					return false;
@@ -219,33 +212,40 @@
 			    
 			
 				$('#submitbutton').click( function(){
-					alert( "insert action click" );
 					var win = window.dialogArguments || opener || parent || top;
 			        win.attach_placeling_place( $("#selected_place_json").val() );
 			
 			        parent.tb_remove();
 			        return;				
-				
 				} );
+				
+				place_json = $("#selected_place_json").val();
+				if ( place_json != "" ){
+					place = JSON.parse(place_json);
+					drawPreview( place );
+				} else {
+					$("#placeling_footer").hide();
+				}
+				
 			});
 
 		</script>
     </head>
     <body>
     
-    <div class="wrap mapEnabled" style="width:660px;height:500px; background-color:yellow;padding: 10 10 10 10;">
+    <div id='placeling_popup_main' class="wrap mapEnabled">
         <h2>Attach Place to post</h2>
         <div class="place_pick" style="display:block;width:600px">
         		<div class="search_top">
         			<input id="searchTextField" type="text" class="search_box ui-autocomplete-input" style="width:100%;">
         		</div>
-        		<div class="search_results">
+        		<div id="search_results">
 					<ul id="recent_places">
         			</ul>   
         		</div>
         	</div>
         
-        	<div id="spinwait" style="width:100%;text-align:center;display:none;"><img src="../img/spinner.gif"/></div>
+        	<div id="spinwait"><img height='91px' src="../img/spinner.gif"/></div>
         	<?php
         		if ( isset( $meta_values ) ){
         	?>
@@ -256,13 +256,10 @@
         		<input type="hidden" id="selected_place_json" name="selected_place_json"/>
         	<?php 
         		}
-        	?>
-	        <div id="display_place" style="display:none;">
-	        	<div id="stats">
-	        		<div id="place_name"></div>
-	        	</div>
-	        	<img id="static_map"/>
-	        </div>
+        	
+        		include("../footer.php");
+		  		echo footerHtml( null, '../img/addPlace.png' );
+		  	?>
 	        
 	        <div id="actions">
 	        	<input class="button-primary" type="submit" name="Save" value="Save" id="submitbutton" style="float:right;" />   

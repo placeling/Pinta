@@ -7,6 +7,19 @@ window.attach_placeling_place = function(json) {
 
 jQuery(document).ready(function(){
 
+	jQuery('form[name=post]').submit(function(){ 
+		alert("TEST");
+            //the validateForm function lives in wp-admin/js/common.js
+            /*
+            if ( !validateForm( jQuery(this)) ) { 
+                    alert('Please enter a value'); 
+                    return false; //stop submitting the form
+            } else {
+                    //alert('all required fields have some input');
+            }*/
+    });
+
+
 	renderPlaceAdmin( );
 
 	jQuery("a#placeling_remove_place").click( function(){
