@@ -9,10 +9,9 @@ Author: Placeling (Internet Services) Inc.
 Author URI: https://www.placeling.com
 */
 
-
-
 if (!class_exists("Placeling")) {
 	class Placeling {
+		
 		var $path = '';
 		function Placeling() { 
 			$this->path = WP_PLUGIN_URL . '/Pinta/';
@@ -42,16 +41,16 @@ if (!class_exists("Placeling")) {
 			
 		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 			
+			
+			
 			if ( strlen( $meta_value ) > 0 ){
 				$place_json = urldecode( $meta_value );
 				$place = json_decode( $place_json );
 				
-				$lat = $place->lat;
-				$lng = $place->lng;
+				wp_enqueue_style( 'footer', $this->path.'/css/footer.css' );
 				
-				$url = "http://maps.google.com/maps/api/staticmap?center=".$lat.",".$lng."&zoom=14&size=100x100&&markers=color:red%%7C".$lat."," .$lng."&sensor=false";
-			
-		  		$content = $content.'<img src="'.$url.'"/>'.$place->name;
+				include("footer.php");
+		  		$content = $content .footerHtml( $place, $this->path.'/img/addPlace.png' );
 		  	}
 		  	
 		  	return $content;
@@ -83,11 +82,6 @@ if (!class_exists("Placeling")) {
 				</div>
 					
 			<?php
-		}
-		
-		
-		function scripts_action() {	
-			//wp_enqueue_script('jquery');		 		
 		}
 		
 		

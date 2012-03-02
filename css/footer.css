@@ -1,0 +1,57 @@
+
+#placeling_footer{
+	width: 100%;
+	overflow:hidden;
+	height: 91px;
+	background-image:url('images/BGTile.png');
+	background-repeat:repeat-x;
+}
+
+#placeling_left_footer{
+	width:220px;
+	float: left;
+	height: 91px;
+	background-image:url('images/logoBanner.png');
+	background-repeat: no-repeat;
+	background-position:center top;
+}
+
+#placeling_add_action{
+	
+}
+
+#placeling_add_map{
+	
+}
+
+#placeling_add_text{
+	color: red;
+	margin: 37px 0 0 10px;
+}
+		
+#placeling_middle_footer{
+	float: left;
+	text-align: center;
+	height: 91px;
+}
+
+#placeling_place_title{
+	margin: 10px;
+	height: 20px;
+}
+
+#placeling_right_footer{
+	width:100px;
+	float: right;
+	text-align: right;
+	height: 91px;
+}
+
+#placeling_map_image{
+	margin: 12px 10px auto 0;
+	height: 60px;
+	width: 60px;
+	border-style:solid;
+	border-width:4px;
+	border-color: white;
+}
