@@ -45,8 +45,7 @@ function renderPlaceAdmin( ){
 		lat = place.lat;
 		lng = place.lng;
 		name = place.name;
-		
-		map_url = "http://maps.google.com/maps/api/staticmap?center="+lat+","+lng+"&zoom=14&size=100x100&&markers=color:red%%7C"+lat+","+lng+"&sensor=false";
+		map_url = place.map_url;
 		
 		template = getPlacelingAdminTemplate();
 		//console.debug( place );
