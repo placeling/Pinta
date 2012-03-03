@@ -4,6 +4,10 @@ window.attach_placeling_place = function(json) {
     renderPlaceAdmin( );
 };
 
+window.get_placeling_json = function(json) {
+    return jQuery('#placeling_place_json').val();
+};
+
 
 jQuery(document).ready(function(){
 

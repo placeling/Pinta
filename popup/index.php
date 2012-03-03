@@ -220,6 +220,13 @@
 				} );
 				
 				place_json = $("#selected_place_json").val();
+				
+				var win = window.dialogArguments || opener || parent || top;
+			    $("#selected_place_json").val( win.get_placeling_json( ) );
+				place_json =  unescape( $("#selected_place_json").val() );
+				
+				console.debug( place_json );
+				
 				if ( place_json != "" ){
 					place = JSON.parse(place_json);
 					drawPreview( place );
