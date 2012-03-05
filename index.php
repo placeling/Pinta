@@ -36,12 +36,10 @@ if (!class_exists("Placeling")) {
 				//we only want to show on single views, for now,  so as not to crowd
 				return $content;
 			}
-		
+			
 		  	$post_ID = $GLOBALS['post']->ID;
 			
-		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
-			
-			
+		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);			
 			
 			if ( strlen( $meta_value ) > 0 ){
 				$place_json = urldecode( $meta_value );
@@ -58,11 +56,12 @@ if (!class_exists("Placeling")) {
 		
 		function draw_placeling(){
 			global $post_ID;
-						
+			
 			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'postnew', $this->path.'/js/postnew.js', array('jquery', 'underscore'));
-			wp_enqueue_script( 'underscore', $this->path.'/js/underscore-min.js', array('jquery'));
-			wp_enqueue_style( 'pinta', $this->path.'/css/pinta.css' );
+			wp_enqueue_script( 'jquery-validate',  $this->path.'/js/jquery.validate.min.js', array('jquery') );
+			wp_enqueue_script( 'postnew', $this->path.'/js/postnew.js', array('jquery', 'underscore') );
+			wp_enqueue_script( 'underscore', $this->path.'/js/underscore-min.js', array('jquery') );
+			wp_enqueue_style( 'pinta', $this->path.'/css/pinta.css');
 			
 			$path = $this->path;
 			$empty_marker_button = $path . 'img/EmptyMarker.png';
@@ -70,8 +69,13 @@ if (!class_exists("Placeling")) {
 			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 			
 			?>
-				<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo $meta_value ; ?>" />	
-				<input id="placeling_placemarker_post" name="placeling_placemarker_post" type="hidden" value="" />		
+				<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo $meta_value ; ?>" />
+				
+				<input id="placeling_placemarker_memo" name="placeling_placemarker_memo" type="hidden" />					
+				
+				<div id="placeling_dialog_form" title="Post to Placeling">
+			
+				</div>
 				
 				<div id="empty_place">
 					<a id='add_place' href='<?php echo $path; ?>/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img src='<?php echo $empty_marker_button; ?>' />Add place</a>
@@ -80,10 +84,46 @@ if (!class_exists("Placeling")) {
 				<div id="placeling_tagged_place" style="display:none;">
 
 				</div>
-					
+	
 			<?php
 		}
 		
+		function postToPlaceling( $placemarker_raw ){
+			$current_user = wp_get_current_user();
+    
+			$accessToken = get_user_meta($current_user->ID, 'placeling_access_token', true);
+			$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret', true);
+			
+			$hostname = "http://localhost:3000";
+	
+			$oauthObject = new OAuthSimple();
+			
+			$signatures = array( 'consumer_key'     => 'IR3hVvWRYBp1ah3PJUiPirgFzKlMHTeujbORNzAK',
+				'shared_secret'    => 'PqsYkO2smE7gkz9txhzN0bHoPMtDLfp73kIc3RSY');
+			
+			$placemarker_json = urldecode( $placemarker_raw );
+			$placemarker = json_decode( $placemarker_json );
+			
+			if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {
+				//this is a weird state that probably shouldn't happen, but I don't want it to break their post
+			} else {
+				$signatures['oauth_token'] = $accessToken;
+				$signatures['oauth_secret'] = $secretToken;
+			
+				$result = $oauthObject->sign(array(
+					'path'      => $hostname.'/v1/places/' + $placemarker['place_id'] + '/perspectives/me.json',
+					'parameters'=> array(
+						'memo' => $placemarker['memo'],
+						'url'  => $placemarker['url']),
+					'signatures'=> $signatures));
+		
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_URL, $result['signed_url']);
+				$r = curl_exec($ch);
+				// has to be "fire and forget"  
+			}
+		}
 		
 		function save_post( $post_ID ){
 			if ( array_key_exists( 'placeling_place_json', $_POST ) ){
@@ -94,7 +134,12 @@ if (!class_exists("Placeling")) {
 					delete_post_meta( $post_ID, '_placeling_place_json' );
 				}
 			}
+			
+			if ( array_key_exists( 'placeling_placemarker_post', $_POST ) ){
+				postToPlaceling( $_POST['placeling_placemarker_post'] );
+			}	
 		}
+		
 		
 		function placeling_media_button($context) {
 			global $post_ID;

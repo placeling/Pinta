@@ -12,7 +12,7 @@
 	display:block;
 }
 
-#placeling_tagged_place{
+#place_data{
 
 	width:100%;
 	height:120px;
@@ -25,5 +25,7 @@
 	float:right;
 }
 
-
+label.error{
+	color:red;
+}
 

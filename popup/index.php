@@ -6,7 +6,7 @@
 	if (!current_user_can('edit_pages') && !current_user_can('edit_posts'))
     	wp_die(__("You are not allowed to be here"));
     	
-    $current_user = wp_get_current_user();
+	$current_user = wp_get_current_user();
     
 	$accessToken = get_user_meta($current_user->ID, 'placeling_access_token', true);
 	$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret', true);
@@ -68,18 +68,18 @@
 	    exit;			
 	} else {
 		$signatures['oauth_token'] = $accessToken;
-    	$signatures['oauth_secret'] = $secretToken;
+		$signatures['oauth_secret'] = $secretToken;
     	
-    	$result = $oauthObject->sign(array(
-	        'path'      => $hostname.'/users/me.json',
-	        'signatures'=> $signatures));
+		$result = $oauthObject->sign(array(
+			'path'      => $hostname.'/users/me.json',
+			'signatures'=> $signatures));
 
 		$ch = curl_init();	        
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	    curl_setopt($ch, CURLOPT_URL, $result['signed_url']);	    
-	    $r = curl_exec($ch);
-	    $info = curl_getinfo($ch);
-	    curl_close($ch);
+		curl_setopt($ch, CURLOPT_URL, $result['signed_url']);	    
+		$r = curl_exec($ch);
+		$info = curl_getinfo($ch);
+		curl_close($ch);
 	
 		if ( $info['http_code'] == 401 ){
 			delete_user_meta($current_user->ID, 'placeling_access_token');
@@ -112,7 +112,7 @@
 
 ?>
 <html>
-    <head>
+	<head>
 		<link rel='stylesheet' id='colors-css'  href='../css/style.css' type='text/css' media='all' />
 		<link rel='stylesheet' href='../css/footer.css' type='text/css' />
 		<link rel='stylesheet' href='../css/popup.css' type='text/css' />
@@ -126,12 +126,12 @@
 		<script type="text/javascript">
 			
 			var places_json = '<?php echo addslashes( json_encode( $recent_places ) ); ?>';
-            var lat = "<?php echo $lat;?>";
-            var lng = "<?php echo $lng;?>";
-            var hostname = "<?php echo $hostname;?>";
-            var path= hostname +"/users/me.json";
-            var places_dictionary;
-            var autocomplete;			
+			var lat = "<?php echo $lat;?>";
+			var lng = "<?php echo $lng;?>";
+			var hostname = "<?php echo $hostname;?>";
+			var path= hostname +"/users/me.json";
+			var places_dictionary;
+			var autocomplete;			
 			
 			function showRecentlyBookmarked(){
 			
@@ -179,7 +179,7 @@
 							success: function( data ) {
 								$("ul#recent_places li").remove();
 								$.each(data.predictions, function(i, item){
-						          $("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" data-ref="'+ item.reference + '" >'+ item.description + '</a></li>');  
+								$("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" data-ref="'+ item.reference + '" >'+ item.description + '</a></li>');  
 						        });													            
 							}
 						});
@@ -190,11 +190,11 @@
 				
 				
 				$("li.place_option a").live('click', function(){
-			    	var place_id = $(this).attr('data-id');
-			    	var data_ref = $(this).attr('data-ref');
+					var place_id = $(this).attr('data-id');
+					var data_ref = $(this).attr('data-ref');
 					$( "#spinwait" ).show();
 					$( "#placeling_footer" ).hide();	
-		    		$.ajax({
+					$.ajax({
 						url: hostname + "/places/" + place_id + ".json",
 						dataType: "jsonp",
 						data: {
@@ -208,21 +208,21 @@
 						}
 					});
 					return false;
-			    });
+				});
 			    
 			
 				$('#submitbutton').click( function(){
 					var win = window.dialogArguments || opener || parent || top;
-			        win.attach_placeling_place( $("#selected_place_json").val() );
+				win.attach_placeling_place( $("#selected_place_json").val() );
 			
-			        parent.tb_remove();
-			        return;				
+				parent.tb_remove();
+				return;				
 				} );
 				
 				place_json = $("#selected_place_json").val();
 				
 				var win = window.dialogArguments || opener || parent || top;
-			    $("#selected_place_json").val( win.get_placeling_json( ) );
+				$("#selected_place_json").val( win.get_placeling_json( ) );
 				place_json =  unescape( $("#selected_place_json").val() );
 				
 				if ( place_json != "" ){
@@ -245,7 +245,7 @@
         			<input id="searchTextField" type="text" class="search_box ui-autocomplete-input" style="width:100%;">
         		</div>
         		<div id="search_results">
-					<ul id="recent_places">
+				<ul id="recent_places">
         			</ul>   
         		</div>
         	</div>
