@@ -1,6 +1,6 @@
 <?php
 	include('../../../../wp-config.php');
-	include ('../OAuthSimple.php');
+	include_once ('../OAuthSimple.php');
 	//require 'oauth.php';
 	//check if logged in
 	$hostname= "http://staging.placeling.com";
