@@ -10,7 +10,7 @@ Author URI: https://www.placeling.com
 */
 
 include_once('OAuthSimple.php');
-
+include_once('simple_html_dom.php');
 
 if (!class_exists("Placeling")) {
 	class Placeling {
@@ -88,6 +88,8 @@ if (!class_exists("Placeling")) {
 			
 			$placemark_memo = $_POST['placeling_placemark_memo'];
 			
+			//$_POST['placeling_placemark_memo']
+			
 			$permalink = get_permalink( $post_ID );
 			$current_user = wp_get_current_user();
 			
@@ -108,6 +110,19 @@ if (!class_exists("Placeling")) {
 			
 			$placemark_memo = preg_replace('/\\\\\'/', '\'', $placemark_memo);
 			
+			if ( array_key_exists( 'placeling_placemark_photos', $_POST) && $_POST['placeling_placemark_photos'] =="on" ){
+				$content = $_POST['content'];
+				
+				$html = str_get_html( $content );
+				$images = array();
+				foreach($html->find('img') as $element) 
+					$images[] = $element->src;
+
+				$image_urls = join( ',', $images); 
+			}
+			
+			
+			
 			if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {
 				//this is a weird state that probably shouldn't happen, but I don't want it to break their post
 			} else {
@@ -116,11 +131,30 @@ if (!class_exists("Placeling")) {
 				
 				$url = $hostname.'/v1/places/'.$placemarker->id.'/perspectives';
 				
+				if ( array_key_exists( 'placeling_placemark_photos', $_POST) && $_POST['placeling_placemark_photos'] =="on" ){
+					$content = $_POST['content'];
+					
+					$html = str_get_html( $content );
+					$images = array();
+					foreach($html->find('img') as $element){ 
+						$images[] = trim( $element->src, "\\\"" );
+					}
+	
+					$image_urls = join( ',', $images);
+					
+					$data = array(
+						'memo' => $placemark_memo,
+						'url'  => $permalink,
+						'photo_urls' => $image_urls);
+					
+				} else {
+					$data = array( 'memo' => $placemark_memo,
+						'url'  => $permalink );
+				}
+				
 				$result = $oauthObject->sign(array(
 					'path'      => $url,
-					'parameters'=> array(
-						'memo' => $placemark_memo,
-						'url'  => $permalink ),
+					'parameters'=> $data,
 					'signatures'=> $signatures));
 				
 				$ch = curl_init();
