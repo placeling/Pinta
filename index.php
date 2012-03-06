@@ -9,6 +9,9 @@ Author: Placeling (Internet Services) Inc.
 Author URI: https://www.placeling.com
 */
 
+include('OAuthSimple.php');
+
+
 if (!class_exists("Placeling")) {
 	class Placeling {
 		
@@ -69,9 +72,7 @@ if (!class_exists("Placeling")) {
 			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 			
 			?>
-				<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo $meta_value ; ?>" />
-				
-				<input id="placeling_placemarker_memo" name="placeling_placemarker_memo" type="hidden" />					
+				<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo $meta_value ; ?>" />				
 				
 				<div id="placeling_dialog_form" title="Post to Placeling">
 			
@@ -88,41 +89,56 @@ if (!class_exists("Placeling")) {
 			<?php
 		}
 		
-		function postToPlaceling( $placemarker_raw ){
+		function postToPlaceling( $post_ID ){
+			
+			$placemark_memo = $_POST['placeling_placemark_memo'];
+			
+			$permalink = get_permalink( $post_ID );
 			$current_user = wp_get_current_user();
-    
+			
 			$accessToken = get_user_meta($current_user->ID, 'placeling_access_token', true);
 			$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret', true);
 			
 			$hostname = "http://localhost:3000";
 	
 			$oauthObject = new OAuthSimple();
+			$oauthObject->setAction("POST");
 			
 			$signatures = array( 'consumer_key'     => 'IR3hVvWRYBp1ah3PJUiPirgFzKlMHTeujbORNzAK',
 				'shared_secret'    => 'PqsYkO2smE7gkz9txhzN0bHoPMtDLfp73kIc3RSY');
 			
-			$placemarker_json = urldecode( $placemarker_raw );
+			$placemarker_json = urldecode( $_POST['placeling_place_json'] );
+			$placemarker_json = preg_replace('/\\\\\'/', '\'', $placemarker_json);
 			$placemarker = json_decode( $placemarker_json );
+			
+			$placemark_memo = preg_replace('/\\\\\'/', '\'', $placemark_memo);
 			
 			if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {
 				//this is a weird state that probably shouldn't happen, but I don't want it to break their post
 			} else {
 				$signatures['oauth_token'] = $accessToken;
 				$signatures['oauth_secret'] = $secretToken;
-			
+				
+				$url = $hostname.'/v1/places/'.$placemarker->id.'/perspectives';
+				
 				$result = $oauthObject->sign(array(
-					'path'      => $hostname.'/v1/places/' + $placemarker['place_id'] + '/perspectives/me.json',
+					'path'      => $url,
 					'parameters'=> array(
-						'memo' => $placemarker['memo'],
-						'url'  => $placemarker['url']),
+						'memo' => $placemark_memo,
+						'url'  => $permalink ),
 					'signatures'=> $signatures));
-		
+				
 				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_URL, $result['signed_url']);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $result['parameters']);
 				$r = curl_exec($ch);
-				// has to be "fire and forget"  
+				// has to be "fire and forget"
+				var_dump( $r );
 			}
+			
+			die();
 		}
 		
 		function save_post( $post_ID ){
@@ -135,15 +151,15 @@ if (!class_exists("Placeling")) {
 				}
 			}
 			
-			if ( array_key_exists( 'placeling_placemarker_post', $_POST ) ){
-				postToPlaceling( $_POST['placeling_placemarker_post'] );
+			if ( array_key_exists( 'placeling_placemark_memo', $_POST ) ){
+				$this->postToPlaceling( $post_ID );
 			}	
 		}
 		
 		
 		function placeling_media_button($context) {
 			global $post_ID;
-	        $path = $this->path;
+			$path = $this->path;
 			
 		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 		  	
