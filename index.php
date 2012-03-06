@@ -135,10 +135,7 @@ if (!class_exists("Placeling")) {
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $result['parameters']);
 				$r = curl_exec($ch);
 				// has to be "fire and forget"
-				var_dump( $r );
 			}
-			
-			die();
 		}
 		
 		function save_post( $post_ID ){
