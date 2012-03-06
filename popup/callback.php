@@ -3,7 +3,7 @@
 	include ('../OAuthSimple.php');
 	//require 'oauth.php';
 	//check if logged in
-	
+	$hostname= "http://staging.placeling.com";
 	$current_user = wp_get_current_user();
 	
 	$oauthObject = new OAuthSimple();
@@ -20,7 +20,7 @@
     
     // Build the request-URL...
     $result = $oauthObject->sign(array(
-        'path'      => 'http://localhost:3000/oauth/access_token',
+        'path'      => $hostname.'/oauth/access_token',
         'parameters'=> array(
             'oauth_verifier' => $_GET['oauth_verifier'],
             'oauth_token'    => $_GET['oauth_token']),

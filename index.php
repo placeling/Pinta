@@ -9,16 +9,12 @@ Author: Placeling (Internet Services) Inc.
 Author URI: https://www.placeling.com
 */
 
-include('OAuthSimple.php');
+include_once('OAuthSimple.php');
 
 
 if (!class_exists("Placeling")) {
 	class Placeling {
-		
-		var $path = '';
 		function Placeling() { 
-			$this->path = WP_PLUGIN_URL . '/Pinta/';
-			
 			// Add Options Page
 			add_action( 'admin_menu',  array(&$this, 'admin_menu') );
 			add_action( 'save_post', array( &$this, 'save_post') );
@@ -48,10 +44,10 @@ if (!class_exists("Placeling")) {
 				$place_json = urldecode( $meta_value );
 				$place = json_decode( $place_json );
 				
-				wp_enqueue_style( 'footer', $this->path.'/css/footer.css' );
+				wp_enqueue_style( 'footer', plugins_url( 'css/footer.css', __FILE__ ) );
 				
 				include("footer.php");
-		  		$content = $content .footerHtml( $place, $this->path.'/img/addPlace.png' );
+		  		$content = $content .footerHtml( $place, plugins_url( 'img/addPlace.png', __FILE__ ) );
 		  	}
 		  	
 		  	return $content;
@@ -61,13 +57,12 @@ if (!class_exists("Placeling")) {
 			global $post_ID;
 			
 			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'jquery-validate',  $this->path.'/js/jquery.validate.min.js', array('jquery') );
-			wp_enqueue_script( 'postnew', $this->path.'/js/postnew.js', array('jquery', 'underscore') );
-			wp_enqueue_script( 'underscore', $this->path.'/js/underscore-min.js', array('jquery') );
-			wp_enqueue_style( 'pinta', $this->path.'/css/pinta.css');
+			wp_enqueue_script( 'jquery-validate',  plugins_url( 'js/jquery.validate.min.js' , __FILE__ ), array('jquery') );
+			wp_enqueue_script( 'postnew', plugins_url( 'js/postnew.js', __FILE__ ), array('jquery', 'underscore') );
+			wp_enqueue_script( 'underscore', plugins_url( 'js/underscore-min.js' , __FILE__ ), array('jquery') );
+			wp_enqueue_style( 'pinta', plugins_url( 'css/pinta.css' , __FILE__ ) );
 			
-			$path = $this->path;
-			$empty_marker_button = $path . 'img/EmptyMarker.png';
+			$empty_marker_button = plugins_url( 'img/EmptyMarker.png' , __FILE__ );
 			
 			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 			
@@ -79,7 +74,7 @@ if (!class_exists("Placeling")) {
 				</div>
 				
 				<div id="empty_place">
-					<a id='add_place' href='<?php echo $path; ?>/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img src='<?php echo $empty_marker_button; ?>' />Add place</a>
+					<a id='add_place' href='<?php echo plugins_url( 'popup/index.php' , __FILE__ ); ?>?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img src='<?php echo $empty_marker_button; ?>' />Add place</a>
 				</div>
 				
 				<div id="placeling_tagged_place" style="display:none;">
@@ -99,7 +94,7 @@ if (!class_exists("Placeling")) {
 			$accessToken = get_user_meta($current_user->ID, 'placeling_access_token', true);
 			$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret', true);
 			
-			$hostname = "http://localhost:3000";
+			$hostname = "http://staging.placeling.com";
 	
 			$oauthObject = new OAuthSimple();
 			$oauthObject->setAction("POST");
@@ -156,12 +151,10 @@ if (!class_exists("Placeling")) {
 		
 		function placeling_media_button($context) {
 			global $post_ID;
-			$path = $this->path;
-			
 		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 		  	
-		  	$empty_button_image = $this->path . 'img/EmptyMarker.png';
-		  	$placed_button_image = $this->path . 'img/MyMarker.png';
+		  	$empty_button_image = plugins_url( 'img/EmptyMarker.png', __FILE__ );
+		  	$placed_button_image = plugins_url( 'img/MyMarker.png', __FILE__ );
 		  	if ( strlen($meta_value) > 0 ){
 		  		$place_json = urldecode( $meta_value );
 				$place = json_decode( $place_json );
@@ -169,7 +162,7 @@ if (!class_exists("Placeling")) {
 		  	} else {
 	        	$name = "";
 	        }
-	        $placesApi_media_button = ' %s' . "<a id='add_place' href='{$path}/popup/index.php?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Add Place'><img id='placeling_untagged' style='display:none;' height=16 width=16 src='" . $empty_button_image . "' /><img id='placeling_tagged' height=16 width=16 style='display:none;' src='" . $placed_button_image . "' /><span class='placeling_place_name'>".$name."</span></a>";
+	        $placesApi_media_button = ' %s' . "<a id='add_place' href='".plugins_url( 'popup/index.php', __FILE__ )."?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Add Place'><img id='placeling_untagged' style='display:none;' height=16 width=16 src='" . $empty_button_image . "' /><img id='placeling_tagged' height=16 width=16 style='display:none;' src='" . $placed_button_image . "' /><span class='placeling_place_name'>".$name."</span></a>";
 	        return sprintf($context, $placesApi_media_button);
 	    }
 

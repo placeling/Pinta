@@ -1,6 +1,6 @@
 <?php
 	include('../../../../wp-config.php');
-	include('../OAuthSimple.php');
+	include_once('../OAuthSimple.php');
 	//check if logged in
 	
 	if (!current_user_can('edit_pages') && !current_user_can('edit_posts'))
@@ -10,7 +10,7 @@
     
 	$accessToken = get_user_meta($current_user->ID, 'placeling_access_token', true);
 	$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret', true);
-	$hostname = "http://localhost:3000";
+	$hostname = "http://staging.placeling.com";
 	
 	$oauthObject = new OAuthSimple();
 	
@@ -22,10 +22,11 @@
 	    ///////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	    // Step 1: Get a Request Token
 	    //
+	    $callback_url = plugins_url( 'popup/callback.php' , dirname(__FILE__) );
 	    $result = $oauthObject->sign(array(
 	        'path'      =>$hostname . '/oauth/request_token',
 	        'parameters'=> array(
-	            'oauth_callback'=> 'http://localhost/~imack/wp-content/plugins/Pinta/popup/callback.php'),
+	            'oauth_callback'=> $callback_url),
 	        'signatures'=> $signatures));
 	
 	    // The above object generates a simple URL that includes a signature, the 
@@ -35,7 +36,12 @@
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	    curl_setopt($ch, CURLOPT_URL, $result['signed_url']);
 	    $r = curl_exec($ch);
+	    $info = curl_getinfo($ch);
 	    curl_close($ch);
+	    
+	    if ( $info['http_code'] != 200 ){
+		die("can't connect to Placeling server");
+	    }
 	
 	    // We parse the string for the request token and the matching token
 	    // secret. Again, I'm not handling any errors and just plough ahead 
@@ -80,7 +86,7 @@
 		$r = curl_exec($ch);
 		$info = curl_getinfo($ch);
 		curl_close($ch);
-	
+		
 		if ( $info['http_code'] == 401 ){
 			delete_user_meta($current_user->ID, 'placeling_access_token');
 			delete_user_meta($current_user->ID, 'placeling_access_secret');
