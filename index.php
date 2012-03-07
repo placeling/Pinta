@@ -86,7 +86,7 @@ if (!class_exists("Placeling")) {
 		}
 		
 		function postToPlaceling( $post_ID ){
-			
+			global $SERVICE_HOSTNAME;
 			$placemark_memo = $_POST['placeling_placemark_memo'];
 			
 			//$_POST['placeling_placemark_memo']
