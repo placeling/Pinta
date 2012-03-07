@@ -26,7 +26,7 @@ jQuery(document).ready(function(){
     renderPlaceAdmin( );
 
     jQuery("a#placeling_remove_place").live('click', function(){
-	jQuery("#placeling_place_json").val();
+	jQuery("#placeling_place_json").val("");
 	renderPlaceAdmin( );		
 	return false;
     });

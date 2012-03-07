@@ -75,7 +75,7 @@ if (!class_exists("Placeling")) {
 				</div>
 				
 				<div id="empty_place">
-					<a id='add_place' href='<?php echo plugins_url( 'popup/index.php' , __FILE__ ); ?>?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img src='<?php echo $empty_marker_button; ?>' />Add place</a>
+					<a id='add_place' href='<?php echo plugins_url( 'popup/index.php' , __FILE__ ); ?>?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img id='placeling_empty_icon' src='<?php echo $empty_marker_button; ?>' /><div id='placeling_add_label'>Add Place</div></a>
 				</div>
 				
 				<div id="placeling_tagged_place" style="display:none;">

@@ -3,6 +3,8 @@
 .placeling_place_details{
 	float:left;
 	display:block;
+	margin:10px 0 0 10px;
+	font-size: 14px;
 }
 
 
@@ -25,7 +27,25 @@
 	float:right;
 }
 
+#placeling_memo_label{
+	font-weight: bold;
+}
+
 label.error{
 	color:red;
 }
 
+
+#empty_place {
+	display: block;
+	min-height: 44px;
+}
+
+#placeling_empty_icon {
+	float:left;
+}
+
+#placeling_add_label{
+	padding-top:12px;
+	font-size: 14px;
+}
