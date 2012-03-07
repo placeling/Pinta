@@ -3,7 +3,7 @@
 /*
 Plugin Name: Placeling
 Plugin URI: https://www.placeling.com
-Description: Tag your posts with location data from Placeling!
+Description: Placeling turns your blog into an iPhone- and map-based guide to the world. Simply use this plugin to tag your posts with a location and we'll convert each post into a point on a map at placeling.com. Your readers can use their iPhone to see nearby places you've recommended (and they'll be driven to your blog to read your post) or explore a web-based map of all your posts.
 Version: 0.1
 Author: Placeling (Internet Services) Inc.
 Author URI: https://www.placeling.com
@@ -75,7 +75,7 @@ if (!class_exists("Placeling")) {
 				</div>
 				
 				<div id="empty_place">
-					<a id='add_place' href='<?php echo plugins_url( 'popup/index.php' , __FILE__ ); ?>?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Tag Place'><img id='placeling_empty_icon' src='<?php echo $empty_marker_button; ?>' /><div id='placeling_add_label'>Add Place</div></a>
+					<a id='add_place' href='<?php echo plugins_url( 'popup/index.php' , __FILE__ ); ?>?TB_iframe=true&height=500&width=630' class='thickbox' alt='foo' title='Tag Place'><img id='placeling_empty_icon' src='<?php echo $empty_marker_button; ?>' /><div id='placeling_add_label'>Add Place</div></a>
 				</div>
 				
 				<div id="placeling_tagged_place" style="display:none;">
