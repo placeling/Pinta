@@ -119,16 +119,10 @@
 ?>
 <html>
 	<head>
-		<link rel='stylesheet' id='colors-css'  href='../css/style.css' type='text/css' media='all' />
 		<link rel='stylesheet' href='../css/footer.css' type='text/css' />
 		<link rel='stylesheet' href='../css/popup.css' type='text/css' />
-		<link rel="stylesheet" href="../css/jquery-ui-1.8.18.custom.css" type="text/css"/>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 		
-		<style type="text/css">
-			.ui-progressbar-value { background-image: url(../css/images/pbar-ani.gif); }
-		</style>
 		<script type="text/javascript">
 			
 			var places_json = '<?php echo addslashes( json_encode( $recent_places ) ); ?>';
@@ -194,6 +188,9 @@
 					}
 				});	
 				
+				$("li.place_option").live('click', function(){
+					$(this).find("a").click();
+				});
 				
 				$("li.place_option a").live('click', function(){
 					var place_id = $(this).attr('data-id');
@@ -219,10 +216,10 @@
 			
 				$('#submitbutton').click( function(){
 					var win = window.dialogArguments || opener || parent || top;
-				win.attach_placeling_place( $("#selected_place_json").val() );
-			
-				parent.tb_remove();
-				return;				
+					win.attach_placeling_place( $("#selected_place_json").val() );
+				
+					parent.tb_remove();
+					return;				
 				} );
 				
 				place_json = $("#selected_place_json").val();
@@ -245,10 +242,11 @@
     <body>
     
     <div id='placeling_popup_main' class="wrap mapEnabled">
-        <h2>Attach Place to post</h2>
+	
+        <h3 class='pick_header'>Attach Place to post</h2>
         <div class="place_pick" style="display:block;width:600px">
-        		<div class="search_top">
-        			<input id="searchTextField" type="text" class="search_box ui-autocomplete-input" style="width:100%;">
+        		<div id="search_top">
+        			<input id="searchTextField" type="text" class="search_box">
         		</div>
         		<div id="search_results">
 				<ul id="recent_places">
