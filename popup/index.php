@@ -131,7 +131,8 @@
 			var hostname = "<?php echo $SERVICE_HOSTNAME;?>";
 			var path= hostname +"/users/me.json";
 			var places_dictionary;
-			var autocomplete;			
+			var autocomplete;
+			varxhrPool = [];
 			
 			function showRecentlyBookmarked(){
 			
@@ -152,7 +153,7 @@
 					$("#placeling_footer").show();
 					$("#placeling_map_image").attr( "src", place.map_url );
 					$("#placeling_place_name").html( place.name );
-					$( "#placeling_footer" ).focus();
+					$( "#submitbutton" ).focus();
 				} else {
 					$("#placeling_footer").hide();
 				}
@@ -164,6 +165,27 @@
 				places_dictionary = JSON.parse(places_json);
 				
 				showRecentlyBookmarked();
+				
+				$.xhrPool = [];
+				$.xhrPool.abortAll = function() {
+				    $(this).each(function(idx, jqXHR) {
+					jqXHR.abort();
+				    });
+				    $.xhrPool = [];
+				};
+				
+				$.ajaxSetup({
+				    beforeSend: function(jqXHR) {
+					$.xhrPool.push(jqXHR);
+				    },
+				    complete: function(jqXHR) {
+					var index = $.xhrPool.indexOf(jqXHR);
+					if (index > -1) {
+					    $.xhrPool.splice(index, 1);
+					}
+				    }
+				});
+				
 				
 				$( "#searchTextField" ).keyup(function( e ) {
 					var text = $( "#searchTextField" ).val();
@@ -192,6 +214,7 @@
 						}
 					} else {
 						$("ul#recent_places li").remove();
+						$.xhrPool.abortAll
 						$("ul#recent_places").append( "<li class='waitload'><img height='91px' src='../img/spinner.gif'/></li>" );
 						$.ajax({
 							url: hostname + "/places/search.json",
@@ -202,12 +225,14 @@
 								lat: lat,
 								lng: lng
 							},
+							error: function(){
+								$("ul#recent_places li").remove();	
+							},
 							success: function( data ) {
-								console.debug("search", data);
 								$("ul#recent_places li").remove();
 								if (data.places) {
 									$.each(data.places, function(i, item){
-										$("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" >'+ item.name + ',' + item.city_data + '</a></li>');  
+										$("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" >'+ item.name + ',' + item.vicinity + '</a></li>');  
 									});
 								}	
 							}
