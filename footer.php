@@ -27,20 +27,20 @@ function footerHtml( $place, $add_url ){
 	return "
 	<div id='placeling_footer'>
 		<div id='placeling_left_footer'>
-			<div id='placeling_add_text'>
-				<a id='placeling_add_action' href='#'><img id='placeling_add_map' src='$add_url'/>Add to My Map</a>
+			<div id='placeling_add_map'>
+				<a id='placeling_add_action' href='#'><img id='placeling_add_image' src='$add_url'/><div id='placeling_add_text'>add to my places</div></a>
 			</div>
 		</div>
 		<div id='placeling_middle_footer'>
 			<div id='placeling_place_title'>
-				<a href='$place_url'><span id='placeling_place_name'>$name</span></a>
+				<a href='$place_url' target='_blank'><span id='placeling_place_name'>$name</span></a>
 			</div>
 			<div id='placeling_contact_info'>
-				<a href='$thirdparty_url'>hours, directions, and contact</a>
+				<a href='$thirdparty_url'  target='_blank'>hours, directions, and contact</a>
 			</div>
 		</div>
 		<div id='placeling_right_footer'>
-			<a href='$thirdparty_url'><img id='placeling_map_image' src='$url'></a>
+			<a href='$thirdparty_url'  target='_blank'><img id='placeling_map_image' src='$url'></a>
 		</div>
 	</div>
 	";

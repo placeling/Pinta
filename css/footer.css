@@ -1,4 +1,15 @@
 
+@font-face {
+	font-family: Museo;
+	src: url('fonts/Museo.otf');
+}
+
+@font-face {
+	font-family: MuseoSlab;
+	src: url('fonts/MuseoSlab.otf');
+}
+
+
 #placeling_footer{
 	width: 100%;
 	overflow:hidden;
@@ -8,7 +19,7 @@
 }
 
 #placeling_left_footer{
-	width:220px;
+	width:177px;
 	float: left;
 	height: 91px;
 	background-image:url('images/logoBanner.png');
@@ -20,14 +31,26 @@
 	
 }
 
+#placeling_add_image{
+	display:block;
+	float:left;
+}
+
 #placeling_add_map{
-	
+	margin: 41px 0 0 10px;
+	display: block;
 }
 
 #placeling_add_text{
-	color: red;
-	margin: 37px 0 0 10px;
+	font-family: MuseoSlab, Rockwell, Courier;
+	color: rgb(210,86,79);
+	padding-top: 12px;
 }
+
+a#placeling_add_action{
+	text-decoration: none;
+}
+
 		
 #placeling_middle_footer{
 	float: left;
@@ -35,13 +58,34 @@
 	height: 91px;
 }
 
+#placeling_contact_info{
+	font-family: Museo, Rockwell, Courier;
+	margin-top: 28px;
+}
+
+#placeling_contact_info a{
+	text-decoration: none;
+	color: rgb(210,86,79);
+}
+
 #placeling_place_title{
 	margin: 10px;
 	height: 20px;
 }
 
+#placeling_place_name{
+	font-size: 24px;
+	color: rgb(193,191,183);
+	text-shadow:#fff 0px 1px 0, #000 0 -1px 0;
+	font-family: MuseoSlab, Rockwell, Courier;
+}
+
+#placeling_place_title a{
+	text-decoration: none;
+}
+
 #placeling_right_footer{
-	width:100px;
+	width:80px;
 	float: right;
 	text-align: right;
 	height: 91px;
