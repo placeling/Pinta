@@ -1,5 +1,9 @@
 
 
+.waitload{
+	list-style-type: none;
+}
+
 #placeling_popup_main{
 	width:600px;
 	height:500px; 

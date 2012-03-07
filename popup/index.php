@@ -152,6 +152,7 @@
 					$("#placeling_footer").show();
 					$("#placeling_map_image").attr( "src", place.map_url );
 					$("#placeling_place_name").html( place.name );
+					$( "#placeling_footer" ).focus();
 				} else {
 					$("#placeling_footer").hide();
 				}
@@ -164,27 +165,53 @@
 				
 				showRecentlyBookmarked();
 				
-				$( "#searchTextField" ).keyup(function() {
+				$( "#searchTextField" ).keyup(function( e ) {
 					var text = $( "#searchTextField" ).val();
-					
-					if ( text.length >= 1 ){
+					code= (e.keyCode ? e.keyCode : e.which);
+					if (code != 13) {
+						if ( text.length >= 1 ){
+							$.ajax({
+								url: "autocomplete.php",
+								dataType: "json",
+								data: {
+									input: text,
+									location: lat + "," + lng,
+									types: "establishment"
+								},
+								success: function( data ) {
+									$("ul#recent_places li").remove();
+									if (data.predictions){
+										$.each(data.predictions, function(i, item){
+											$("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" data-ref="'+ item.reference + '" >'+ item.description + '</a></li>');  
+										});
+									}
+								}
+							});
+						} else {					
+							showRecentlyBookmarked();
+						}
+					} else {
+						$("ul#recent_places li").remove();
+						$("ul#recent_places").append( "<li class='waitload'><img height='91px' src='../img/spinner.gif'/></li>" );
 						$.ajax({
-							url: "autocomplete.php",
-							dataType: "json",
+							url: hostname + "/places/search.json",
+							dataType: "jsonp",
 							data: {
-								input: text,
-								location: lat + "," + lng,
-								types: "establishment"
+								key: "<?php echo $signatures['consumer_key']; ?>",
+								query: text,
+								lat: lat,
+								lng: lng
 							},
 							success: function( data ) {
+								console.debug("search", data);
 								$("ul#recent_places li").remove();
-								$.each(data.predictions, function(i, item){
-								$("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" data-ref="'+ item.reference + '" >'+ item.description + '</a></li>');  
-						        });													            
+								if (data.places) {
+									$.each(data.places, function(i, item){
+										$("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" >'+ item.name + ',' + item.city_data + '</a></li>');  
+									});
+								}	
 							}
 						});
-					} else {					
-						showRecentlyBookmarked();
 					}
 				});	
 				
