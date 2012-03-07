@@ -89,19 +89,20 @@ function getPlacelingAdminTemplate(){
 				    <img src='<%= map_url %>'/>							\
 			    </div>										\
 			    <div class='placeling_place_details'>						\
-				    <div style='placeling_place_name'><%= name %></div>			\
-				    <div style='placeling_place_address'><%= street_address %></div>	\
-				    <div style='placeling_place_city'><%= city_data %></div>			\
+				    <div id='placeling_place_name'><%= name %></div>			\
+				    <div id='placeling_place_address'><%= street_address %></div>	\
+				    <div id='placeling_place_city'><%= city_data %></div>			\
 			    </div>										\
 			    <div class='placeling_place_remove'>						\
 				    <div><a href='#' id='placeling_remove_place'>remove place</a></div>	\
 			    </div>										\
 			</div>		\
+			<hr> 			\
 			<div id='placeling_placemark'>					\
 			    <fieldset>									\
-				    <label for='placeling_placemark_memo'>Placemark Note</label>				\
-				    <textarea id='placeling_placemark_memo' rows='5' cols='50' name='placeling_placemark_memo'></textarea>	\
-				    <label for='placeling_placemark_photos'><input name='placeling_placemark_photos' type='checkbox' id='placeling_placemark_photos' checked='checked'>Attach Photos?</label> \
+				    <div id='placeling_memo_label'><label for='placeling_placemark_memo'>Placemark Note</label></div>				\
+				    <textarea id='placeling_placemark_memo' rows='5' cols='50' name='placeling_placemark_memo'></textarea>\
+				    <div id='placeling_photo_label'><label for='placeling_placemark_photos'><input name='placeling_placemark_photos' type='checkbox' id='placeling_placemark_photos' checked='checked'>Attach Photos?</label></div> \
 			    </fieldset>									\
 			</div>		\
 	");
