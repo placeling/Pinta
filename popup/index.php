@@ -1,6 +1,7 @@
 <?php
 	include('../../../../wp-config.php');
 	include_once('../OAuthSimple.php');
+	include_once('../pinta-config.php');
 	//check if logged in
 	
 	if (!current_user_can('edit_pages') && !current_user_can('edit_posts'))
@@ -10,7 +11,6 @@
     
 	$accessToken = get_user_meta($current_user->ID, 'placeling_access_token', true);
 	$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret', true);
-	$hostname = "http://staging.placeling.com";
 	
 	$oauthObject = new OAuthSimple();
 	
@@ -24,7 +24,7 @@
 	    //
 	    $callback_url = plugins_url( 'popup/callback.php' , dirname(__FILE__) );
 	    $result = $oauthObject->sign(array(
-	        'path'      =>$hostname . '/oauth/request_token',
+	        'path'      =>$SERVICE_HOSTNAME . '/oauth/request_token',
 	        'parameters'=> array(
 	            'oauth_callback'=> $callback_url),
 	        'signatures'=> $signatures));
@@ -64,7 +64,7 @@
 	    // so the user can authorize our access request.  The user could also deny
 	    // the request, so don't forget to add something to handle that case.
 	    $result = $oauthObject->sign(array(
-	        'path'      => $hostname . '/oauth/authorize',
+	        'path'      => $SERVICE_HOSTNAME . '/oauth/authorize',
 	        'parameters'=> array(
 	            'oauth_token' => $request_token),
 	        'signatures'=> $signatures));
@@ -77,7 +77,7 @@
 		$signatures['oauth_secret'] = $secretToken;
     	
 		$result = $oauthObject->sign(array(
-			'path'      => $hostname.'/users/me.json',
+			'path'      => $SERVICE_HOSTNAME.'/users/me.json',
 			'signatures'=> $signatures));
 
 		$ch = curl_init();	        
@@ -134,7 +134,7 @@
 			var places_json = '<?php echo addslashes( json_encode( $recent_places ) ); ?>';
 			var lat = "<?php echo $lat;?>";
 			var lng = "<?php echo $lng;?>";
-			var hostname = "<?php echo $hostname;?>";
+			var hostname = "<?php echo $SERVICE_HOSTNAME;?>";
 			var path= hostname +"/users/me.json";
 			var places_dictionary;
 			var autocomplete;			

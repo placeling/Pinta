@@ -1,7 +1,10 @@
 <?php
 
-function footerHtml( $place, $add_url ){
+include_once('pinta-config.php');
 
+function footerHtml( $place, $add_url ){
+	global $SERVICE_HOSTNAME;
+	
 	if ( isset( $place ) ){
 		$lat = $place->lat;
 		$lng = $place->lng;
@@ -9,7 +12,7 @@ function footerHtml( $place, $add_url ){
 		
 		$url = $place->map_url;
 		$thirdparty_url = $place->google_url;
-		$place_url = "http://www.placeling.com/places/$pid?src=plugin";
+		$place_url = $SERVICE_HOSTNAME."/places/$pid?src=plugin";
 		$name = $place->name;	
 	} else {
 		$lat = 0;

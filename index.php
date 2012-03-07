@@ -11,6 +11,7 @@ Author URI: https://www.placeling.com
 
 include_once('OAuthSimple.php');
 include_once('simple_html_dom.php');
+include_once('pinta-config.php');
 
 if (!class_exists("Placeling")) {
 	class Placeling {
@@ -95,8 +96,6 @@ if (!class_exists("Placeling")) {
 			
 			$accessToken = get_user_meta($current_user->ID, 'placeling_access_token', true);
 			$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret', true);
-			
-			$hostname = "http://staging.placeling.com";
 	
 			$oauthObject = new OAuthSimple();
 			$oauthObject->setAction("POST");
@@ -129,7 +128,7 @@ if (!class_exists("Placeling")) {
 				$signatures['oauth_token'] = $accessToken;
 				$signatures['oauth_secret'] = $secretToken;
 				
-				$url = $hostname.'/v1/places/'.$placemarker->id.'/perspectives';
+				$url = $SERVICE_HOSTNAME.'/v1/places/'.$placemarker->id.'/perspectives';
 				
 				if ( array_key_exists( 'placeling_placemark_photos', $_POST) && $_POST['placeling_placemark_photos'] =="on" ){
 					$content = $_POST['content'];
