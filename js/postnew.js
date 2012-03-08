@@ -45,6 +45,14 @@ function renderPlaceAdmin( ){
 	    var json_place = unescape( raw_place );
 	    var place = JSON.parse( json_place );		
 	    
+	    if ( !place.street_address ){
+		place.street_address = "";
+	    }
+	    
+	    if ( !place.city_data ){
+		place.city_data = "";
+	    }
+	    
 	    lat = place.lat;
 	    lng = place.lng;
 	    name = place.name;
