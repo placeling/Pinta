@@ -23,6 +23,10 @@ if (!class_exists("Placeling")) {
 			
 		}
 		
+		function install() {
+			//there isn't anything we need to do, this just is to prevent an error on activation
+		}
+		
 		function admin_menu() {
 			add_meta_box( 'WPPlaceling', 'Placeling', array(&$this,'draw_placeling'), 'post', 'normal', 'high' );
 		} 
