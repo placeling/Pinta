@@ -253,10 +253,3 @@ if ( class_exists('Placeling') ) :
 endif;
 
 ?>
-
-
-
-
-
-
-
