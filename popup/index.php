@@ -9,8 +9,8 @@
     	
 	$current_user = wp_get_current_user();
     
-	$accessToken = get_user_meta($current_user->ID, 'placeling_access_token', true);
-	$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret', true);
+	$accessToken = get_user_meta($current_user->ID, '_placeling_access_token', true);
+	$secretToken = get_user_meta($current_user->ID, '_placeling_access_secret', true);
 	
 	$oauthObject = new OAuthSimple();
 	
@@ -85,27 +85,30 @@
 		curl_close($ch);
 		
 		if ( $info['http_code'] == 401 ){
-			delete_user_meta($current_user->ID, 'placeling_access_token');
-			delete_user_meta($current_user->ID, 'placeling_access_secret');
+			delete_user_meta($current_user->ID, '_placeling_access_token');
+			delete_user_meta($current_user->ID, '_placeling_access_secret');
 			//die("no good access_key");	
 			header("Location:index.php");
 		} else if ( $info['http_code'] != 200 ){
 			die("can't connect to Placeling server");
 		}
 		
-	    // We parse the string for the request token and the matching token
-	    // secret. Again, I'm not handling any errors and just plough ahead 
-	    $user = json_decode( $r );
+		// We parse the string for the request token and the matching token
+		// secret. Again, I'm not handling any errors and just plough ahead 
+		$user = json_decode( $r );
+		    
+		$lat = $user->location[0];
+		$lng = $user->location[1];
 		
-	    $lat = $user->location[0];
-	    $lng = $user->location[1];
-	    
-	    $recent_perspectives = $user->perspectives;
-	    $recent_places = array();
-	    
-	    foreach ( $recent_perspectives as $perspective){
-	    	$recent_places[] = $perspective->place;
-	    }   
+		$username = $user->username;
+		update_user_meta( $current_user->ID, '_placeling_username', $username );
+		
+		$recent_perspectives = $user->perspectives;
+		$recent_places = array();
+		
+		foreach ( $recent_perspectives as $perspective){
+		    $recent_places[] = $perspective->place;
+		}   
 	
 		if ( array_key_exists( 'post_id', $_GET ) ){
 			$meta_values = get_post_meta( $_GET['post_id'], '_placeling_place_json', true );
@@ -125,6 +128,7 @@
 			var places_json = '<?php echo addslashes( json_encode( $recent_places ) ); ?>';
 			var lat = "<?php echo $lat;?>";
 			var lng = "<?php echo $lng;?>";
+			var username = "<?php echo $username; ?>";
 			var hostname = "<?php echo $SERVICE_HOSTNAME;?>";
 			var path= hostname +"/users/me.json";
 			var places_dictionary;

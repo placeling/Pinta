@@ -143,8 +143,8 @@ if (!class_exists("Placeling")) {
 			$permalink = get_permalink( $post_ID );
 			$current_user = wp_get_current_user();
 			
-			$accessToken = get_user_meta($current_user->ID, 'placeling_access_token', true);
-			$secretToken = get_user_meta($current_user->ID, 'placeling_access_secret', true);
+			$accessToken = get_user_meta($current_user->ID, '_placeling_access_token', true);
+			$secretToken = get_user_meta($current_user->ID, '_placeling_access_secret', true);
 	
 			$oauthObject = new OAuthSimple();
 			$oauthObject->setAction("POST");
