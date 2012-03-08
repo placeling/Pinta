@@ -8,16 +8,14 @@
 	$current_user = wp_get_current_user();
 	
 	$oauthObject = new OAuthSimple();
-	$signatures = array( 'consumer_key'     => 'IR3hVvWRYBp1ah3PJUiPirgFzKlMHTeujbORNzAK',
-                     'shared_secret'    => 'PqsYkO2smE7gkz9txhzN0bHoPMtDLfp73kIc3RSY');
     
     if ( !isset( $_COOKIE['oauth_token_secret'] )){
     	//cookie we set there maxs out at an hour, should check
     	header("Location:index.php");
     	exit;
     }
-    $signatures['oauth_secret'] = $_COOKIE['oauth_token_secret'];
-    $signatures['oauth_token'] = $_GET['oauth_token'];
+    $SIGNATURES['oauth_secret'] = $_COOKIE['oauth_token_secret'];
+    $SIGNATURES['oauth_token'] = $_GET['oauth_token'];
     
     // Build the request-URL...
     $result = $oauthObject->sign(array(
@@ -25,7 +23,7 @@
         'parameters'=> array(
             'oauth_verifier' => $_GET['oauth_verifier'],
             'oauth_token'    => $_GET['oauth_token']),
-        'signatures'=> $signatures));
+        'signatures'=> $SIGNATURES));
 
     // ... and grab the resulting string again. 
     $ch = curl_init();
@@ -44,8 +42,8 @@
     // All Google API data requests will have to be signed just as before,
     // but we can now bypass the authorization process and use the long-term
     // access token you hopefully stored somewhere permanently.
-    $signatures['oauth_token'] = $access_token;
-    $signatures['oauth_secret'] = $access_token_secret;
+    $SIGNATURES['oauth_token'] = $access_token;
+    $SIGNATURES['oauth_secret'] = $access_token_secret;
     //////////////////////////////////////////////////////////////////////
     
     // Example Google API Access:

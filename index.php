@@ -23,11 +23,45 @@ if (!class_exists("Placeling")) {
 			
 		}
 		
-			// Hook the options mage
 		function admin_menu() {
 			add_meta_box( 'WPPlaceling', 'Placeling', array(&$this,'draw_placeling'), 'post', 'normal', 'high' );
 		} 
 		
+		function update_place( $post_ID ){
+			global $SIGNATURES;
+			global $SERVICE_HOSTNAME;
+			
+			$oauthObject = new OAuthSimple();
+			
+			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
+			
+			$place_json = urldecode( $meta_value );
+			$place_json = preg_replace('/\\\\\'/', '\'', $place_json);
+			$place = json_decode( $place_json );
+			
+			$url = $SERVICE_HOSTNAME.'/v1/places/'.$place->id.'.json';
+			
+			$result = $oauthObject->sign(array(
+				'path'      => $url,
+				'signatures'=> $SIGNATURES));
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $result['signed_url'] );
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$r = curl_exec($ch);
+			$info = curl_getinfo($ch);
+			curl_close($ch);
+			
+			if ( $info['http_code'] == 200 ){
+				$place = json_decode( $r );
+				
+				if ( isset( $place->id ) ) {
+					$place_json = urlencode( $r );
+					update_post_meta( $post_ID, '_placeling_place_json', $place_json );
+				} 
+			} 
+			
+		}
 		
 		function addPlacelingFooter( $content ){
 		
@@ -38,7 +72,18 @@ if (!class_exists("Placeling")) {
 			
 		  	$post_ID = $GLOBALS['post']->ID;
 			
-		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);			
+		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);						
+			$timestamp = get_post_meta($post_ID, '_placeling_place_json_timestamp', true);
+			
+			if ( $timestamp =="" || $timestamp < time() - ( 60*60*24) ){
+				update_post_meta( $post_ID, '_placeling_place_json_timestamp', time() );
+				try{
+					$this->update_place( $post_ID );	
+				} catch (Exception $e){
+					//we just never want this to prevent rendering of a page
+				}
+				
+			}
 			
 			if ( strlen( $meta_value ) > 0 ){
 				$place_json = urldecode( $meta_value );
@@ -86,6 +131,7 @@ if (!class_exists("Placeling")) {
 		
 		function postToPlaceling( $post_ID ){
 			global $SERVICE_HOSTNAME;
+			global $SIGNATURES;
 			$placemark_memo = $_POST['placeling_placemark_memo'];
 			
 			//$_POST['placeling_placemark_memo']
@@ -98,9 +144,6 @@ if (!class_exists("Placeling")) {
 	
 			$oauthObject = new OAuthSimple();
 			$oauthObject->setAction("POST");
-			
-			$signatures = array( 'consumer_key'     => 'IR3hVvWRYBp1ah3PJUiPirgFzKlMHTeujbORNzAK',
-				'shared_secret'    => 'PqsYkO2smE7gkz9txhzN0bHoPMtDLfp73kIc3RSY');
 			
 			$placemarker_json = urldecode( $_POST['placeling_place_json'] );
 			$placemarker_json = preg_replace('/\\\\\'/', '\'', $placemarker_json);
@@ -124,8 +167,8 @@ if (!class_exists("Placeling")) {
 			if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {
 				//this is a weird state that probably shouldn't happen, but I don't want it to break their post
 			} else {
-				$signatures['oauth_token'] = $accessToken;
-				$signatures['oauth_secret'] = $secretToken;
+				$SIGNATURES['oauth_token'] = $accessToken;
+				$SIGNATURES['oauth_secret'] = $secretToken;
 				
 				$url = $SERVICE_HOSTNAME.'/v1/places/'.$placemarker->id.'/perspectives';
 				
@@ -153,7 +196,7 @@ if (!class_exists("Placeling")) {
 				$result = $oauthObject->sign(array(
 					'path'      => $url,
 					'parameters'=> $data,
-					'signatures'=> $signatures));
+					'signatures'=> $SIGNATURES));
 				
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_POST, true);

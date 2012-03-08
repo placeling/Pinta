@@ -14,9 +14,6 @@
 	
 	$oauthObject = new OAuthSimple();
 	
-	$signatures = array( 'consumer_key'     => 'IR3hVvWRYBp1ah3PJUiPirgFzKlMHTeujbORNzAK',
-                     'shared_secret'    => 'PqsYkO2smE7gkz9txhzN0bHoPMtDLfp73kIc3RSY');
-	
 	if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {	
 
 	    ///////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -27,7 +24,7 @@
 	        'path'      =>$SERVICE_HOSTNAME . '/oauth/request_token',
 	        'parameters'=> array(
 	            'oauth_callback'=> $callback_url),
-	        'signatures'=> $signatures));
+	        'signatures'=> $SIGNATURES));
 	
 	    // The above object generates a simple URL that includes a signature, the 
 	    // needed parameters, and the web page that will handle our request.  I now
@@ -67,18 +64,18 @@
 	        'path'      => $SERVICE_HOSTNAME . '/oauth/authorize',
 	        'parameters'=> array(
 	            'oauth_token' => $request_token),
-	        'signatures'=> $signatures));
+	        'signatures'=> $SIGNATURES));
 	
 	    // See you in a sec in step 3.
 	    header("Location:$result[signed_url]");
 	    exit;			
 	} else {
-		$signatures['oauth_token'] = $accessToken;
-		$signatures['oauth_secret'] = $secretToken;
+		$SIGNATURES['oauth_token'] = $accessToken;
+		$SIGNATURES['oauth_secret'] = $secretToken;
     	
 		$result = $oauthObject->sign(array(
 			'path'      => $SERVICE_HOSTNAME.'/users/me.json',
-			'signatures'=> $signatures));
+			'signatures'=> $SIGNATURES));
 
 		$ch = curl_init();	        
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -220,7 +217,7 @@
 							url: hostname + "/places/search.json",
 							dataType: "jsonp",
 							data: {
-								key: "<?php echo $signatures['consumer_key']; ?>",
+								key: "<?php echo $SIGNATURES['consumer_key']; ?>",
 								query: text,
 								lat: lat,
 								lng: lng
@@ -255,7 +252,7 @@
 						data: {
 							id: place_id,
 							google_ref:data_ref, 
-							key: "<?php echo $signatures['consumer_key']; ?>"
+							key: "<?php echo $SIGNATURES['consumer_key']; ?>"
 						},
 						success: function( data ) {	
 							$( "#spinwait" ).hide();					
