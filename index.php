@@ -39,11 +39,15 @@ if (!class_exists("Placeling")) {
 			
 			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 			
+			$postObj = get_post( $post_ID ); 
+			$author_id = $postObj->post_author;
+			$username = get_user_meta( $author_id, '_placeling_username', true);	
+			
 			$place_json = urldecode( $meta_value );
 			$place_json = preg_replace('/\\\\\'/', '\'', $place_json);
 			$place = json_decode( $place_json );
 			
-			$url = $SERVICE_HOSTNAME.'/v1/places/'.$place->id.'.json';
+			$url = $SERVICE_HOSTNAME.'/v1/places/'.$place->id.'.json?rf='.$username;
 			
 			$result = $oauthObject->sign(array(
 				'path'      => $url,
@@ -76,27 +80,32 @@ if (!class_exists("Placeling")) {
 			
 		  	$post_ID = $GLOBALS['post']->ID;
 			
-		  	$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);						
-			$timestamp = get_post_meta($post_ID, '_placeling_place_json_timestamp', true);
-			
-			if ( $timestamp =="" || $timestamp < time() - ( 60*60*24) ){
-				update_post_meta( $post_ID, '_placeling_place_json_timestamp', time() );
-				try{
-					$this->update_place( $post_ID );	
-				} catch (Exception $e){
-					//we just never want this to prevent rendering of a page
-				}
-				
-			}
+			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);	
 			
 			if ( strlen( $meta_value ) > 0 ){
+				
+				$timestamp = get_post_meta($post_ID, '_placeling_place_json_timestamp', true);
+			
+				if ( $timestamp =="" || $timestamp < time() - ( 10 ) ){
+					update_post_meta( $post_ID, '_placeling_place_json_timestamp', time() );
+					try{
+						$this->update_place( $post_ID );	
+					} catch (Exception $e){
+						//we just never want this to prevent rendering of a page
+					}
+					$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
+				}
+				
 				$place_json = urldecode( $meta_value );
 				$place = json_decode( $place_json );
+				
+				$author_id = $GLOBALS['post']->post_author;
+				$username = get_user_meta( $author_id, '_placeling_username', true);
 				
 				wp_enqueue_style( 'footer', plugins_url( 'css/footer.css', __FILE__ ) );
 				
 				include("footer.php");
-		  		$content = $content .footerHtml( $place, plugins_url( 'img/addPlace.png', __FILE__ ) );
+		  		$content = $content .footerHtml( $place, $username );
 		  	}
 		  	
 		  	return $content;
@@ -114,6 +123,7 @@ if (!class_exists("Placeling")) {
 			$empty_marker_button = plugins_url( 'img/EmptyMarker.png' , __FILE__ );
 			
 			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
+			
 			
 			?>
 				<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo $meta_value ; ?>" />				

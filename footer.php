@@ -2,9 +2,10 @@
 
 include_once('pinta-config.php');
 
-function footerHtml( $place, $add_url ){
+function footerHtml( $place, $username ){
 	global $SERVICE_HOSTNAME;
 	
+	$add_url = plugins_url( 'img/addPlace.png', __FILE__ );
 	if ( isset( $place ) ){
 		$lat = $place->lat;
 		$lng = $place->lng;
@@ -13,7 +14,25 @@ function footerHtml( $place, $add_url ){
 		$url = $place->map_url;
 		$thirdparty_url = $place->google_url;
 		$place_url = $SERVICE_HOSTNAME."/places/$pid?src=plugin";
-		$name = $place->name;	
+		$name = $place->name;
+		
+		if ( isset($place->perspectives) ){
+			$found = false;
+			$user_perspective;
+			foreach ($place->perspectives as $perspective){
+				if ( $perspective->user->username == $username ){
+					$user_perspective = $perspective;
+					$found = true;
+				} 	
+			}
+			
+			if ( $found ){
+				$pid = $user_perspective->id;
+				$add_action_url = $SERVICE_HOSTNAME."/perspectives/$pid?src=plugin";
+			} else {
+				$add_action_url = $place_url;
+			}
+		}
 	} else {
 		$lat = 0;
 		$lng = 0;
@@ -21,14 +40,15 @@ function footerHtml( $place, $add_url ){
 		$url = "";
 		$thirdparty_url = "#";
 		$place_url ="#";
-		$name = "";		
+		$name = "";
+		$add_action_url="#";
 	}			
 				
 	return "
 	<div id='placeling_footer'>
 		<div id='placeling_left_footer'>
 			<div id='placeling_add_map'>
-				<a id='placeling_add_action' href='#'><img id='placeling_add_image' src='$add_url'/><div id='placeling_add_text'>add to my places</div></a>
+				<a id='placeling_add_action'  target='_blank' href='$add_action_url'><img id='placeling_add_image' src='$add_url'/><div id='placeling_add_text'>add to my places</div></a>
 			</div>
 		</div>
 		<div id='placeling_middle_footer'>

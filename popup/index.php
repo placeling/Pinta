@@ -320,7 +320,7 @@
         		}
         	
         		include("../footer.php");
-		  		echo footerHtml( null, '../img/addPlace.png' );
+		  		echo footerHtml( null, "" );
 		  	?>
 	        
 	        <div id="actions">
