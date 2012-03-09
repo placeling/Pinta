@@ -225,6 +225,7 @@ if (!class_exists("Placeling")) {
 		function save_post( $post_ID ){
 			if ( array_key_exists( 'placeling_place_json', $_POST ) ){
 				$place_json = $_POST['placeling_place_json'];
+                update_post_meta( $post_ID, '_placeling_place_json', 0 ); //always want to refresh
 				if ( strlen( $place_json ) > 0 ){
 					update_post_meta( $post_ID, '_placeling_place_json', $place_json );
 				} else {
