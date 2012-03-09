@@ -9,8 +9,6 @@ function truncateName( $placename ){
     
     $parts = preg_split( "/[\s]+/", $placename );
     
-    print_r( $parts );
-    
     $i = 0;
     foreach ($parts as $part){
         $shortname .= $part . " ";
