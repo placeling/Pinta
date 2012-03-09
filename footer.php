@@ -2,6 +2,34 @@
 
 include_once('pinta-config.php');
 
+
+function truncateName( $placename ){
+
+    $shortname = "";
+    
+    $parts = preg_split( "/[\s]+/", $placename );
+    
+    print_r( $parts );
+    
+    $i = 0;
+    foreach ($parts as $part){
+        $shortname .= $part . " ";
+        $i += strlen( $part ) + 1;
+        
+        if ( $i > 20 ){
+            break;
+        }
+    }
+    
+    if ( strlen( $shortname ) > 27){
+        $shortname = substr( $shortname, 0, 25 )."...";
+    }
+    
+    return $shortname;
+
+}
+
+
 function footerHtml( $place, $username ){
 	global $SERVICE_HOSTNAME;
 	
@@ -14,7 +42,7 @@ function footerHtml( $place, $username ){
 		$url = $place->map_url;
 		$thirdparty_url = $place->google_url;
 		$place_url = $SERVICE_HOSTNAME."/places/$pid?src=plugin";
-		$name = $place->name;
+		$name = truncateName( $place->name );
 		
 		if ( isset($place->perspectives) ){
 			$found = false;
