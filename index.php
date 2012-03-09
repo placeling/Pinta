@@ -86,7 +86,7 @@ if (!class_exists("Placeling")) {
 				
 				$timestamp = get_post_meta($post_ID, '_placeling_place_json_timestamp', true);
 			
-				if ( $timestamp =="" || $timestamp < time() - ( 10 ) ){
+				if ( $timestamp =="" || $timestamp < time() - ( 60*60*24 ) ){
 					update_post_meta( $post_ID, '_placeling_place_json_timestamp', time() );
 					try{
 						$this->update_place( $post_ID );	
