@@ -218,7 +218,7 @@
 						$.xhrPool.abortAll
 						$("ul#recent_places").append( "<li class='waitload'><img height='91px' src='../img/spinner.gif'/></li>" );
 						$.ajax({
-							url: hostname + "/places/search.json",
+							url: hostname + "/v1/places/search.json",
 							dataType: "jsonp",
 							data: {
 								key: "<?php echo $SIGNATURES['consumer_key']; ?>",
@@ -226,7 +226,7 @@
 								lat: lat,
 								lng: lng
 							},
-							error: function(){
+							error: function( jqXHR ){
 								$("ul#recent_places li").remove();	
 							},
 							success: function( data ) {
@@ -251,7 +251,7 @@
 					$( "#spinwait" ).show();
 					$( "#placeling_footer" ).hide();	
 					$.ajax({
-						url: hostname + "/places/" + place_id + ".json",
+						url: hostname + "/v1/places/" + place_id + ".json",
 						dataType: "jsonp",
 						data: {
 							id: place_id,
@@ -261,7 +261,10 @@
 						success: function( data ) {	
 							$( "#spinwait" ).hide();					
 							drawPreview( data );															            
-						}
+						},
+						error: function( jqXHR ){
+							$( "#spinwait" ).hide();	
+						},
 					});
 					return false;
 				});
