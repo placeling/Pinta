@@ -41,7 +41,7 @@ function footerHtml( $place, $username ){
 		$thirdparty_url = $place->google_url;
 		$place_url = $SERVICE_HOSTNAME."/places/$pid?src=plugin";
 		$name = truncateName( $place->name );
-		
+        
 		if ( isset($place->perspectives) ){
 			$found = false;
 			$user_perspective;

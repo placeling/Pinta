@@ -14,21 +14,22 @@ jQuery(document).ready(function(){
     jQuery("form[name=post]").validate();
     
     jQuery('form[name=post]').submit(function(){
-	jQuery('form[name=post]').validate();
-	
-	if ( !jQuery('form[name=post]').valid() ) {
-	    jQuery("textarea[name=placeling_placemark_memo]").focus();
-	    return false;
-	}
-	return true; 
+        jQuery('form[name=post]').validate();
+        
+        if ( !jQuery('form[name=post]').valid() ) {
+            jQuery("textarea[name=placeling_placemark_memo]").focus();
+            return false;
+        }
+        return true; 
     });
 
     renderPlaceAdmin( );
 
     jQuery("a#placeling_remove_place").live('click', function(){
-	jQuery("#placeling_place_json").val("");
-	renderPlaceAdmin( );		
-	return false;
+        jQuery("#placeling_place_json").val("");
+        jQuery("#placeling_placemarker_initial_memo").val("")
+        renderPlaceAdmin( );		
+        return false;
     });
 	
 });
@@ -65,9 +66,12 @@ function renderPlaceAdmin( ){
 	    jQuery("#add_place #placeling_tagged").show();
 	    jQuery("#add_place #placeling_untagged").hide();
 	    
-	    if ( place.perspectives[0] && place.perspectives[0].mine){
-		jQuery("textarea[name=placeling_placemark_memo]").val(  place.perspectives[0].memo );
+        if ( jQuery("#placeling_placemarker_initial_memo").val() != ""){
+            jQuery("textarea[name=placeling_placemark_memo]").val( jQuery("#placeling_placemarker_initial_memo").val() );
+	    } else if ( place.perspectives[0] && place.perspectives[0].mine){
+            jQuery("textarea[name=placeling_placemark_memo]").val( place.perspectives[0].memo );
 	    }
+        
 	    
 	    jQuery("#empty_place").hide();
 	    jQuery("#placeling_tagged_place").show();

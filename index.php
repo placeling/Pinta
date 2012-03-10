@@ -80,7 +80,7 @@ if (!class_exists("Placeling")) {
 			
 		  	$post_ID = $GLOBALS['post']->ID;
 			
-			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);	
+			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
 			
 			if ( strlen( $meta_value ) > 0 ){
 				
@@ -123,10 +123,11 @@ if (!class_exists("Placeling")) {
 			$empty_marker_button = plugins_url( 'img/EmptyMarker.png' , __FILE__ );
 			
 			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
-			
+			$placemarker_memo = get_post_meta( $post_ID, '_placeling_placemark_memo', true );
 			
 			?>
-				<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo $meta_value ; ?>" />				
+				<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo $meta_value ; ?>" />
+                <input id="placeling_placemarker_initial_memo" name="placeling_placemarker_initial_memo" type="hidden" value="<?php echo $placemarker_memo ; ?>" />				
 				
 				<div id="placeling_dialog_form" title="Post to Placeling">
 			
@@ -164,6 +165,8 @@ if (!class_exists("Placeling")) {
 			$placemarker = json_decode( $placemarker_json );
 			
 			$placemark_memo = preg_replace('/\\\\\'/', '\'', $placemark_memo);
+            
+            update_post_meta( $post_ID, '_placeling_placemark_memo', $placemark_memo );
 			
 			if ( array_key_exists( 'placeling_placemark_photos', $_POST) && $_POST['placeling_placemark_photos'] =="on" ){
 				$content = $_POST['content'];
