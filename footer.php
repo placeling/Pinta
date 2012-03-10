@@ -42,10 +42,10 @@ function footerHtml( $place, $username ){
 		$place_url = $SERVICE_HOSTNAME."/places/$pid?src=plugin";
 		$name = truncateName( $place->name );
         
-		if ( isset($place->perspectives) ){
+		if ( isset($place->referring_perspectives) ){
 			$found = false;
 			$user_perspective;
-			foreach ($place->perspectives as $perspective){
+			foreach ($place->referring_perspectives as $perspective){
 				if ( $perspective->user->username == $username ){
 					$user_perspective = $perspective;
 					$found = true;
@@ -58,7 +58,9 @@ function footerHtml( $place, $username ){
 			} else {
 				$add_action_url = $place_url;
 			}
-		}
+		} else {
+            $add_action_url = $place_url;
+        }
 	} else {
 		$lat = 0;
 		$lng = 0;
@@ -69,7 +71,7 @@ function footerHtml( $place, $username ){
 		$name = "";
 		$add_action_url="#";
 	}			
-				
+                
 	return "
 	<div id='placeling_footer'>
 		<div id='placeling_left_footer'>
