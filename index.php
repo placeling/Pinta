@@ -43,7 +43,7 @@ if (!class_exists("Placeling")) {
 			$author_id = $postObj->post_author;
 			$username = get_user_meta( $author_id, '_placeling_username', true);	
 			
-			$place_json = urldecode( $meta_value );
+			$place_json = rawurldecode( $meta_value );
 			$place_json = preg_replace('/\\\\\'/', '\'', $place_json);
 			$place = json_decode( $place_json );
 			
@@ -65,7 +65,7 @@ if (!class_exists("Placeling")) {
 			if ( $info['http_code'] == 200 ){
 				$place = json_decode( $r );
 				if ( isset( $place->id ) ) {
-					$place_json = urlencode( $r );
+					$place_json = rawurlencode( $r );
 					update_post_meta( $post_ID, '_placeling_place_json', $place_json );
 				} 
 			} 
@@ -161,7 +161,7 @@ if (!class_exists("Placeling")) {
 			$oauthObject = new OAuthSimple();
 			$oauthObject->setAction("POST");
 			
-			$placemarker_json = urldecode( $_POST['placeling_place_json'] );
+			$placemarker_json = rawurldecode( $_POST['placeling_place_json'] );
 			$placemarker_json = preg_replace('/\\\\\'/', '\'', $placemarker_json);
 			$placemarker = json_decode( $placemarker_json );
 			
@@ -250,7 +250,7 @@ if (!class_exists("Placeling")) {
 		  	$empty_button_image = plugins_url( 'img/EmptyMarker.png', __FILE__ );
 		  	$placed_button_image = plugins_url( 'img/MyMarker.png', __FILE__ );
 		  	if ( strlen($meta_value) > 0 ){
-		  		$place_json = urldecode( $meta_value );
+		  		$place_json = rawurldecode( $meta_value );
 				$place = json_decode( $place_json );
 		  		$name = $place->name;
 		  	} else {
