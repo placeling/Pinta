@@ -47,10 +47,12 @@ if (!class_exists("Placeling")) {
 			$place_json = preg_replace('/\\\\\'/', '\'', $place_json);
 			$place = json_decode( $place_json );
 			
-			$url = $SERVICE_HOSTNAME.'/v1/places/'.$place->id.'.json?rf='.$username;
+			$url = $SERVICE_HOSTNAME.'/v1/places/'.$place->id;
 			
 			$result = $oauthObject->sign(array(
 				'path'      => $url,
+                'parameters'=> array(
+                    'rf' => $username ),
 				'signatures'=> $SIGNATURES));
 			
 			$ch = curl_init();
@@ -62,7 +64,6 @@ if (!class_exists("Placeling")) {
 			
 			if ( $info['http_code'] == 200 ){
 				$place = json_decode( $r );
-				
 				if ( isset( $place->id ) ) {
 					$place_json = urlencode( $r );
 					update_post_meta( $post_ID, '_placeling_place_json', $place_json );
@@ -72,7 +73,7 @@ if (!class_exists("Placeling")) {
 		}
 		
 		function addPlacelingFooter( $content ){
-		
+			global $RELOAD_INTERVAL;
 			if ( !is_single() ){
 				//we only want to show on single views, for now,  so as not to crowd
 				return $content;
@@ -86,7 +87,7 @@ if (!class_exists("Placeling")) {
 				
 				$timestamp = get_post_meta($post_ID, '_placeling_place_json_timestamp', true);
 			
-				if ( $timestamp =="" || $timestamp < time() - ( 60*60*24 ) ){
+				if ( $timestamp =="" || $timestamp < time() - $RELOAD_INTERVAL ){
 					update_post_meta( $post_ID, '_placeling_place_json_timestamp', time() );
 					try{
 						$this->update_place( $post_ID );	
