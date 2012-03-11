@@ -28,6 +28,7 @@ jQuery(document).ready(function(){
     jQuery("a#placeling_remove_place").live('click', function(){
         jQuery("#placeling_place_json").val("");
         jQuery("#placeling_placemarker_initial_memo").val("")
+        jQuery("textarea[name=placeling_placemark_memo]").val("");
         renderPlaceAdmin( );		
         return false;
     });
@@ -51,7 +52,7 @@ function renderPlaceAdmin( ){
 	    }
 	    
 	    if ( !place.city_data ){
-		place.city_data = "";
+            place.city_data = "";
 	    }
 	    
 	    lat = place.lat;
