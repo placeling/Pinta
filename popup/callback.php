@@ -27,6 +27,7 @@
     
 	// ... and grab the resulting string again. 
 	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_URL, $result['signed_url']);
 	$r = curl_exec($ch);
