@@ -324,13 +324,13 @@
     
     <div id='placeling_popup_main' class="wrap mapEnabled">
 	
-        <h3 class='pick_header'>Attach Place to post</h2>
+        <h3 class='pick_header'>Attach Place to Post</h2>
         <div class="place_pick" style="display:block;width:600px">
         		<div id="search_top">
         			<input id="searchTextField" type="text" class="search_box">
         		</div>
         		<div id="search_results">
-				<ul id="recent_places">
+				    <ul id="recent_places">
         			</ul>   
         		</div>
         	</div>

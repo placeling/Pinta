@@ -29,8 +29,8 @@
 }
 
 
-#recent_places{
-	
+#recent_places li{
+    font-family: sans-serif, Arial;
 }
 
 #submitbutton{
