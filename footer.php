@@ -29,7 +29,7 @@ function truncateName( $placename ){
 
 
 function footerHtml( $place, $username ){
-	global $SERVICE_HOSTNAME;
+	global $WEB_HOSTNAME;
 	
 	$add_url = plugins_url( 'img/addPlace.png', __FILE__ );
 	if ( isset( $place ) ){
@@ -39,7 +39,7 @@ function footerHtml( $place, $username ){
 		
 		$url = $place->map_url;
 		$thirdparty_url = $place->google_url;
-		$place_url = $SERVICE_HOSTNAME."/places/$pid?src=plugin";
+		$place_url = $WEB_HOSTNAME."/places/$pid?src=plugin";
 		$name = truncateName( $place->name );
         
 		if ( isset($place->referring_perspectives) ){
@@ -54,7 +54,7 @@ function footerHtml( $place, $username ){
 			
 			if ( $found ){
 				$pid = $user_perspective->id;
-				$add_action_url = $SERVICE_HOSTNAME."/perspectives/$pid?src=plugin";
+				$add_action_url = $WEB_HOSTNAME."/perspectives/$pid?src=plugin";
 			} else {
 				$add_action_url = $place_url;
 			}
