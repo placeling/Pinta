@@ -293,7 +293,11 @@
 					});
 					return false;
 				});
-			    
+
+			    $("a").live('click', function(){
+			        //none of the links should actually perform a non-javascript function
+			        return false;
+			    });
 			
 				$('#submitbutton').click( function(){
 					var win = window.dialogArguments || opener || parent || top;
