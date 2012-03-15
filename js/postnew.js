@@ -105,9 +105,9 @@ function getPlacelingAdminTemplate(){
 			<hr> 			\
 			<div id='placeling_placemark'>					\
 			    <fieldset>									\
-				    <div id='placeling_memo_label'><label for='placeling_placemark_memo'>Placemark Note</label></div>				\
+				    <div id='placeling_memo_label'><label for='placeling_placemark_memo'>Add a brief summary. This will appear in Placeling</label></div>				\
 				    <textarea id='placeling_placemark_memo' rows='5' cols='50' name='placeling_placemark_memo'></textarea> \
-				    <div id='placeling_photo_label'><label for='placeling_placemark_photos'><input name='placeling_placemark_photos' type='checkbox' id='placeling_placemark_photos' checked='checked'>Attach Photos?</label></div> \
+				    <div id='placeling_photo_label'><label for='placeling_placemark_photos'><input name='placeling_placemark_photos' type='checkbox' id='placeling_placemark_photos' checked='checked'>Copy blog post photos to Placeling?</label></div> \
 			    </fieldset>									\
 			</div>		\
 	");
