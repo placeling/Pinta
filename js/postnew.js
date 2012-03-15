@@ -11,17 +11,9 @@ window.get_placeling_json = function(json) {
 
 jQuery(document).ready(function(){
 
-    jQuery("form[name=post]").validate();
-    
-    jQuery('form[name=post]').submit(function(){
-        jQuery('form[name=post]').validate();
-        
-        if ( !jQuery('form[name=post]').valid() ) {
-            jQuery("textarea[name=placeling_placemark_memo]").focus();
-            return false;
-        }
-        return true; 
-    });
+     jQuery("form[name=post]").validate({
+            wrapper: "div"
+     });
 
     renderPlaceAdmin( );
 
@@ -81,7 +73,7 @@ function renderPlaceAdmin( ){
 		required: true,
 		minlength: 20,
 		messages: {
-		    required: "Required input",
+		    required: "We need you to add a summary",
 		    minlength: jQuery.format("At least {0} characters are necessary")
 		}
 	    });
@@ -114,7 +106,7 @@ function getPlacelingAdminTemplate(){
 			<div id='placeling_placemark'>					\
 			    <fieldset>									\
 				    <div id='placeling_memo_label'><label for='placeling_placemark_memo'>Placemark Note</label></div>				\
-				    <textarea id='placeling_placemark_memo' rows='5' cols='50' name='placeling_placemark_memo'></textarea>\
+				    <textarea id='placeling_placemark_memo' rows='5' cols='50' name='placeling_placemark_memo'></textarea> \
 				    <div id='placeling_photo_label'><label for='placeling_placemark_photos'><input name='placeling_placemark_photos' type='checkbox' id='placeling_placemark_photos' checked='checked'>Attach Photos?</label></div> \
 			    </fieldset>									\
 			</div>		\
