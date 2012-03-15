@@ -61,7 +61,7 @@ function renderPlaceAdmin( ){
 	    
         if ( jQuery("#placeling_placemarker_initial_memo").val() != ""){
             jQuery("textarea[name=placeling_placemark_memo]").val( jQuery("#placeling_placemarker_initial_memo").val() );
-	    } else if ( place.perspectives[0] && place.perspectives[0].mine){
+	    } else if ( undefined != place.perspectives && place.perspectives.length > 0 && place.perspectives[0].mine){
             jQuery("textarea[name=placeling_placemark_memo]").val( place.perspectives[0].memo );
 	    }
         
