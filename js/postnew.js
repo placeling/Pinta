@@ -12,8 +12,18 @@ window.get_placeling_json = function(json) {
 jQuery(document).ready(function(){
 
      jQuery("form[name=post]").validate({
-            wrapper: "div"
+         wrapper: "div",
+         onsubmit: false
      });
+
+
+    jQuery("input#publish").click(function(event){
+        if ( !jQuery("form[name=post]").valid() ){
+            event.preventDefault();
+            jQuery("placeling_placemark_memo").focus();
+            return false;
+        }
+    });
 
     renderPlaceAdmin( );
 

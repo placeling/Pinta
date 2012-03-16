@@ -14,10 +14,12 @@ include_once('pinta-config.php');
 
 if (!class_exists("Placeling")) {
 	class Placeling {
-		function Placeling() { 
+		function Placeling() {
+
 			// Add Options Page
 			add_action( 'admin_menu',  array(&$this, 'admin_menu') );
 			add_action( 'save_post', array( &$this, 'save_post') );
+			add_action( 'publish_post', array( &$this, 'postToPlaceling') );
 			add_filter( 'media_buttons_context', array(&$this, 'placeling_media_button') );
 			add_filter( 'the_content', array(&$this, 'addPlacelingFooter') );
 			
@@ -129,7 +131,7 @@ if (!class_exists("Placeling")) {
 			
 			?>
 				<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo $meta_value ; ?>" />
-                <input id="placeling_placemarker_initial_memo" name="placeling_placemarker_initial_memo" type="hidden" value="<?php echo $placemarker_memo ; ?>" />				
+                <input id="placeling_placemarker_initial_memo" name="placeling_placemarker_initial_memo" type="hidden" value="<?php echo htmlentities( $placemarker_memo );?>" />
 				
 				<div id="placeling_dialog_form" title="Post to Placeling">
 			
@@ -149,9 +151,12 @@ if (!class_exists("Placeling")) {
 		function postToPlaceling( $post_ID ){
 			global $SERVICE_HOSTNAME;
 			global $SIGNATURES;
-			$placemark_memo = $_POST['placeling_placemark_memo'];
-			
-			//$_POST['placeling_placemark_memo']
+
+			if ( !array_key_exists( 'placeling_placemark_memo', $_POST ) ){
+				return; //no placeling memo to post
+			}
+
+			$placemark_memo = stripslashes( $_POST['placeling_placemark_memo'] );
 			
 			$permalink = get_permalink( $post_ID );
 			$current_user = wp_get_current_user();
@@ -165,23 +170,8 @@ if (!class_exists("Placeling")) {
 			$placemarker_json = rawurldecode( $_POST['placeling_place_json'] );
 			$placemarker_json = preg_replace('/\\\\\'/', '\'', $placemarker_json);
 			$placemarker = json_decode( $placemarker_json );
-			
-			$placemark_memo = preg_replace('/\\\\\'/', '\'', $placemark_memo);
-            
-            update_post_meta( $post_ID, '_placeling_placemark_memo', $placemark_memo );
-			
-			if ( array_key_exists( 'placeling_placemark_photos', $_POST) && $_POST['placeling_placemark_photos'] =="on" ){
-				$content = $_POST['content'];
-				
-				$html = str_get_html( $content );
-				$images = array();
-				foreach($html->find('img') as $element) 
-					$images[] = $element->src;
 
-				$image_urls = join( ',', $images); 
-			}
-			
-			
+            update_post_meta( $post_ID, '_placeling_placemark_memo', $placemark_memo );
 			
 			if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {
 				//this is a weird state that probably shouldn't happen, but I don't want it to break their post
@@ -196,8 +186,10 @@ if (!class_exists("Placeling")) {
 					
 					$html = str_get_html( $content );
 					$images = array();
-					foreach($html->find('img') as $element){ 
-						$images[] = trim( $element->src, "\\\"" );
+					if ($html){
+                        foreach($html->find('img') as $element){
+                            $images[] = trim( $element->src, "\\\"" );
+                        }
 					}
 	
 					$image_urls = join( ',', $images);
@@ -238,10 +230,6 @@ if (!class_exists("Placeling")) {
 					delete_post_meta( $post_ID, '_placeling_place_json' );
 				}
 			}
-			
-			if ( array_key_exists( 'placeling_placemark_memo', $_POST ) ){
-				$this->postToPlaceling( $post_ID );
-			}	
 		}
 		
 		
