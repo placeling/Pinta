@@ -12,32 +12,29 @@
 
 #placeling_footer{
 	width: 100%;
-	overflow:hidden;
-	height: 91px;
+	height: 100px;
+    display: block;
 	background-image:url('images/BGTile.png');
 	background-repeat:repeat-x;
 }
 
 #placeling_left_footer{
-	width:177px;
-	float: left;
-	height: 91px;
-	background-image:url('images/logoBanner.png');
-	background-repeat: no-repeat;
-	background-position:center top;
+	width: 180px;
+	height: 100px;
+    float: left;
+    display: block;
 }
 
 #placeling_add_action{
-	
+    display:block;
 }
 
-#placeling_add_image{
-	display:block;
-	float:left;
+#placeling_logo_image{
+	float: left;
 }
 
 #placeling_add_map{
-	margin: 41px 0 0 10px;
+	margin: 0 0 0 10px;
 	display: block;
 }
 
@@ -45,22 +42,21 @@
 	font-family: MuseoSlab, Rockwell, Courier;
 	color: rgb(210,86,79);
 	padding-top: 12px;
+    float: left;
 }
 
 a#placeling_add_action{
 	text-decoration: none;
 }
-
 		
 #placeling_middle_footer{
 	float: left;
 	text-align: center;
-	height: 91px;
+	width: auto;
 }
 
 #placeling_contact_info{
 	font-family: Museo, Rockwell, Courier;
-	margin-top: 28px;
 }
 
 #placeling_contact_info a{
@@ -69,8 +65,8 @@ a#placeling_add_action{
 }
 
 #placeling_place_title{
-	margin: 10px;
-	height: 20px;
+	margin: 15px 0 0 0;
+    line-height: 22px;
 }
 
 #placeling_place_name{
@@ -88,7 +84,7 @@ a#placeling_add_action{
 	width:78px;
 	float: right;
 	text-align: right;
-	height: 91px;
+	height: 100px;
 }
 
 #placeling_map_image{
