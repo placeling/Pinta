@@ -148,37 +148,13 @@
 				$('#searchTextField').focus();
 			}
 
-			function truncateName( placename ){
-                shortname = "";
-
-                parts = placename.split( " " );
-
-                i = 0;
-                len = 0;
-                for (var i=0;i<parts.length;i++){
-                    shortname += parts[i] + " ";
-                    len += parts[i].length + 1;
-
-                    if ( len > 20 ){
-                        break;
-                    }
-                }
-
-                if ( shortname.length > 27){
-                    shortname = shortname.substring(0, 25) + "...";
-                }
-
-                return shortname;
-			}
-			
-			
 			function drawPreview( place ){
 				$("#selected_place_json").val( JSON.stringify( place ) );
 				
 				if ( place ){
 					$("#placeling_footer").show();
 					$("#placeling_map_image").attr( "src", place.map_url );
-					$("#placeling_place_name").html( truncateName( place.name ) );
+					$("#placeling_place_name").html( place.name );
 					$( "#submitbutton" ).focus();
 				} else {
 					$("#placeling_footer").hide();
