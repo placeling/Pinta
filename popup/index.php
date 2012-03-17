@@ -257,7 +257,8 @@
 						data: {
 							id: place_id,
 							google_ref:data_ref, 
-							key: "<?php echo $SIGNATURES['consumer_key']; ?>"
+							key: "<?php echo $SIGNATURES['consumer_key']; ?>",
+							rf: username
 						},
 						success: function( data ) {	
 							$( "#spinwait" ).hide();					

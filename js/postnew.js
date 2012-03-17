@@ -47,7 +47,7 @@ function renderPlaceAdmin( ){
 	    
 	    var raw_place = jQuery('#placeling_place_json').val();
 	    var json_place = unescape( raw_place );
-	    var place = JSON.parse( json_place );		
+	    var place = JSON.parse( json_place );
 	    
 	    if ( !place.street_address ){
 		place.street_address = "";
@@ -71,8 +71,8 @@ function renderPlaceAdmin( ){
 	    
         if ( jQuery("#placeling_placemarker_initial_memo").val() != ""){
             jQuery("textarea[name=placeling_placemark_memo]").val( jQuery("#placeling_placemarker_initial_memo").val() );
-	    } else if ( undefined != place.perspectives && place.perspectives.length > 0 && place.perspectives[0].mine){
-            jQuery("textarea[name=placeling_placemark_memo]").val( place.perspectives[0].memo );
+	    } else if ( undefined != place.referring_perspectives && place.referring_perspectives.length > 0){
+            jQuery("textarea[name=placeling_placemark_memo]").val( place.referring_perspectives[0].memo );
 	    }
         
 	    
