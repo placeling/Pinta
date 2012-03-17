@@ -56,6 +56,9 @@ function footerHtml( $place, $username ){
 				<a id='placeling_add_action' target='_blank' href='$add_action_url'><img id='placeling_logo_image' src='$add_url'/><div id='placeling_add_text'>Add to my map</div></a>
 			</div>
 		</div>
+		<div id='placeling_right_footer'>
+			<a href='$thirdparty_url'  target='_blank'><img id='placeling_map_image' src='$url'></a>
+		</div>
 		<div id='placeling_middle_footer'>
 			<div id='placeling_place_title'>
 				<a href='$place_url' target='_blank'><span id='placeling_place_name'>$name</span></a>
@@ -63,9 +66,6 @@ function footerHtml( $place, $username ){
 			<div id='placeling_contact_info'>
 				<a href='$thirdparty_url'  target='_blank'>hours, directions, and contact info</a>
 			</div>
-		</div>
-		<div id='placeling_right_footer'>
-			<a href='$thirdparty_url'  target='_blank'><img id='placeling_map_image' src='$url'></a>
 		</div>
 	</div>
 	";

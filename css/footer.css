@@ -11,18 +11,27 @@
 
 
 #placeling_footer{
-	width: 100%;
+    margin-left: 178px;
+    margin-right: 90px;
+    min-width: 200px;
 	height: 100px;
     display: block;
 	background-image:url('images/BGTile.png');
 	background-repeat:repeat-x;
+
 }
 
 #placeling_left_footer{
-	width: 180px;
-	height: 100px;
+    position: relative;
+    width: 178px;
     float: left;
-    display: block;
+    margin-left: -177px;
+    z-index: 100;
+    left: -1px;
+    background-image:url('images/BGTile.png');
+	background-repeat:repeat-x;
+
+	height: 100px;
 }
 
 #placeling_add_action{
@@ -50,13 +59,18 @@ a#placeling_add_action{
 }
 		
 #placeling_middle_footer{
-	float: left;
+    width: 100%;
+    float: left;
+    position: relative;
+    z-index: 1;
+    margin: 0 -1px;
 	text-align: center;
-	width: auto;
+    height:100px;
 }
 
 #placeling_contact_info{
 	font-family: Museo, Rockwell, Courier;
+    line-height: 12px;
 }
 
 #placeling_contact_info a{
@@ -81,10 +95,16 @@ a#placeling_add_action{
 }
 
 #placeling_right_footer{
-	width:78px;
-	float: right;
+    position: relative;
+    width: 90px;
+    float: right;
+    margin-right: -89px;
+    left: 1px;
 	text-align: right;
 	height: 100px;
+
+    background-image:url('images/BGTile.png');
+	background-repeat:repeat-x;
 }
 
 #placeling_map_image{
