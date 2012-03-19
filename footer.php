@@ -47,26 +47,28 @@ function footerHtml( $place, $username ){
 	}			
                 
 	return "
-	<div id='placeling_footer'>
-		<div id='placeling_left_footer'>
-		    <div id='placeling_logo'>
-				<a id='placeling_link'  target='_blank' href='http://www.placeling.com'><img id='placeling_add_image' src=". plugins_url( 'img/logoBanner.png', __FILE__ ) . " /></a>
-			</div>
-			<div id='placeling_add_map'>
-				<a id='placeling_add_action' target='_blank' href='$add_action_url'><img id='placeling_logo_image' src='$add_url'/><div id='placeling_add_text'>Add to my map</div></a>
-			</div>
-		</div>
-		<div id='placeling_right_footer'>
-			<a href='$thirdparty_url'  target='_blank'><img id='placeling_map_image' src='$url'></a>
-		</div>
-		<div id='placeling_middle_footer'>
-			<div id='placeling_place_title'>
-				<a href='$place_url' target='_blank'><span id='placeling_place_name'>$name</span></a>
-			</div>
-			<div id='placeling_contact_info'>
-				<a href='$thirdparty_url'  target='_blank'>hours, directions, and contact info</a>
-			</div>
-		</div>
+	<div id='placeling_footer_wrapper' class='placeling_shadow'>
+        <div id='placeling_footer'>
+            <div id='placeling_left_footer'>
+                <div id='placeling_logo'>
+                    <a id='placeling_link'  target='_blank' href='http://www.placeling.com'><img id='placeling_add_image' src=". plugins_url( 'img/logoBanner.png', __FILE__ ) . " /></a>
+                </div>
+                <div id='placeling_add_map'>
+                    <a id='placeling_add_action' target='_blank' href='$add_action_url'><img id='placeling_logo_image' src='$add_url'/><div id='placeling_add_text'>Add to my map</div></a>
+                </div>
+            </div>
+            <div id='placeling_right_footer'>
+                <a href='$thirdparty_url'  target='_blank'><img id='placeling_map_image' src='$url'></a>
+            </div>
+            <div id='placeling_middle_footer'>
+                <div id='placeling_place_title'>
+                    <a href='$place_url' target='_blank'><span id='placeling_place_name'>$name</span></a>
+                </div>
+                <div id='placeling_contact_info'>
+                    <a href='$thirdparty_url'  target='_blank'>hours, directions, and contact info</a>
+                </div>
+            </div>
+        </div>
 	</div>
 	";
 }

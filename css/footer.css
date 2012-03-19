@@ -9,6 +9,15 @@
 	src: url('fonts/MuseoSlab.otf');
 }
 
+.placeling_shadow{
+	-moz-box-shadow: 3px 3px 4px #000;
+	-webkit-box-shadow: 3px 3px 4px #000;
+	box-shadow: 3px 3px 4px #000;
+	/* For IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+	/* For IE 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+}
 
 #placeling_footer{
     margin-left: 178px;
@@ -18,7 +27,10 @@
     display: block;
 	background-image:url('images/BGTile.png');
 	background-repeat:repeat-x;
+}
 
+#placeling_footer_wrapper{
+    margin: 0 0 5px 0;
 }
 
 #placeling_left_footer{
