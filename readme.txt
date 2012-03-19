@@ -10,7 +10,6 @@ Placeling turns your blog into a map-based, iPhone-enabled guide to the world.
 
 == Description ==
 
-
 Wouldn't it be great if when your readers walked past that restaurant you wrote about, they could see your blog post?
 
 Or maybe your friends are visiting a city you wrote about on your travel blog - and you want to give them an iPhone-based map of the places you love.
@@ -50,6 +49,7 @@ We maintain an extensive help section on [our blogger page](https://www.placelin
 
 == Upgrade Notice ==
 
+
 == Screenshots ==
 
 1. Tag a location by clicking the marker next to the photo uploader
@@ -58,14 +58,8 @@ We maintain an extensive help section on [our blogger page](https://www.placelin
 4. Your place will appear on a map at Placeling.com...
 5. ...and appear within the Placeling iPhone app
 
-= Key Features =
 
-  * Tag places in your post creator
-  * Info footer displayed with link to Google Places and Placeling Data
-  * Attaches url for your post to the corresponding place on placeling and allows your readers to view your posts on a map
-
-
-== Change Log ==
+== Changelog ==
 
 = 0.2 =
 * Initial Public Beta version
