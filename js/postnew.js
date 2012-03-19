@@ -83,8 +83,8 @@ function renderPlaceAdmin( ){
 		required: true,
 		minlength: 20,
 		messages: {
-		    required: jQuery.format("At least 20 characters are necessary"),
-		    minlength: jQuery.format("At least {0} characters are necessary")
+		    required: jQuery.format("You need to add a summary that's at least 20 characters long"),
+		    minlength: jQuery.format("You need to add a summary that's at least 20 characters long")
 		}
 	    });
 	    
