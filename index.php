@@ -107,6 +107,7 @@ if (!class_exists("Placeling")) {
 				$username = get_user_meta( $author_id, '_placeling_username', true);
 				
 				wp_enqueue_style( 'footer', plugins_url( 'css/footer.css', __FILE__ ) );
+				wp_enqueue_script( 'footer', plugins_url( 'js/footer.js', __FILE__ ), array('jquery') );
 				
 				include("footer.php");
 		  		$content = $content .footerHtml( $place, $username );
