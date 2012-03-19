@@ -48,13 +48,13 @@ git push origin master --tags
 
 echo
 echo "Creating local copy of SVN repo ..."
-/usr/bin/svn co $SVNURL $SVNPATH
+/usr/local/svn co $SVNURL $SVNPATH
 
 echo "Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
 
 echo "Ignoring github specific files and deployment script"
-/usr/bin/svn propset svn:ignore "deploy.sh
+/usr/local/svn propset svn:ignore "deploy.sh
 README.md
 .git
 .gitignore" "$SVNPATH/trunk/"
@@ -62,14 +62,14 @@ README.md
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/
 # Add all new files that are not set to be ignored
-/usr/bin/svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
-/usr/bin/svn commit --username=$SVNUSER -m "$COMMITMSG"
+/usr/local/svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
+/usr/local/svn commit --username=$SVNUSER -m "$COMMITMSG"
 
 echo "Creating new SVN tag & committing it"
 cd $SVNPATH
-/usr/bin/svn copy trunk/ tags/$NEWVERSION1/
+/usr/local/svn copy trunk/ tags/$NEWVERSION1/
 cd $SVNPATH/tags/$NEWVERSION1
-/usr/bin/svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
+/usr/local/svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
 
 echo "Removing temporary directory $SVNPATH"
 rm -fr $SVNPATH/
