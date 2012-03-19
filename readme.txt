@@ -3,7 +3,7 @@ Contributors: imack
 Tags: map, maps, google maps, geo, location, places, place, placeling 
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 1.0.0
+Stable tag: 0.1
 
 Tag your blog posts with a place which can 
 
@@ -16,7 +16,13 @@ Simply use this plugin to tag your posts with a location and we'll convert each 
 
 = Examples =
 
-There's a community sourced [list of examples in action](http://code.google.com/p/wordpress-geo-mashup/wiki/ExamplesInAction).
+== Installation ==
+
+== Frequently Asked Questions ==
+
+== Upgrade Notice ==
+
+== Screenshots ==
 
 = Key Features =
 
