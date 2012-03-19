@@ -79,7 +79,7 @@ a#placeling_add_action{
 }
 
 #placeling_place_title{
-	margin: 15px 0 0 0;
+	margin: 16px 0 0 0;
     line-height: 22px;
 }
 
@@ -108,7 +108,7 @@ a#placeling_add_action{
 }
 
 #placeling_map_image{
-	margin: 12px 10px auto 0;
+	margin: 16px 10px auto 0;
 	height: 60px;
 	width: 60px;
 	border-style:solid;
