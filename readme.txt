@@ -3,7 +3,7 @@ Contributors: imack
 Tags: map, maps, google maps, geo, location, places, place, placeling, guide, guides
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 0.2.1
+Stable tag: 1.0
 
 
 Placeling turns your blog into a map-based, iPhone-enabled guide to the world.
@@ -23,10 +23,11 @@ This post then appears on a map of places you love (at Placeling.com/yourusernam
 Your readers can now explore the world with you as a guide.
 
 A few specifics:
-*  The plugin allows you to tag a location to your post
-*  You add a snippet summarizing the location
-*  When you publish, the snippet, a link to your post and (optionally) all the photos in the post are sent to Placeling
-*  Each blog post includes a footer showing the tagged location, its address plus a link to your map at Placeling
+
+*   The plugin allows you to tag a location to your post
+*   You add a snippet summarizing the location
+*   When you publish, the snippet, a link to your post and (optionally) all the photos in the post are sent to Placeling
+*   Each blog post includes a footer showing the tagged location, its address plus a link to your map at Placeling
 
 == Installation ==
 
@@ -59,6 +60,10 @@ We maintain an extensive help section on [our blogger page](https://www.placelin
 
 
 == Changelog ==
+
+
+= 1.0 =
+* Launch version!
 
 = 0.2 =
 * Initial Public Beta version
