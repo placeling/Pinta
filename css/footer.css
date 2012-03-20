@@ -143,6 +143,7 @@ a#placeling_add_action{
 #placeling_mobile_map{
     width: 100%;
     max-width: 300px;
+    border:1px solid #ccc;
 }
 
 
