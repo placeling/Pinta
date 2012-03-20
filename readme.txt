@@ -10,9 +10,9 @@ Placeling turns your blog into a map-based, iPhone-enabled guide to the world.
 
 == Description ==
 
-Wouldn't it be great if when your readers walked past that restaurant you wrote about, they could see your blog post?
+Placeling turns your blog into a map-based, iPhone-enabled guide to the world.
 
-Or maybe your friends are visiting a city you wrote about on your travel blog - and you want to give them an iPhone-based map of the places you love.
+Wouldn't it be nice if your readers could walk past a place you wrote about and see your blog post?
 
 Placeling makes this effortlessly easy.
 
@@ -23,15 +23,14 @@ This post then appears on a map of places you love (at Placeling.com/yourusernam
 Your readers can now explore the world with you as a guide.
 
 A few specifics:
-*   The plugin allows you to tag a location to your post
-*   You add a snippet summarizing the location
-*   When you publish, the snippet, a link to your post and (optionally) all the photos in the post are sent to Placeling
-*   Each blog post includes a footer showing the tagged location, its address plus a link to your map at Placeling
-
+*  The plugin allows you to tag a location to your post
+*  You add a snippet summarizing the location
+*  When you publish, the snippet, a link to your post and (optionally) all the photos in the post are sent to Placeling
+*  Each blog post includes a footer showing the tagged location, its address plus a link to your map at Placeling
 
 == Installation ==
 
-Note that in order to make this plugin work, you must have an account at Placeling.com. Drop everything and [get one now](https://www.placeling.com, "Get an account") or you won't be able to use the plugin properly.
+Note that in order to make this plugin work, you must have an account at Placeling.com. Drop everything and [get one now](https://www.placeling.com "Get an account") or you won't be able to use the plugin properly.
 
 Activate the plugin through through the 'Plugins' menu in Wordpress
 
@@ -41,11 +40,11 @@ Now start sharing your world!
 
 = How do I get a Placeling account? =
 
-Go to [Placeling](https://www.placeling.com, "Placeling") and sign up.
+Go to [Placeling](https://www.placeling.com "Placeling") and sign up.
 
 = How do I get more support? =
 
-We maintain an extensive help section on [our blogger page](https://www.placeling.com/bloggers, "Tools for bloggers"). Or, feel free to send us an email: contact [at] placeling [dot] com. We try hard to get back to you within one business day.
+We maintain an extensive help section on [our blogger page](https://www.placeling.com/bloggers "Tools for bloggers"). Or, feel free to send us an email: contact [at] placeling [dot] com. We try hard to get back to you within one business day.
 
 == Upgrade Notice ==
 
