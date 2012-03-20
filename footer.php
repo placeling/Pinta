@@ -12,6 +12,7 @@ function footerHtml( $place, $username ){
 		$pid = $place->id;
 		
 		$url = $place->map_url;
+		$mobile_map_url = str_replace( "size=100x100", "size=300x100", $url );
 		$thirdparty_url = $place->google_url;
 		$place_url = $WEB_HOSTNAME."/places/$pid?src=plugin";
 		$name = $place->name;
@@ -68,6 +69,26 @@ function footerHtml( $place, $username ){
                     <a href='$thirdparty_url'  target='_blank'>hours, directions, and contact info</a>
                 </div>
             </div>
+        </div>
+	</div>
+	<div id='placeling_mobile_footer' style='display:none;' >
+        <div id='placeling_top_footer'>
+            <div id='placeling_mobile_add'>
+                <a target='_blank' href='$add_action_url'><img src='$add_url'/>
+            </div>
+            <div id='placeling_mobile_add_text'>
+                <a target='_blank' href='$add_action_url'>Add to my map</a>
+            </div>
+            <div id='placeling_mobile_logo'>
+                <a id='placeling_link'  target='_blank' href='http://www.placeling.com'><img id='placeling_add_image' src=". plugins_url( 'img/mobile_logo.png', __FILE__ ) . " /></a>
+            </div>
+        </div>
+
+        <div id='placeling_map_container'>
+            <a href='$thirdparty_url'  target='_blank'><img id='placeling_mobile_map' src='$mobile_map_url'></a>
+        </div>
+        <div id='placeling_mobile_title'>
+            <a href='$place_url' target='_blank'><span id='placeling_place_name'>$name</span></a>
         </div>
 	</div>
 	";

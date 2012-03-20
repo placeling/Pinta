@@ -94,6 +94,7 @@ a#placeling_add_action{
 #placeling_contact_info{
 	font-family: Museo, Rockwell, Courier;
     line-height: 12px;
+    margin-top: 3px;
 }
 
 #placeling_contact_info a{
@@ -137,4 +138,53 @@ a#placeling_add_action{
 	border-style:solid;
 	border-width:4px;
 	border-color: white;
+}
+
+#placeling_mobile_map{
+    width: 100%;
+    max-width: 300px;
+}
+
+
+#placeling_mobile_title{
+	font-size: 24px;
+	color: rgb(193,191,183);
+	text-shadow:#fff 0px 1px 0, #000 0 -1px 0;
+	font-family: MuseoSlab, Rockwell, Courier;
+    text-align: center;
+
+}
+
+#placeling_top_footer{
+    width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+#placeling_map_container{
+    text-align: center;
+}
+
+#placeling_mobile_title a{
+	text-decoration: none;
+}
+
+#placeling_mobile_add{
+    float: left;
+}
+
+#placeling_mobile_add_text{
+	padding-top: 12px;
+    float: left;
+}
+
+#placeling_mobile_add_text a{
+    font-family: MuseoSlab, Rockwell, Courier;
+	color: rgb(210,86,79);
+	text-decoration: none;
+    font-size: 14px;
+}
+
+#placeling_mobile_logo{
+    float: right;
 }
