@@ -45,6 +45,7 @@ function footerHtml( $place, $username ){
 		$place_url ="#";
 		$name = "";
 		$add_action_url="#";
+		$mobile_map_url="#";
 	}			
                 
 	return "
