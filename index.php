@@ -118,13 +118,14 @@ if (!class_exists("Placeling")) {
 		
 		function draw_placeling(){
 			global $post_ID;
-			
+
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-validate',  plugins_url( 'js/jquery.validate.min.js' , __FILE__ ), array('jquery') );
-			wp_enqueue_script( 'postnew', plugins_url( 'js/postnew.js', __FILE__ ), array('jquery', 'underscore') );
-			wp_enqueue_script( 'underscore', plugins_url( 'js/underscore-min.js' , __FILE__ ), array('jquery') );
+			wp_enqueue_script( 'underscorejs', plugins_url( 'js/underscore-min.js' , __FILE__ ), array('jquery') );
+			wp_enqueue_script( 'postnew', plugins_url( 'js/postnew.js', __FILE__ ), array('jquery', 'underscorejs') );
+
 			wp_enqueue_style( 'pinta', plugins_url( 'css/pinta.css' , __FILE__ ) );
-			
+
 			$empty_marker_button = plugins_url( 'img/EmptyMarker.png' , __FILE__ );
 			
 			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
@@ -251,7 +252,7 @@ if (!class_exists("Placeling")) {
 		  	} else {
 	        	$name = "";
 	        }
-	        $placesApi_media_button = ' %s' . "<a id='add_place' href='".plugins_url( 'popup/index.php', __FILE__ )."?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Add Place'><img id='placeling_untagged' style='display:none;' height=16 width=16 src='" . $empty_button_image . "' /><img id='placeling_tagged' height=16 width=16 style='display:none;' src='" . $placed_button_image . "' /><span class='placeling_place_name'>".$name."</span></a>";
+	        $placesApi_media_button = ' %s' . "<a id='placeling_add_place_metabox' href='".plugins_url( 'popup/index.php', __FILE__ )."?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Add Place'><img id='placeling_untagged' style='display:none;' height=16 width=16 src='" . $empty_button_image . "' /><img id='placeling_tagged' height=16 width=16 style='display:none;' src='" . $placed_button_image . "' /><span class='placeling_place_name'>".$name."</span></a>";
 	        return sprintf($context, $placesApi_media_button);
 	    }
 

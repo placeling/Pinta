@@ -66,9 +66,9 @@ function renderPlaceAdmin( ){
 	    template = getPlacelingAdminTemplate();
 	    
 	    jQuery("#placeling_tagged_place").html( template( place ) );
-	    jQuery("#placeling_add_place .placeling_place_name").html( name );
-	    jQuery("#placeling_add_place #placeling_tagged").show();
-	    jQuery("#placeling_add_place #placeling_untagged").hide();
+	    jQuery("#placeling_add_place_metabox .placeling_place_name").html( name );
+	    jQuery("#placeling_add_place_metabox #placeling_tagged").show();
+	    jQuery("#placeling_add_place_metabox #placeling_untagged").hide();
 	    
         if ( jQuery("#placeling_placemarker_initial_memo").val() != ""){
             jQuery("textarea[name=placeling_placemark_memo]").val( jQuery("#placeling_placemarker_initial_memo").val() );
@@ -91,9 +91,9 @@ function renderPlaceAdmin( ){
 	    
 	} else {
 	    jQuery("#placeling_tagged_place").html("");
-	    jQuery("#placeing_add_place .placeling_place_name").html( "" );
-	    jQuery("#placeling_add_place #placeling_tagged").hide();
-	    jQuery("#placeling_add_place #placeling_untagged").show();
+	    jQuery("#placeling_add_place_metabox .placeling_place_name").html( "" );
+	    jQuery("#placeling_add_place_metabox #placeling_tagged").hide();
+	    jQuery("#placeling_add_place_metabox #placeling_untagged").show();
 	    jQuery("#placeling_empty_place").show();
 	    jQuery("#placeling_tagged_place").hide();
 	}						
