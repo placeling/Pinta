@@ -124,7 +124,6 @@
 		<link rel='stylesheet' href='../css/footer.css' type='text/css' />
 		<link rel='stylesheet' href='../css/popup.css' type='text/css' />
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		
 		<script type="text/javascript">
 			
 			var places_json = '<?php echo addslashes( json_encode( $recent_places ) ); ?>';
@@ -266,7 +265,7 @@
 						},
 						error: function( jqXHR ){
 							$( "#spinwait" ).hide();	
-						},
+						}
 					});
 					return false;
 				});
