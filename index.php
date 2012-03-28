@@ -20,9 +20,9 @@ if (!class_exists("Placeling")) {
 			add_action( 'admin_menu',  array(&$this, 'admin_menu') );
 			add_action( 'save_post', array( &$this, 'save_post') );
 			add_action( 'publish_post', array( &$this, 'postToPlaceling') );
+			add_action( 'publish_page', array( &$this, 'postToPlaceling') );
 			add_filter( 'media_buttons_context', array(&$this, 'placeling_media_button') );
 			add_filter( 'the_content', array(&$this, 'addPlacelingFooter') );
-			
 		}
 		
 		function install() {
@@ -31,6 +31,7 @@ if (!class_exists("Placeling")) {
 		
 		function admin_menu() {
 			add_meta_box( 'WPPlaceling', 'Placeling', array(&$this,'draw_placeling'), 'post', 'normal', 'high' );
+			add_meta_box( 'WPPlaceling', 'Placeling', array(&$this,'draw_placeling'), 'page', 'normal', 'high' );
 		} 
 		
 		function update_place( $post_ID ){
@@ -77,7 +78,8 @@ if (!class_exists("Placeling")) {
 		
 		function addPlacelingFooter( $content ){
 			global $RELOAD_INTERVAL;
-			if ( !is_single() ){
+
+			if ( !is_singular() ){
 				//we only want to show on single views, for now,  so as not to crowd
 				return $content;
 			}
