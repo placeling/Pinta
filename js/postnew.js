@@ -10,6 +10,7 @@ window.get_placeling_json = function(json) {
 
 
 jQuery(document).ready(function(){
+    jQuery("#placeling_js_warning").remove();
 
      jQuery("form[name=post]").validate({
          wrapper: "div",
@@ -20,7 +21,7 @@ jQuery(document).ready(function(){
     jQuery("input#publish").click(function(event){
         if ( !jQuery("form[name=post]").valid() ){
             event.preventDefault();
-            jQuery("placeling_placemark_memo").focus();
+            jQuery("#placeling_placemark_memo").focus();
             return false;
         }
     });
@@ -65,9 +66,9 @@ function renderPlaceAdmin( ){
 	    template = getPlacelingAdminTemplate();
 	    
 	    jQuery("#placeling_tagged_place").html( template( place ) );
-	    jQuery("#add_place .placeling_place_name").html( name );
-	    jQuery("#add_place #placeling_tagged").show();
-	    jQuery("#add_place #placeling_untagged").hide();
+	    jQuery("#placeling_add_place .placeling_place_name").html( name );
+	    jQuery("#placeling_add_place #placeling_tagged").show();
+	    jQuery("#placeling_add_place #placeling_untagged").hide();
 	    
         if ( jQuery("#placeling_placemarker_initial_memo").val() != ""){
             jQuery("textarea[name=placeling_placemark_memo]").val( jQuery("#placeling_placemarker_initial_memo").val() );
@@ -76,7 +77,7 @@ function renderPlaceAdmin( ){
 	    }
         
 	    
-	    jQuery("#empty_place").hide();
+	    jQuery("#placeling_empty_place").hide();
 	    jQuery("#placeling_tagged_place").show();
 	    
 	    jQuery("#placeling_placemark_memo").rules("add", {
@@ -90,10 +91,10 @@ function renderPlaceAdmin( ){
 	    
 	} else {
 	    jQuery("#placeling_tagged_place").html("");
-	    jQuery("#add_place .placeling_place_name").html( "" );
-	    jQuery("#add_place #placeling_tagged").hide();
-	    jQuery("#add_place #placeling_untagged").show();
-	    jQuery("#empty_place").show();
+	    jQuery("#placeing_add_place .placeling_place_name").html( "" );
+	    jQuery("#placeling_add_place #placeling_tagged").hide();
+	    jQuery("#placeling_add_place #placeling_untagged").show();
+	    jQuery("#placeling_empty_place").show();
 	    jQuery("#placeling_tagged_place").hide();
 	}						
 }

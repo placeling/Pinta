@@ -137,9 +137,13 @@ if (!class_exists("Placeling")) {
 				<div id="placeling_dialog_form" title="Post to Placeling">
 			
 				</div>
-				
-				<div id="empty_place">
-					<a id='add_place' href='<?php echo plugins_url( 'popup/index.php' , __FILE__ ); ?>?TB_iframe=true&height=500&width=630' class='thickbox' alt='foo' title='Tag Place'><img id='placeling_empty_icon' src='<?php echo $empty_marker_button; ?>' /><div id='placeling_add_label'>Add Place</div></a>
+
+				<div id="placeling_js_warning">
+					<div>If you see this, then the Placeling javascript didn't get to run. Please check your browser's javascript console.</div>
+				</div>
+
+				<div id="placeling_empty_place" style="display:none;">
+					<a id='placeling_add_place' href='<?php echo plugins_url( 'popup/index.php' , __FILE__ ); ?>?TB_iframe=true&height=500&width=630' class='thickbox' alt='foo' title='Tag Place'><img id='placeling_empty_icon' src='<?php echo $empty_marker_button; ?>' /><div id='placeling_add_label'>Add Place</div></a>
 				</div>
 				
 				<div id="placeling_tagged_place" style="display:none;">
