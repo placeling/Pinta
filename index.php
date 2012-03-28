@@ -3,7 +3,7 @@
 Plugin Name: Placeling
 Plugin URI: https://www.placeling.com
 Description: Placeling turns your blog into an iPhone- and map-based guide to the world. Simply use this plugin to tag your posts with a location and we'll convert each post into a point on a map at placeling.com. Your readers can use their iPhone to see nearby places you've recommended (and they'll be driven to your blog to read your post) or explore a web-based map of all your posts.
-Version: 1.0
+Version: 1.1
 Author: Placeling (Internet Services) Inc.
 Author URI: https://www.placeling.com
 */
@@ -121,8 +121,7 @@ if (!class_exists("Placeling")) {
 
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-validate',  plugins_url( 'js/jquery.validate.min.js' , __FILE__ ), array('jquery') );
-			wp_enqueue_script( 'underscorejs', plugins_url( 'js/underscore-min.js' , __FILE__ ), array('jquery') );
-			wp_enqueue_script( 'postnew', plugins_url( 'js/postnew.js', __FILE__ ), array('jquery', 'underscorejs') );
+			wp_enqueue_script( 'postnew', plugins_url( 'js/postnew.js', __FILE__ ), array('jquery'), "1.1" );
 
 			wp_enqueue_style( 'pinta', plugins_url( 'css/pinta.css' , __FILE__ ) );
 
@@ -148,7 +147,27 @@ if (!class_exists("Placeling")) {
 				</div>
 				
 				<div id="placeling_tagged_place" style="display:none;">
-
+                    <div id="place_data">
+                        <div class="placeling_map_image">
+                            <img id="placeling_place_map" src="#"/>
+                        </div>
+                        <div class='placeling_place_details'>
+                            <div id='placeling_place_name'></div>
+                            <div id='placeling_place_address'></div>
+                            <div id='placeling_place_city'></div>
+                        </div>
+                        <div class='placeling_place_remove'>
+                            <div><a href='#' id='placeling_remove_place'>remove place</a></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div id='placeling_placemark'>
+                        <fieldset>
+                            <div id='placeling_memo_label'><label for='placeling_placemark_memo'>Add a brief summary. This will appear in Placeling</label></div>
+                            <textarea id='placeling_placemark_memo' rows='5' cols='50' name='placeling_placemark_memo'></textarea>
+                            <div id='placeling_photo_label'><label for='placeling_placemark_photos'><input name='placeling_placemark_photos' type='checkbox' id='placeling_placemark_photos' checked='checked'>Copy blog post photos to Placeling?</label></div>
+                        </fieldset>
+                    </div>
 				</div>
 	
 			<?php

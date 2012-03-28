@@ -57,16 +57,13 @@ function renderPlaceAdmin( ){
 	    if ( !place.city_data ){
             place.city_data = "";
 	    }
-	    
-	    lat = place.lat;
-	    lng = place.lng;
-	    name = place.name;
-	    map_url = place.map_url;
-	    
-	    template = getPlacelingAdminTemplate();
-	    
-	    jQuery("#placeling_tagged_place").html( template( place ) );
-	    jQuery("#placeling_add_place_metabox .placeling_place_name").html( name );
+
+        jQuery("#placeling_place_name").html( place.name );
+        jQuery("#placeling_place_address").html( place.street_address );
+        jQuery("#placeling_place_city").html( place.city_data );
+        jQuery("#placeling_place_map").attr("src", place.map_url);
+
+	    jQuery("#placeling_add_place_metabox .placeling_place_name").html( place.name );
 	    jQuery("#placeling_add_place_metabox #placeling_tagged").show();
 	    jQuery("#placeling_add_place_metabox #placeling_untagged").hide();
 	    
@@ -79,49 +76,22 @@ function renderPlaceAdmin( ){
 	    
 	    jQuery("#placeling_empty_place").hide();
 	    jQuery("#placeling_tagged_place").show();
-	    
+
 	    jQuery("#placeling_placemark_memo").rules("add", {
-		required: true,
-		minlength: 20,
-		messages: {
-		    required: jQuery.format("You need to add a summary that's at least 20 characters long"),
-		    minlength: jQuery.format("You need to add a summary that's at least 20 characters long")
-		}
+            required: true,
+            minlength: 20,
+            messages: {
+                required: jQuery.format("You need to add a summary that's at least 20 characters long"),
+                minlength: jQuery.format("You need to add a summary that's at least 20 characters long")
+            }
 	    });
 	    
 	} else {
-	    jQuery("#placeling_tagged_place").html("");
 	    jQuery("#placeling_add_place_metabox .placeling_place_name").html( "" );
 	    jQuery("#placeling_add_place_metabox #placeling_tagged").hide();
 	    jQuery("#placeling_add_place_metabox #placeling_untagged").show();
 	    jQuery("#placeling_empty_place").show();
 	    jQuery("#placeling_tagged_place").hide();
 	}						
-}
-
-function getPlacelingAdminTemplate(){
-	return _.template("<div id='place_data'>		\
-			    <div class='placeling_map_image'>						\
-				    <img src='<%= map_url %>'/>							\
-			    </div>										\
-			    <div class='placeling_place_details'>						\
-				    <div id='placeling_place_name'><%= name %></div>			\
-				    <div id='placeling_place_address'><%= street_address %></div>	\
-				    <div id='placeling_place_city'><%= city_data %></div>			\
-			    </div>										\
-			    <div class='placeling_place_remove'>						\
-				    <div><a href='#' id='placeling_remove_place'>remove place</a></div>	\
-			    </div>										\
-			</div>		\
-			<hr> 			\
-			<div id='placeling_placemark'>					\
-			    <fieldset>									\
-				    <div id='placeling_memo_label'><label for='placeling_placemark_memo'>Add a brief summary. This will appear in Placeling</label></div>				\
-				    <textarea id='placeling_placemark_memo' rows='5' cols='50' name='placeling_placemark_memo'></textarea> \
-				    <div id='placeling_photo_label'><label for='placeling_placemark_photos'><input name='placeling_placemark_photos' type='checkbox' id='placeling_placemark_photos' checked='checked'>Copy blog post photos to Placeling?</label></div> \
-			    </fieldset>									\
-			</div>		\
-	");
-
 }
 
