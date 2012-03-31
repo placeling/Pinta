@@ -2,7 +2,7 @@
 
 include_once('pinta-config.php');
 
-function footerHtml( $place, $username ){
+function placelingFooterHtml( $place, $username ){
 	global $WEB_HOSTNAME;
 	
 	$add_url = plugins_url( 'img/addPlace.png', __FILE__ );

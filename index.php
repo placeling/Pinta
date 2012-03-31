@@ -112,7 +112,7 @@ if (!class_exists("Placeling")) {
 				wp_enqueue_script( 'footer', plugins_url( 'js/footer.js', __FILE__ ), array('jquery') );
 				
 				include("footer.php");
-		  		$content = $content .footerHtml( $place, $username );
+		  		$content = $content .placelingFooterHtml( $place, $username );
 		  	}
 		  	
 		  	return $content;

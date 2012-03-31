@@ -331,7 +331,7 @@
         		}
         	
         		include("../footer.php");
-		  		echo footerHtml( null, "" );
+		  		echo placelingFooterHtml( null, "" );
 		  	?>
 	        
 	        <div id="actions">
