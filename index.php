@@ -125,7 +125,7 @@ if (!class_exists("Placeling")) {
 			wp_enqueue_script( 'jquery-validate',  plugins_url( 'js/jquery.validate.min.js' , __FILE__ ), array('jquery') );
 			wp_enqueue_script( 'postnew', plugins_url( 'js/postnew.js', __FILE__ ), array('jquery'), "1.1" );
 
-			wp_enqueue_style( 'pinta', plugins_url( 'css/pinta.css' , __FILE__ ) );
+			wp_enqueue_style( 'pinta', plugins_url( 'css/pinta.css' , __FILE__ ), false, "1.1" );
 
 			$empty_marker_button = plugins_url( 'img/EmptyMarker.png' , __FILE__ );
 			
