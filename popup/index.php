@@ -146,8 +146,7 @@
 					var place = places_dictionary[i];
 					$("ul#recent_places").append('<li class="place_option"><a data-id=' + place.google_id + ' href="#">' + place.name + ", " + place.city_data + '</a></li>');			
 				}
-				
-				$('#searchTextField').focus();
+
 			}
 
 			function drawPreview( place ){
@@ -157,7 +156,6 @@
 					$("#placeling_footer").show();
 					$("#placeling_map_image").attr( "src", place.map_url );
 					$("#placeling_place_name").html( place.name );
-					$( "#submitbutton" ).focus();
 				} else {
 					$("#placeling_footer").hide();
 				}
@@ -310,7 +308,7 @@
         <h3 class='pick_header'>Attach Place to Post</h2>
         <div class="place_pick" style="display:block;width:600px">
         		<div id="search_top">
-        			<input id="searchTextField" type="text" class="search_box">
+        			<input id="searchTextField" type="text" class="search_box" autofocus>
         		</div>
         		<div id="search_results">
 				    <ul id="recent_places">
