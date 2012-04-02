@@ -19,6 +19,9 @@
     color: #a9a9a9;
 }
 
+#placeling_placemark_memo{
+    width:100%;
+}
 
 .placeling_map_image{
 	float:left;
