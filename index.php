@@ -59,7 +59,6 @@ if (!class_exists("Placeling")) {
 				'signatures'=> $SIGNATURES));
 			
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($ch, CURLOPT_URL, $result['signed_url'] );
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$r = curl_exec($ch);
@@ -145,7 +144,7 @@ if (!class_exists("Placeling")) {
 				</div>
 
 				<div id="placeling_empty_place" style="display:none;">
-					<a id='placeling_add_place' href='<?php echo plugins_url( 'popup/index.php' , __FILE__ ); ?>?TB_iframe=true&height=500&width=630' class='thickbox' alt='foo' title='Tag Place'><img id='placeling_empty_icon' src='<?php echo $empty_marker_button; ?>' /><div id='placeling_add_label'>Add Place</div></a>
+					<a id='placeling_add_place' href='<?php echo plugins_url( 'popup/index.php' , __FILE__ ); ?>?TB_iframe=true&height=500&width=700' class='thickbox' alt='foo' title='Tag Place'><img id='placeling_empty_icon' src='<?php echo $empty_marker_button; ?>' /><div id='placeling_add_label'>Add Place</div></a>
 				</div>
 				
 				<div id="placeling_tagged_place" style="display:none;">
@@ -237,7 +236,6 @@ if (!class_exists("Placeling")) {
 					'signatures'=> $SIGNATURES));
 				
 				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 				curl_setopt($ch, CURLOPT_POST, true);
 				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -273,7 +271,7 @@ if (!class_exists("Placeling")) {
 		  	} else {
 	        	$name = "";
 	        }
-	        $placesApi_media_button = ' %s' . "<a id='placeling_add_place_metabox' href='".plugins_url( 'popup/index.php', __FILE__ )."?TB_iframe=true&height=500&width=660' class='thickbox' alt='foo' title='Add Place'><img id='placeling_untagged' style='display:none;' height=16 width=16 src='" . $empty_button_image . "' /><img id='placeling_tagged' height=16 width=16 style='display:none;' src='" . $placed_button_image . "' /><span class='placeling_place_name'>".$name."</span></a>";
+	        $placesApi_media_button = ' %s' . "<a id='placeling_add_place_metabox' href='".plugins_url( 'popup/index.php', __FILE__ )."?TB_iframe=true&height=500&width=700' class='thickbox' alt='foo' title='Add Place'><img id='placeling_untagged' style='display:none;' height=16 width=16 src='" . $empty_button_image . "' /><img id='placeling_tagged' height=16 width=16 style='display:none;' src='" . $placed_button_image . "' /><span class='placeling_place_name'>".$name."</span></a>";
 	        return sprintf($context, $placesApi_media_button);
 	    }
 

@@ -30,7 +30,6 @@
 	    // needed parameters, and the web page that will handle our request.  I now
 	    // "load" that web page into a string variable.
 	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	    curl_setopt($ch, CURLOPT_URL, $result['signed_url']);
 	    $r = curl_exec($ch);
@@ -79,7 +78,6 @@
 			'signatures'=> $SIGNATURES));
 
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_URL, $result['signed_url']);	    
 		$r = curl_exec($ch);
