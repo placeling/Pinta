@@ -1,5 +1,5 @@
 <?php
-	include('../../../../wp-config.php');
+	include_once('../../../../wp-config.php');
 	include_once('../OAuthSimple.php');
 	include_once('../pinta-config.php');
 	//check if logged in
@@ -134,7 +134,6 @@
 			var lng = "<?php echo $lng;?>";
 			var username = "<?php echo $username; ?>";
 			var hostname = "<?php echo $SERVICE_HOSTNAME;?>";
-			var path= hostname +"/users/me.json";
 			var places_dictionary;
 			var autocomplete;
 			varxhrPool = [];
@@ -179,7 +178,7 @@
 
 				$.ajaxSetup({
 				    beforeSend: function(jqXHR) {
-					    //$.xhrPool.push(jqXHR);
+					    $.xhrPool.push(jqXHR);
 				    },
 				    complete: function(jqXHR) {
 					    var index = jQuery.inArray( jqXHR, $.xhrPool );
@@ -256,7 +255,6 @@
 						url: hostname + "/v1/places/" + place_id + ".json",
 						dataType: "jsonp",
 						data: {
-							id: place_id,
 							google_ref:data_ref, 
 							key: "<?php echo $SIGNATURES['consumer_key']; ?>",
 							rf: username
@@ -265,7 +263,7 @@
 							$( "#spinwait" ).hide();					
 							drawPreview( data );															            
 						},
-						error: function( jqXHR ){
+						error: function( jqXHR, textStatus, errorThrown ){
 							$( "#spinwait" ).hide();	
 						}
 					});
