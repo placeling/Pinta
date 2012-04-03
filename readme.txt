@@ -3,7 +3,7 @@ Contributors: imack
 Tags: map, maps, google maps, geo, location, places, place, placeling, guide, guides
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 1.0
+Stable tag: 1.1
 
 
 Placeling turns your blog into a map-based, iPhone-enabled guide to the world.
@@ -61,6 +61,10 @@ We maintain an extensive help section on [our blogger page](https://www.placelin
 
 == Changelog ==
 
+= 1.1 =
+* Fixed various IE8 issues
+* Fixed Firefox on Windows problems
+* Plugin compatbility issues
 
 = 1.0 =
 * Launch version!
