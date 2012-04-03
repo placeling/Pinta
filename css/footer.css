@@ -13,20 +13,12 @@
 	-moz-box-shadow: 3px 3px 4px #666;
 	-webkit-box-shadow: 3px 3px 4px #666;
 	box-shadow: 3px 3px 4px #666;
-	/* For IE 8 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#666')";
-	/* For IE 5.5 - 7 */
-	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#666');
 }
 
 .placeling_shadow{
 	-moz-box-shadow: 3px 3px 4px #ccc;
 	-webkit-box-shadow: 3px 3px 4px #ccc;
 	box-shadow: 3px 3px 4px #ccc;
-	/* For IE 8 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#ccc')";
-	/* For IE 5.5 - 7 */
-	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#ccc');
 }
 
 #placeling_footer{
@@ -71,7 +63,7 @@
 }
 
 #placeling_add_text{
-	font-family: MuseoSlab, Rockwell, Courier;
+	font-family: MuseoSlab, Rockwell, Courier-Bold;
 	color: rgb(210,86,79);
 	padding-top: 12px;
     float: left;
@@ -92,7 +84,7 @@ a#placeling_add_action{
 }
 
 #placeling_contact_info{
-	font-family: Museo, Rockwell, Courier;
+	font-family: Museo, Rockwell;
     line-height: 12px;
     margin-top: 3px;
 }
@@ -111,7 +103,7 @@ a#placeling_add_action{
 	font-size: 24px;
 	color: rgb(193,191,183);
 	text-shadow:#fff 0px 1px 0, #000 0 -1px 0;
-	font-family: MuseoSlab, Rockwell, Courier;
+	font-family: MuseoSlab, Rockwell, "Arial Black";
 }
 
 #placeling_place_title a{
@@ -180,7 +172,7 @@ a#placeling_add_action{
 }
 
 #placeling_mobile_add_text a{
-    font-family: MuseoSlab, Rockwell, Courier;
+    font-family: MuseoSlab, Rockwell;
 	color: rgb(210,86,79);
 	text-decoration: none;
     font-size: 14px;
