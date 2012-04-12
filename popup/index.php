@@ -37,7 +37,7 @@
 	    curl_close($ch);
 	    
 	    if ( $info['http_code'] != 200 ){
-		die("can't connect to Placeling server");
+		    die("can't connect to Placeling server");
 	    }
 	
 	    // We parse the string for the request token and the matching token
@@ -50,7 +50,8 @@
 	    // We will need the request token and secret after the authorization.
 	    // Google will forward the request token, but not the secret.
 	    // Set a cookie, so the secret will be available once we return to this page.
-	    setcookie("oauth_token_secret", $request_token_secret, time()+3600);
+	    update_user_meta( $current_user->ID, '_oauth_token_secret', $request_token_secret);
+	    update_user_meta( $current_user->ID, '_oauth_token_secret_timeout', time()+3600);
 	    //
 	    //////////////////////////////////////////////////////////////////////
 	    

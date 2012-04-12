@@ -8,13 +8,18 @@
 	$current_user = wp_get_current_user();
 	
 	$oauthObject = new OAuthSimple();
-    
-	if ( !isset( $_COOKIE['oauth_token_secret'] )){
-	    //cookie we set there maxs out at an hour, should check
+
+	$requestTokenSecret = get_user_meta($current_user->ID, '_oauth_token_secret', true);
+	$requestTokenSecretTimeout = get_user_meta($current_user->ID, '_oauth_token_secret_timeout', true);
+
+	$oauthObject = new OAuthSimple();
+
+	if ( empty($requestTokenSecret) || empty($requestTokenSecretTimeout) || $requestTokenSecret == "" || $requestTokenSecretTimeout < time() ) {
+	    //token we set there maxs out at an hour, should check
 	    header("Location:index.php");
 	    exit;
 	}
-	$SIGNATURES['oauth_secret'] = $_COOKIE['oauth_token_secret'];
+	$SIGNATURES['oauth_secret'] = $requestTokenSecret;
 	$SIGNATURES['oauth_token'] = $_GET['oauth_token'];
 	
 	// Build the request-URL...
