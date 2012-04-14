@@ -22,6 +22,7 @@ jQuery(document).ready(function(){
         if ( !jQuery("form[name=post]").valid() ){
             event.preventDefault();
             jQuery("#placeling_placemark_memo").focus();
+            alert("We need a brief summary (20 character minimum) to be displayed on your placeling map");
             return false;
         }
     });
