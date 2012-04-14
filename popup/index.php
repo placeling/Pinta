@@ -190,6 +190,8 @@
 				
 				$( "#searchTextField" ).keyup(function( e ) {
 					var text = $( "#searchTextField" ).val();
+					$('#add_place_click').attr("href", "https://www.placeling.com/places/new?name=" + $( "#searchTextField" ).val() );
+
 					code= (e.keyCode ? e.keyCode : e.which);
 					if (code != 13) {
 						if ( text.length >= 1 ){
@@ -215,6 +217,7 @@
 						}
 					} else {
 						$("ul#recent_places li").remove();
+						$("#addplace").show();
 						$.xhrPool.abortAll
 						$("ul#recent_places").append( "<li class='waitload'><img height='91px' src='../img/spinner.gif'/></li>" );
 						$.ajax({
@@ -269,7 +272,7 @@
 					return false;
 				});
 
-			    $("a").live('click', function(){
+			    $("a").not("#add_place_click").live('click', function(){
 			        //none of the links should actually perform a non-javascript function
 			        return false;
 			    });
@@ -313,7 +316,8 @@
         			</ul>   
         		</div>
         	</div>
-        
+
+            <div id="addplace" style="display:none;">Can't find place in our database? <a id="add_place_click" target="_blank" href="https://www.placeling.com/places/new">Add new place</a></div>
         	<div id="spinwait"><img height='91px' src="../img/spinner.gif"/></div>
         	<?php
         		if ( isset( $meta_values ) ){
@@ -331,7 +335,7 @@
 		  	?>
 	        
 	        <div id="actions">
-	        	<input class="button-primary" type="submit" name="Save" value="Save" id="submitbutton" style="float:right;" />   
+	        	<input class="button-primary" type="button" name="Save" value="Save" id="submitbutton" style="float:right;" />
 	        </div>
         </div>
         

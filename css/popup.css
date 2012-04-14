@@ -7,7 +7,7 @@
 
 #placeling_popup_main{
 	width:600px;
-	height:500px; 
+	min-height:500px;
 	margin: 0px auto;
 	background-color: whiteSmoke;
 	border-color: #DFDFDF;
@@ -17,7 +17,7 @@
 }
 
 #search_results{
-	height:300px;
+	min-height:300px;
 }
 
 #search_top {
