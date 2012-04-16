@@ -1,28 +1,20 @@
 
 
 function resizeFooter(){
-    if ( jQuery(document).width() <= 360 ){
-        jQuery("#placeling_footer_wrapper").hide();
-        jQuery("#placeling_mobile_footer").show();
+    if ( jQuery("#placeling_right_footer").width() + jQuery("#placeling_left_footer").width() > jQuery("#placeling_footer").parent().width() -10 ){
+        jQuery("#placeling_left_footer").hide();
+        jQuery("#placeling_user_link_secondary").show();
+        jQuery("#placeling_place_title").css("margin", "3px 0 0 0")
     } else {
-        jQuery("#placeling_footer_wrapper").show();
-        jQuery("#placeling_mobile_footer").hide();
-
-        if ( jQuery("#placeling_footer_wrapper").parent().width() < 468 ){
-            jQuery("#placeling_right_footer").hide();
-            jQuery("#placeling_footer").css("margin-right", "0");
-            jQuery("#placeling_footer_wrapper").css("min-width", "378px");
-        } else {
-            jQuery("#placeling_right_footer").show();
-            jQuery("#placeling_footer").css("margin-right", "90px");
-            jQuery("#placeling_footer_wrapper").css("min-width", "468px");
-        }
+        jQuery("#placeling_left_footer").show();
+        jQuery("#placeling_user_link_secondary").hide();
+        jQuery("#placeling_place_title").css("margin", "16px 0 0 0")
     }
 }
 
 jQuery(document).ready(function(){
 
-    jQuery("#placeling_footer_wrapper").mouseenter(function() {
+    jQuery("#placeling_footer").mouseenter(function() {
         jQuery(this).addClass("placeling_highlight_shadow");
         jQuery(this).removeClass("placeling_shadow");
     }).mouseleave(function() {

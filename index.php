@@ -3,7 +3,7 @@
 Plugin Name: Placeling
 Plugin URI: https://www.placeling.com
 Description: Placeling turns your blog into an iPhone- and map-based guide to the world. Simply use this plugin to tag your posts with a location and we'll convert each post into a point on a map at placeling.com. Your readers can use their iPhone to see nearby places you've recommended (and they'll be driven to your blog to read your post) or explore a web-based map of all your posts.
-Version: 1.1
+Version: 1.2
 Author: Placeling (Internet Services) Inc.
 Author URI: https://www.placeling.com
 */
@@ -107,8 +107,8 @@ if (!class_exists("Placeling")) {
 				$author_id = $GLOBALS['post']->post_author;
 				$username = get_user_meta( $author_id, '_placeling_username', true);
 				
-				wp_enqueue_style( 'footer', plugins_url( 'css/footer.css', __FILE__ ),false, "1.1" );
-				wp_enqueue_script( 'footer', plugins_url( 'js/footer.js', __FILE__ ), array('jquery') );
+				wp_enqueue_style( 'footer', plugins_url( 'css/footer.css', __FILE__ ),false, "1.2" );
+				wp_enqueue_script( 'footer', plugins_url( 'js/footer.js', __FILE__ ), array('jquery'), "1.2" );
 				
 				include("footer.php");
 		  		$content = $content .placelingFooterHtml( $place, $username );
@@ -122,9 +122,9 @@ if (!class_exists("Placeling")) {
 
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-validate',  plugins_url( 'js/jquery.validate.min.js' , __FILE__ ), array('jquery') );
-			wp_enqueue_script( 'postnew', plugins_url( 'js/postnew.js', __FILE__ ), array('jquery'), "1.1" );
+			wp_enqueue_script( 'postnew', plugins_url( 'js/postnew.js', __FILE__ ), array('jquery'), "1.2" );
 
-			wp_enqueue_style( 'pinta', plugins_url( 'css/pinta.css' , __FILE__ ), false, "1.1" );
+			wp_enqueue_style( 'pinta', plugins_url( 'css/pinta.css' , __FILE__ ), false, "1.2" );
 
 			$empty_marker_button = plugins_url( 'img/EmptyMarker.png' , __FILE__ );
 			

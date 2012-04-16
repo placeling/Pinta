@@ -4,17 +4,16 @@ include_once('pinta-config.php');
 
 function placelingFooterHtml( $place, $username ){
 	global $WEB_HOSTNAME;
-	
-	$add_url = plugins_url( 'img/addPlace.png', __FILE__ );
+
 	if ( isset( $place ) ){
 		$lat = $place->lat;
 		$lng = $place->lng;
 		$pid = $place->id;
 		
 		$url = $place->map_url;
-		$mobile_map_url = str_replace( "size=100x100", "size=300x100", $url );
+		$map_url = str_replace( "size=100x100", "size=550x150", $url );
 		$thirdparty_url = $place->google_url;
-		$place_url = $WEB_HOSTNAME."/places/$pid?src=plugin";
+		$place_url = $WEB_HOSTNAME."/places/$pid";
 		$name = $place->name;
         
 		if ( isset($place->referring_perspectives) ){
@@ -29,69 +28,53 @@ function placelingFooterHtml( $place, $username ){
 			
 			if ( $found ){
 				$pid = $user_perspective->id;
-				$add_action_url = $WEB_HOSTNAME."/perspectives/$pid?src=plugin";
+				$action_url = $WEB_HOSTNAME."/users/$username?pid=$pid&src=pinta12";
 			} else {
-				$add_action_url = $place_url;
+				$action_url = $WEB_HOSTNAME."/users/$username?src=pinta12";
 			}
 		} else {
-            $add_action_url = $place_url;
+            $action_url = $WEB_HOSTNAME."/users/$username?src=pinta12";
         }
 	} else {
 		$lat = 0;
 		$lng = 0;
 		$pid = "";		
-		$url = "";
+		$map_url = "";
 		$thirdparty_url = "#";
 		$place_url ="#";
 		$name = "";
-		$add_action_url="#";
-		$mobile_map_url="#";
+		$action_url="#";
 	}			
                 
 	return "
-	<div id='placeling_footer_wrapper' class='placeling_shadow'>
-        <div id='placeling_footer'>
-            <div id='placeling_left_footer'>
+        <div id='placeling_footer' class='placeling_shadow'>
+            <div id='placeling_top_footer'>
+                <div id='placeling_map'>
+                    <a class='action_link' href='$action_url' target='_blank'><img id='placeling_map_image' src='$map_url'></a>
+                </div>
                 <div id='placeling_logo'>
-                    <a id='placeling_link'  target='_blank' href='http://www.placeling.com'><img id='placeling_add_image' src=". plugins_url( 'img/logoBanner.png', __FILE__ ) . " /></a>
-                </div>
-                <div id='placeling_add_map'>
-                    <a id='placeling_add_action' target='_blank' href='$add_action_url'><img id='placeling_logo_image' src='$add_url'/><div id='placeling_add_text'>Add to my map</div></a>
+                    <a id='placeling_link' target='_blank' href='http://www.placeling.com'><img id='placeling_add_image' src=". plugins_url( 'img/logoBanner.png', __FILE__ ) . " /></a>
                 </div>
             </div>
-            <div id='placeling_right_footer'>
-                <a href='$thirdparty_url'  target='_blank'><img id='placeling_map_image' src='$url'></a>
-            </div>
-            <div id='placeling_middle_footer'>
-                <div id='placeling_place_title'>
-                    <a href='$place_url' target='_blank'><span id='placeling_place_name'>$name</span></a>
+            <div id='placeling_bottom_footer'>
+                <div id='placeling_left_footer'>
+                    <div id='placeling_user_link'>
+                        <a class='action_link' href='$action_url' target='_blank'>See <span id='placeling_username'>$username's</span> places</a>
+                    </div>
                 </div>
-                <div id='placeling_contact_info'>
-                    <a href='$thirdparty_url'  target='_blank'>hours, directions, and contact info</a>
+                <div id='placeling_right_footer'>
+                    <div id='placeling_place_title'>
+                        <a href='$place_url' target='_blank'><span id='placeling_place_name'>$name</span></a>
+                    </div>
+                    <div id='placeling_contact_info'>
+                        <a href='$thirdparty_url'  target='_blank'>hours, directions, and contact info</a>
+                    </div>
+                    <div id='placeling_user_link_secondary' style='font-size: 12px;display:none;'>
+                        <a class='action_link' href='$action_url' target='_blank'>See <span id='placeling_username'>$username's</span> places</a>
+                    </div>
                 </div>
             </div>
         </div>
-	</div>
-	<div id='placeling_mobile_footer' style='display:none;' >
-        <div id='placeling_top_footer'>
-            <div id='placeling_mobile_add'>
-                <a target='_blank' href='$add_action_url'><img src='$add_url'/>
-            </div>
-            <div id='placeling_mobile_add_text'>
-                <a target='_blank' href='$add_action_url'>Add to my map</a>
-            </div>
-            <div id='placeling_mobile_logo'>
-                <a id='placeling_link'  target='_blank' href='http://www.placeling.com'><img id='placeling_add_image' src=". plugins_url( 'img/mobile_logo.png', __FILE__ ) . " /></a>
-            </div>
-        </div>
-
-        <div id='placeling_map_container'>
-            <a href='$thirdparty_url'  target='_blank'><img id='placeling_mobile_map' src='$mobile_map_url'></a>
-        </div>
-        <div id='placeling_mobile_title'>
-            <a href='$place_url' target='_blank'><span id='placeling_place_name'>$name</span></a>
-        </div>
-	</div>
 	";
 }
 
