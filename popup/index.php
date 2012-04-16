@@ -201,7 +201,7 @@
 				$( "#searchTextField" ).keyup(function( e ) {
 					var text = $( "#searchTextField" ).val();
 					$('#add_place_click').attr("href", "https://www.placeling.com/places/new?name=" + $( "#searchTextField" ).val() );
-
+                    $('#placeling_search_name').html( $( "#searchTextField" ).val() );
 					code= (e.keyCode ? e.keyCode : e.which);
 					if (code != 13) {
 						if ( text.length >= 1 ){
@@ -282,7 +282,7 @@
 					return false;
 				});
 
-			    $("a").not("#add_place_click").live('click', function(){
+			    $("a:not(#add_place_click)").live('click', function(){
 			        //none of the links should actually perform a non-javascript function
 			        return false;
 			    });
@@ -327,7 +327,7 @@
         		</div>
         	</div>
 
-            <div id="addplace" style="display:none;">Can't find place in our database? <a id="add_place_click" target="_blank" href="https://www.placeling.com/places/new">Add new place</a></div>
+            <div id="addplace" style="display:none;"><a id="add_place_click" target="_blank" href="https://www.placeling.com/places/new">Can't find <span id="placeling_search_name">your place</span>? Add it as a new place.</a></div>
         	<div id="spinwait"><img height='91px' src="../img/spinner.gif"/></div>
         	<?php
         		if ( isset( $meta_values ) ){
