@@ -44,7 +44,13 @@ function placelingFooterHtml( $place, $username ){
 		$place_url ="#";
 		$name = "";
 		$action_url="#";
-	}			
+	}
+
+    if ( substr($username, -1) == 's' ){
+        $displayusername = $username . "'";
+    } else {
+        $displayusername = $username . "'s";
+    }
                 
 	return "
         <div id='placeling_footer' class='placeling_shadow'>
@@ -59,7 +65,7 @@ function placelingFooterHtml( $place, $username ){
             <div id='placeling_bottom_footer'>
                 <div id='placeling_left_footer'>
                     <div id='placeling_user_link'>
-                        <a class='action_link' href='$action_url' target='_blank'>See <span id='placeling_username'>$username's</span> places</a>
+                        <a class='action_link' href='$action_url' target='_blank'>See <span id='placeling_username'>$displayusername</span> places</a>
                     </div>
                 </div>
                 <div id='placeling_right_footer'>
