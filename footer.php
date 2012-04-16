@@ -69,7 +69,7 @@ function placelingFooterHtml( $place, $username ){
                     <div id='placeling_contact_info'>
                         <a href='$thirdparty_url'  target='_blank'>hours, directions, and contact info</a>
                     </div>
-                    <div id='placeling_user_link_secondary' style='font-size: 12px;display:none;'>
+                    <div id='placeling_user_link_secondary' style='font-size: 14px;display:none;margin-top:8px;'>
                         <a class='action_link' href='$action_url' target='_blank'>See <span id='placeling_username'>$username's</span> places</a>
                     </div>
                 </div>

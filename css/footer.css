@@ -61,6 +61,8 @@
 
 #placeling_map_image {
     max-width: 100%;
+    width: 100%;
+    height: 150px;
 }
 
 #placeling_logo{
@@ -126,9 +128,9 @@
     padding-right: 5px;
 }
 
-
 #placeling_top_footer{
     width: 100%;
+    height: 153px;
 }
 
 #placeling_map_container{

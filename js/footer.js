@@ -1,10 +1,32 @@
 
+var placeling_t;
 
-function resizeFooter(){
+function getPlacelingParameterByName(url, name){
+  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+  var regexS = "[\\?&]" + name + "=([^&#]*)";
+  var regex = new RegExp(regexS);
+  var results = regex.exec( url );
+  if(results == null)
+    return "";
+  else
+    return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function resizePlacelingMap(){
+    map_url = jQuery("#placeling_map_image").attr("src");
+    size_param = getPlacelingParameterByName( map_url, "size");
+    newwidth = jQuery("#placeling_top_footer").width();
+    if (newwidth + "x150" != size_param){
+        map_url = map_url.replace( "size="+ size_param, "size=" + newwidth + "x150" )
+        jQuery("#placeling_map_image").attr("src", map_url);
+    }
+}
+
+function resizePlacelingFooter(){
     if ( jQuery("#placeling_right_footer").width() + jQuery("#placeling_left_footer").width() > jQuery("#placeling_footer").parent().width() -10 ){
         jQuery("#placeling_left_footer").hide();
         jQuery("#placeling_user_link_secondary").show();
-        jQuery("#placeling_place_title").css("margin", "3px 0 0 0")
+        jQuery("#placeling_place_title").css("margin", "2px 0 0 0")
     } else {
         jQuery("#placeling_left_footer").show();
         jQuery("#placeling_user_link_secondary").hide();
@@ -23,10 +45,13 @@ jQuery(document).ready(function(){
     });
 
     jQuery(window).resize( function(){
-        resizeFooter();
+        clearTimeout( placeling_t );
+        resizePlacelingFooter();
+        placeling_t = setTimeout("resizePlacelingMap()",500);
     })
 
-    resizeFooter();
+    resizePlacelingFooter();
+    resizePlacelingMap()
 
 });
 
