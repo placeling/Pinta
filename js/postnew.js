@@ -52,7 +52,7 @@ function renderPlaceAdmin( ){
 	    var place = JSON.parse( json_place );
 	    
 	    if ( !place.street_address ){
-		place.street_address = "";
+		    place.street_address = "";
 	    }
 	    
 	    if ( !place.city_data ){

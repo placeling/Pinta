@@ -106,7 +106,14 @@
 		
 		$recent_perspectives = $user->perspectives;
 		$recent_places = array();
-		
+
+		if ( substr($username, -1) == 's' ){
+            $displayusername = $username . "'";
+        } else {
+            $displayusername = $username . "'s";
+        }
+
+
 		foreach ( $recent_perspectives as $perspective){
 		    $recent_places[] = $perspective->place;
 		}   
@@ -125,6 +132,7 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<!-- for IE compatibility -->
 		<script type="text/javascript" src="../js/json2.js"></script>
+		<script type="text/javascript" src="../js/footer.js"></script>
 
 		<script type="text/javascript">
 			
@@ -153,10 +161,12 @@
 				if ( place ){
 					$("#placeling_footer").show();
 					$("#placeling_map_image").attr( "src", place.map_url );
+					$("#placeling_username").html( "<?php echo $displayusername; ?>" );
 					$("#placeling_place_name").html( place.name );
 				} else {
 					$("#placeling_footer").hide();
 				}
+				resizePlacelingMap();
 			}
 			
 			var $recent_places;
