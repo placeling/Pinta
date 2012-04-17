@@ -33,7 +33,7 @@ function resizePlacelingFooter(){
         jQuery("#placeling_left_footer").show();
         jQuery("#placeling_user_link_secondary").hide();
         jQuery("#placeling_place_title").css("margin", "16px 0 0 0");
-        totalspace =  jQuery("#placeling_footer").width() - jQuery("#placeling_left_footer").width() -15;
+        totalspace =  jQuery("#placeling_footer").width() - jQuery("#placeling_left_footer").width() - 20;
         jQuery("#placeling_right_footer").css("max-width", totalspace + "px");
     }
 }
