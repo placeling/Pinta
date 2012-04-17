@@ -75,7 +75,7 @@
 		$SIGNATURES['oauth_secret'] = $secretToken;
     	
 		$result = $oauthObject->sign(array(
-			'path'      => $SERVICE_HOSTNAME.'/users/me.json',
+			'path'      => $SERVICE_HOSTNAME.'/v1/users/me.json',
 			'signatures'=> $SIGNATURES));
 
 		$ch = curl_init();
