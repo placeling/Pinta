@@ -150,7 +150,7 @@
 				$("ul#recent_places li").remove();
 				for (var i=0; i < places_dictionary.length; i++){
 					var place = places_dictionary[i];
-					$("ul#recent_places").append('<li class="place_option"><a data-id=' + place.google_id + ' href="#">' + place.name + ", " + place.city_data + '</a></li>');			
+					$("ul#recent_places").append('<li class="place_option"><a data-id=' + place.id + ' href="#">' + place.name + ", " + place.city_data + '</a></li>');
 				}
 
 			}
