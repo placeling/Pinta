@@ -84,6 +84,10 @@
 
 #placeling_place_title{
 	margin: 16px 0 0 0;
+    width:100%;
+    white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 #placeling_contact_info{
@@ -122,6 +126,7 @@
 
 #placeling_right_footer{
     min-width: 200px;
+    max-width: 50%;
     height: 100%;
     float: right;
 	text-align: right;

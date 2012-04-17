@@ -23,14 +23,18 @@ function resizePlacelingMap(){
 }
 
 function resizePlacelingFooter(){
-    if ( jQuery("#placeling_right_footer").width() + jQuery("#placeling_left_footer").width() > jQuery("#placeling_footer").parent().width() -10 ){
+    if ( jQuery("#placeling_footer").width() < 400 ){
         jQuery("#placeling_left_footer").hide();
         jQuery("#placeling_user_link_secondary").show();
-        jQuery("#placeling_place_title").css("margin", "2px 0 0 0")
+        jQuery("#placeling_place_title").css("margin", "2px 0 0 0");
+        jQuery("#placeling_right_footer").css("max-width", "100%");
+
     } else {
         jQuery("#placeling_left_footer").show();
         jQuery("#placeling_user_link_secondary").hide();
-        jQuery("#placeling_place_title").css("margin", "16px 0 0 0")
+        jQuery("#placeling_place_title").css("margin", "16px 0 0 0");
+        totalspace =  jQuery("#placeling_footer").width() - jQuery("#placeling_left_footer").width() -15;
+        jQuery("#placeling_right_footer").css("max-width", totalspace + "px");
     }
 }
 
