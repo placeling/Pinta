@@ -30,10 +30,10 @@ function placelingFooterHtml( $place, $username ){
 				$pid = $user_perspective->id;
 				$action_url = $WEB_HOSTNAME."/users/$username?pid=$pid&src=pinta12";
 			} else {
-				$action_url = $WEB_HOSTNAME."/users/$username?src=pinta12";
+				$action_url = $WEB_HOSTNAME."/users/$username?src=pinta12&lat=$lat&lng=$lng";
 			}
 		} else {
-            $action_url = $WEB_HOSTNAME."/users/$username?src=pinta12";
+            $action_url = $WEB_HOSTNAME."/users/$username?src=pinta12&lat=$lat&lng=$lng";
         }
 	} else {
 		$lat = 0;
