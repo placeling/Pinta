@@ -6,28 +6,24 @@ Tested up to: 3.3.1
 Stable tag: 1.1
 
 
-Placeling turns your blog into a map-based, iPhone-enabled guide to the world.
+Placeling turns your blog into a map-based, iPhone-enabled guide to your world.
 
 == Description ==
 
-Placeling turns your blog into a map-based, iPhone-enabled guide to the world.
+Placeling makes your blog a guide to your world. Each of your blog posts appears on a map plus and each pin on the map links back to that post.
 
-Wouldn't it be nice if your readers could walk past a place you wrote about and see your blog post?
+This map can be embedded in your blog, giving your readers a new way to explore your world.
 
-Placeling makes this effortlessly easy.
-
-The Placeling plugin allows you to tag a location to your post (and it's as simple as uploading a photo).
-
-This post then appears on a map of places you love (at Placeling.com/yourusername) and in the free Placeling iPhone app.
-
-Your readers can now explore the world with you as a guide.
+This map can also be seen on an iPhone (via the free Placeling app) so that your readers can literally see nearby places you've written about.
 
 A few specifics:
 
 *   The plugin allows you to tag a location to your post
 *   You add a snippet summarizing the location
 *   When you publish, the snippet, a link to your post and (optionally) all the photos in the post are sent to Placeling
-*   Each blog post includes a footer showing the tagged location, its address plus a link to your map at Placeling
+*   Each blog post includes a footer showing the location and a small map
+*   At Placeling.com you can get an embed code to put your map in your blog
+*   The [Placeling app](http://itunes.apple.com/ca/app/placeling/id465502398?mt=8 "Placeling app") is available for free in the iTunes app store
 
 == Installation ==
 
@@ -43,6 +39,10 @@ Now start sharing your world!
 
 Go to [Placeling](https://www.placeling.com "Placeling") and sign up.
 
+= How do I get an embed code for my map? =
+
+Got to [Placeling](https://www.placeling.com "Placeling") and log in. Then go to your account and click the link at the bottom of the page next to "embed"
+
 = How do I get more support? =
 
 We maintain an extensive help section on [our blogger page](https://www.placeling.com/bloggers "Tools for bloggers"). Or, feel free to send us an email: contact [at] placeling [dot] com. We try hard to get back to you within one business day.
@@ -57,6 +57,7 @@ We maintain an extensive help section on [our blogger page](https://www.placelin
 3. A sample summary. The text will appear at Placeling.com
 4. Your place will appear on a map at Placeling.com...
 5. ...and appear within the Placeling iPhone app
+6. An example of an embedded map
 
 
 == Changelog ==
