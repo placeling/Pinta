@@ -210,14 +210,15 @@
 								dataType: "json",
 								data: {
 									input: text,
-									location: lat + "," + lng,
-									types: "establishment|(regions)"
+									location: lat + "," + lng
 								},
 								success: function( data ) {
 									$("ul#recent_places li").remove();
 									if (data.predictions){
 										$.each(data.predictions, function(i, item){
-											$("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" data-ref="'+ item.reference + '" >'+ item.description + '</a></li>');  
+										    if ( $.inArray("route", item.types) < 0 ){
+											    $("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" data-ref="'+ item.reference + '" >'+ item.description + '</a></li>');
+										    }
 										});
 									}
 								}
