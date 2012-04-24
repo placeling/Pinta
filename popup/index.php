@@ -211,7 +211,7 @@
 								data: {
 									input: text,
 									location: lat + "," + lng,
-									types: "establishment"
+									types: "establishment|geocode"
 								},
 								success: function( data ) {
 									$("ul#recent_places li").remove();
