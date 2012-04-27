@@ -56,16 +56,16 @@ function placelingFooterHtml( $place, $username ){
         <div id='placeling_footer' class='placeling_shadow'>
             <div id='placeling_top_footer'>
                 <div id='placeling_map'>
-                    <a class='action_link' href='$action_url' target='_blank'><img id='placeling_map_image' src='$map_url'></a>
+                    <a class='placeling_action_link' href='$action_url' target='_blank'><img id='placeling_map_image' src='$map_url'></a>
                 </div>
                 <div id='placeling_logo'>
-                    <a id='placeling_link' target='_blank' href='http://www.placeling.com'><img id='placeling_add_image' src=". plugins_url( 'img/logoBanner.png', __FILE__ ) . " /></a>
+                    <a id='placeling_link' target='_blank' href='http://www.placeling.com'><img id='placeling_add_image' src='http://www.placeling.com/images/blogFooterLogo.png' /></a>
                 </div>
             </div>
             <div id='placeling_bottom_footer'>
                 <div id='placeling_left_footer'>
                     <div id='placeling_user_link'>
-                        <a class='action_link' href='$action_url' target='_blank'>See <span id='placeling_username'>$displayusername</span> places</a>
+                        <a class='placeling_action_link' href='$action_url' target='_blank'>See <span id='placeling_username'>$displayusername</span> places</a>
                     </div>
                 </div>
                 <div id='placeling_right_footer'>
@@ -76,7 +76,7 @@ function placelingFooterHtml( $place, $username ){
                         <a href='$thirdparty_url'  target='_blank'>hours, directions, and contact info</a>
                     </div>
                     <div id='placeling_user_link_secondary' style='font-size: 14px;display:none;margin-top:4px;'>
-                        <a class='action_link' href='$action_url' target='_blank'>See <span id='placeling_username'>$username's</span> places</a>
+                        <a class='placeling_action_link' href='$action_url' target='_blank'>See <span id='placeling_username'>$username's</span> places</a>
                     </div>
                 </div>
             </div>
