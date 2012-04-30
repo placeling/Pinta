@@ -21,11 +21,17 @@
 	box-shadow: 3px 3px 4px #ccc;
 }
 
+#placeling_add_image{
+    padding:0;
+    border: none;
+    margin:0;
+}
+
 #placeling_footer{
     min-width: 280px;
     max-width: 550px;
 	max-height:223px;
-    display: block;
+    display: inline-block;
     margin: 0 0 5px 0;
     background-image:url('images/BGTile.png');
 	background-repeat:repeat-x;
