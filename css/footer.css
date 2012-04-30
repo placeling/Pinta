@@ -31,7 +31,7 @@
     min-width: 280px;
     max-width: 550px;
 	max-height:223px;
-    display: inline-block;
+    display: block;
     margin: 0 0 5px 0;
     background-image:url('images/BGTile.png');
 	background-repeat:repeat-x;
