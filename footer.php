@@ -59,7 +59,7 @@ function placelingFooterHtml( $place, $username ){
                     <a class='placeling_action_link' href='$action_url' target='_blank'><img id='placeling_map_image' src='$map_url'></a>
                 </div>
                 <div id='placeling_logo'>
-                    <a id='placeling_link' target='_blank' href='http://www.placeling.com'><img id='placeling_add_image' src='http://www.placeling.com/images/blogFooterLogo.png' /></a>
+                    <a id='placeling_link' target='_blank' href='https://www.placeling.com'><img id='placeling_add_image' src='https://www.placeling.com/images/blogFooterLogo.png' /></a>
                 </div>
             </div>
             <div id='placeling_bottom_footer'>
