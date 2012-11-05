@@ -3,16 +3,16 @@ Contributors: imack
 Tags: map, maps, google maps, geo, location, places, place, placeling, guide, guides
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 
 
-Placeling turns your blog into a map-based, iPhone-enabled guide to your world.
+Placeling is the easiest way to put a map in your blog and turn blog posts into map pins.
 
 == Description ==
 
-Placeling makes your blog a guide to your world. Each of your blog posts appears on a map plus and each pin on the map links back to that post.
+Placeling lets you put a map in your blog and turns your blog posts into pins on that map.
 
-This map can be embedded in your blog, giving your readers a new way to explore your world.
+When readers click on a pin it opens up the corresponding blog post in a new window.
 
 This map can also be seen on an iPhone (via the free Placeling app) so that your readers can literally see nearby places you've written about.
 
@@ -23,6 +23,7 @@ A few specifics:
 *   When you publish, the snippet, a link to your post and (optionally) all the photos in the post are sent to Placeling
 *   Each blog post includes a footer showing the location and a small map
 *   At Placeling.com you can get an embed code to put your map in your blog
+*   When a reader clicks a pin an info window opens showing your snippet. Clicking the title of the info window opens that post
 *   The [Placeling app](http://itunes.apple.com/ca/app/placeling/id465502398?mt=8 "Placeling app") is available for free in the iTunes app store
 
 == Installation ==
