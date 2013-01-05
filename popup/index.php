@@ -50,8 +50,8 @@
 	    // We will need the request token and secret after the authorization.
 	    // Google will forward the request token, but not the secret.
 	    // Set a cookie, so the secret will be available once we return to this page.
-	    update_site_option( '_oauth_token_secret', $request_token_secret);
-	    update_site_option( '_oauth_token_secret_timeout', time()+3600);
+        update_user_meta( $current_user->ID, '_oauth_token_secret', $request_token_secret);
+	    update_user_meta( $current_user->ID, '_oauth_token_secret_timeout', time()+3600);
 	    //
 	    //////////////////////////////////////////////////////////////////////
 	    
