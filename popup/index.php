@@ -98,8 +98,8 @@
 		// secret. Again, I'm not handling any errors and just plough ahead 
 		$user = json_decode( $r );
 		    
-		$lat = $user->location[0];
-		$lng = $user->location[1];
+		$lat = $user->lat;
+		$lng = $user->lng;
 		
 		$username = $user->username;
 		update_user_meta( $current_user->ID, '_placeling_username', $username );
