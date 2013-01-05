@@ -15,8 +15,7 @@ function placelingFooterHtml( $place, $username ){
 		$thirdparty_url = $place->google_url;
 		$place_url = $WEB_HOSTNAME."/places/$pid";
 		$name = $place->name;
-        
-		if ( isset($place->referring_perspectives) ){
+		if ( isset( $place->referring_perspectives) ){
 			$found = false;
 			$user_perspective;
 			foreach ($place->referring_perspectives as $perspective){

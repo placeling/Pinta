@@ -44,7 +44,7 @@ if (!class_exists("Placeling")) {
 			
 			$postObj = get_post( $post_ID ); 
 			$author_id = $postObj->post_author;
-			$username = get_user_meta( $author_id, '_placeling_username', true);	
+			$username = get_site_option( '_placeling_username', false, true);
 			
 			$place_json = rawurldecode( $meta_value );
 			$place_json = preg_replace('/\\\\\'/', '\'', $place_json);
@@ -105,7 +105,7 @@ if (!class_exists("Placeling")) {
 				$place = json_decode( $place_json );
 				
 				$author_id = $GLOBALS['post']->post_author;
-				$username = get_user_meta( $author_id, '_placeling_username', true);
+				$username = get_site_option( '_placeling_username', false, true);
 				
 				wp_enqueue_style( 'footer', plugins_url( 'css/footer.css', __FILE__ ),false, "1.2" );
 				wp_enqueue_script( 'footer', plugins_url( 'js/footer.js', __FILE__ ), array('jquery'), "1.2" );
@@ -187,8 +187,8 @@ if (!class_exists("Placeling")) {
 			$permalink = get_permalink( $post_ID );
 			$current_user = wp_get_current_user();
 			
-			$accessToken = get_user_meta($current_user->ID, '_placeling_access_token', true);
-			$secretToken = get_user_meta($current_user->ID, '_placeling_access_secret', true);
+			$accessToken = get_site_option('_placeling_access_token', false, true);
+			$secretToken = get_site_option('_placeling_access_secret', false, true);
 	
 			$oauthObject = new OAuthSimple();
 			$oauthObject->setAction("POST");

@@ -9,8 +9,8 @@
     	
 	$current_user = wp_get_current_user();
     
-	$accessToken = get_user_meta($current_user->ID, '_placeling_access_token', true);
-	$secretToken = get_user_meta($current_user->ID, '_placeling_access_secret', true);
+	$accessToken = get_site_option('_placeling_access_token', false, true);
+	$secretToken = get_site_option('_placeling_access_secret', false, true);
 	
 	$oauthObject = new OAuthSimple();
 	
@@ -50,8 +50,8 @@
 	    // We will need the request token and secret after the authorization.
 	    // Google will forward the request token, but not the secret.
 	    // Set a cookie, so the secret will be available once we return to this page.
-	    update_user_meta( $current_user->ID, '_oauth_token_secret', $request_token_secret);
-	    update_user_meta( $current_user->ID, '_oauth_token_secret_timeout', time()+3600);
+	    update_site_option( '_oauth_token_secret', $request_token_secret);
+	    update_site_option( '_oauth_token_secret_timeout', time()+3600);
 	    //
 	    //////////////////////////////////////////////////////////////////////
 	    
@@ -86,8 +86,8 @@
 		curl_close($ch);
 		
 		if ( $info['http_code'] == 401 ){
-			delete_user_meta($current_user->ID, '_placeling_access_token');
-			delete_user_meta($current_user->ID, '_placeling_access_secret');
+			delete_site_option('_placeling_access_token');
+			delete_site_option('_placeling_access_secret');
 			//die("no good access_key");	
 			header("Location:index.php");
 		} else if ( $info['http_code'] != 200 ){
@@ -102,7 +102,7 @@
 		$lng = $user->lng;
 		
 		$username = $user->username;
-		update_user_meta( $current_user->ID, '_placeling_username', $username );
+		update_site_option( '_placeling_username', $username );
 		
 		$recent_perspectives = $user->perspectives;
 		$recent_places = array();
