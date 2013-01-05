@@ -7,7 +7,7 @@ foreach($_GET as $key=>$value) {
     $fields_string .= $key.'='. urlencode( $value ) .'&';
 }
 
-$fields_string .= "sensor=false&key=AIzaSyAjwCd4DzOM_sQsR7JyXMhA60vEfRXRT-Y";
+$fields_string .= "sensor=false&radius=1000&key=AIzaSyAjwCd4DzOM_sQsR7JyXMhA60vEfRXRT-Y";
 //open connection
 $ch = curl_init();
  
