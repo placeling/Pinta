@@ -18,11 +18,16 @@ function placelingFooterHtml( $place, $username ){
 		if ( isset( $place->referring_perspectives) ){
 			$found = false;
 			$user_perspective;
-			foreach ($place->referring_perspectives as $perspective){
-				if ( $perspective->user->username == $username ){
-					$user_perspective = $perspective;
-					$found = true;
-				} 	
+
+			if ( count( $place->referring_perspectives ) == 1  && ( !isset( $username ) || $username == "") ){
+                $username = $place->referring_perspectives[0]->user->username;
+			} else {
+                foreach ($place->referring_perspectives as $perspective){
+                    if ( $perspective->user->username == $username ){
+                        $user_perspective = $perspective;
+                        $found = true;
+                    }
+                }
 			}
 			
 			if ( $found ){
