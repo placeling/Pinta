@@ -3,7 +3,7 @@ Contributors: imack
 Tags: map, maps, google maps, geo, location, places, place, placeling, guide, guides
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 1.2.5
+Stable tag: 1.3.0
 
 
 Placeling is the easiest way to put a map in your blog and turn blog posts into map pins.
@@ -63,7 +63,7 @@ We maintain an extensive help section on [our blogger page](https://www.placelin
 
 == Changelog ==
 
-= 1.4 =
+= 1.3.0 =
 * Bug Fixes around login
 * Placeling credentials now tied to site instead of author
 
