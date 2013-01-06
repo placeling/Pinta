@@ -63,6 +63,10 @@ We maintain an extensive help section on [our blogger page](https://www.placelin
 
 == Changelog ==
 
+= 1.4 =
+* Bug Fixes around login
+* Placeling credentials now tied to site instead of author
+
 = 1.1 =
 * Fixed various IE8 issues
 * Fixed Firefox on Windows problems
