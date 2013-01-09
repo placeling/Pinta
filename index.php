@@ -3,7 +3,7 @@
 Plugin Name: Placeling
 Plugin URI: https://www.placeling.com
 Description: Placeling turns your blog into an iPhone- and map-based guide to the world. Simply use this plugin to tag your posts with a location and we'll convert each post into a point on a map at placeling.com. Your readers can use their iPhone to see nearby places you've recommended (and they'll be driven to your blog to read your post) or explore a web-based map of all your posts.
-Version: 1.2.5
+Version: 2.0.0
 Author: Placeling (Internet Services) Inc.
 Author URI: https://www.placeling.com
 */
@@ -14,8 +14,14 @@ include_once('pinta-config.php');
 
 if (!class_exists("Placeling")) {
 	class Placeling {
-		function Placeling() {
 
+	    var $page_slug = 'placeling-map';
+
+        var $page_title = 'Map';
+
+        var $ping_status = 'open';
+
+		function Placeling() {
 			// Add Options Page
 			add_action( 'admin_menu',  array(&$this, 'admin_menu') );
 			add_action( 'save_post', array( &$this, 'save_post') );
@@ -23,17 +29,171 @@ if (!class_exists("Placeling")) {
 			add_action( 'publish_page', array( &$this, 'postToPlaceling') );
 			add_filter( 'media_buttons_context', array(&$this, 'placeling_media_button') );
 			add_filter( 'the_content', array(&$this, 'addPlacelingFooter') );
+
+            add_filter( 'the_posts',array(&$this,'detectPost'));
+            add_filter( 'admin_init', array(&$this, 'flush_rewrite_rules'));
+            add_action( 'init', array(&$this, 'add_rewrites_init' ) );
 		}
 		
 		function install() {
 			//there isn't anything we need to do, this just is to prevent an error on activation
 		}
-		
+
+        function flush_rewrite_rules(){
+            global $wp_rewrite;
+            $wp_rewrite->flush_rules();
+        }
+
+        function getContent()
+        {
+            global $SERVICE_HOSTNAME;
+            $username = get_site_option( '_placeling_username', false, true);
+
+            if ( isset( $username )  && isset( $SERVICE_HOSTNAME ) ) {
+                return "<iframe src=\"$SERVICE_HOSTNAME/users/$username/pinta?lat=49.268991905470884&amp;lng=-123.13450887298586\" frameborder=\"0\"  height=\"300\" width=\"100%\">You need iframes enabled to view the map</iframe>";
+            } else {
+                return "<p>Placeling has not yet been setup, please contact the site's administrator</p>";
+            }
+
+        }
+
+        function add_rewrites_init(){
+            add_rewrite_rule(
+                'placeling/map?$',
+                'index.php?pagename=placeling-map',
+                'top' );
+        }
+
+        function detectPost($posts){
+                global $wp;
+                global $wp_query;
+
+                /**
+                 * Check if the requested page matches our target
+                 */
+                if ( isset( $wp->query_vars ) && array_key_exists('pagename', $wp->query_vars) && $wp->query_vars['pagename'] == $this->page_slug ){
+                    //Add the fake post
+                    $posts=NULL;
+                    $posts[]=$this->createPost();
+
+                    /**
+                     * Trick wp_query into thinking this is a page (necessary for wp_title() at least)
+                     * Not sure if it's cheating or not to modify global variables in a filter
+                     * but it appears to work and the codex doesn't directly say not to.
+                     */
+                    $wp_query->is_page = true;
+                    //Not sure if this one is necessary but might as well set it like a true page
+                    $wp_query->is_singular = true;
+                    $wp_query->is_home = false;
+                    $wp_query->is_archive = false;
+                    $wp_query->is_category = false;
+                    //Longer permalink structures may not match the fake post slug and cause a 404 error so we catch the error here
+                    unset($wp_query->query["error"]);
+                    $wp_query->query_vars["error"]="";
+                    $wp_query->is_404=false;
+
+                }
+                return $posts;
+            }
+
+        function createPost(){
+
+            /**
+             * Create a fake post.
+             */
+            $post = new stdClass;
+
+            /**
+             * The author ID for the post.  Usually 1 is the sys admin.  Your
+             * plugin can find out the real author ID without any trouble.
+             */
+            $post->post_author = 1;
+
+            /**
+             * The safe name for the post.  This is the post slug.
+             */
+            $post->post_name = $this->page_slug;
+
+            /**
+             * Not sure if this is even important.  But gonna fill it up anyway.
+             */
+            $post->guid = get_bloginfo('wpurl') . '/' . $this->page_slug;
+
+
+            /**
+             * The title of the page.
+             */
+            $post->post_title = $this->page_title;
+            $post->post_type = "page";
+            $post->post_parent = null;
+
+            /**
+             * This is the content of the post.  This is where the output of
+             * your plugin should go.  Just store the output from all your
+             * plugin function calls, and put the output into this var.
+             */
+            $post->post_content = $this->getContent();
+
+            /**
+             * Fake post ID to prevent WP from trying to show comments for
+             * a post that doesn't really exist.
+             */
+            $post->ID = -134;
+
+            /**
+             * Static means a page, not a post.
+             */
+            $post->post_status = 'static';
+
+            /**
+             * Turning off comments for the post.
+             */
+            $post->comment_status = 'closed';
+
+            /**
+             * Let people ping the post?  Probably doesn't matter since
+             * comments are turned off, so not sure if WP would even
+             * show the pings.
+             */
+            $post->ping_status = $this->ping_status;
+
+            $post->comment_count = 0;
+
+            /**
+             * You can pretty much fill these up with anything you want.  The
+             * current date is fine.  It's a fake post right?  Maybe the date
+             * the plugin was activated?
+             */
+            $post->post_date = current_time('mysql');
+            $post->post_date_gmt = current_time('mysql', 1);
+
+            return($post);
+        }
+
+        function dev4press_debug_rewrite_rules() {
+          global $wp_rewrite;
+          echo '<div>';
+          if (!empty($wp_rewrite->rules)) {
+            echo '<h5>Rewrite Rules</h5>';
+            echo '<table><thead><tr>';
+            echo '<td>Rule</td><td>Rewrite</td>';
+            echo '</tr></thead><tbody>';
+            foreach ($wp_rewrite->rules as $name => $value) {
+              echo '<tr><td>'.$name.'</td><td>'.$value.'</td></tr>';
+            }
+            echo '</tbody></table>';
+          } else {
+            echo 'No rules defined.';
+          }
+          echo '</div>';
+        }
+
+
 		function admin_menu() {
 			add_meta_box( 'WPPlaceling', 'Placeling', array(&$this,'draw_placeling'), 'post', 'normal', 'high' );
 			add_meta_box( 'WPPlaceling', 'Placeling', array(&$this,'draw_placeling'), 'page', 'normal', 'high' );
-		} 
-		
+		}
+
 		function update_place( $post_ID ){
 			global $SIGNATURES;
 			global $SERVICE_HOSTNAME;
