@@ -263,20 +263,12 @@ if (!class_exists("Placeling")) {
 				
 				$place_json = urldecode( $meta_value );
 				$place = json_decode( $place_json );
-				
-				$author_id = $GLOBALS['post']->post_author;
-				$username = get_site_option( '_placeling_username', false, true);
 
-                // legacy case from pre-1.4 uses
-                if ( $username == "" && get_user_meta( $author_id, '_placeling_username', true) != "" ){
-                    $username = get_user_meta( $author_id, '_placeling_username', true);
-                }
-				
 				wp_enqueue_style( 'footer', plugins_url( 'css/footer.css', __FILE__ ),false, "1.2" );
 				wp_enqueue_script( 'footer', plugins_url( 'js/footer.js', __FILE__ ), array('jquery'), "1.2" );
 				
 				include("footer.php");
-		  		$content = $content .placelingFooterHtml( $place, $username );
+		  		$content = $content .placelingFooterHtml( $place );
 		  	}
 		  	
 		  	return $content;
