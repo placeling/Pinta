@@ -133,6 +133,7 @@
 		<!-- for IE compatibility -->
 		<script type="text/javascript" src="../js/json2.js"></script>
 		<script type="text/javascript" src="../js/footer.js"></script>
+		<script type="text/javascript" src="../js/jsrender.js"></script>
 
 		<script type="text/javascript">
 			
@@ -145,15 +146,25 @@
 			var autocomplete;
 			varxhrPool = [];
 			
-			function showRecentlyBookmarked(){
-			
-				$("ul#recent_places li").remove();
-				for (var i=0; i < places_dictionary.length; i++){
-					var place = places_dictionary[i];
-					$("ul#recent_places").append('<li class="place_option"><a data-id=' + place.id + ' href="#">' + place.name + ", " + place.city_data + '</a></li>');
-				}
-
+			function showRecentlyBookmarked() {
+                $( "#recent_places" ).html(
+                    $( "#placeTemplate" ).render( places_dictionary )
+                );
 			}
+
+			$.views.converters({
+                // Tag to reverse-sort an array
+                placeAddress: function( array ){
+                    var address=[];
+
+                    for (i=1;i<array.length;i++) {
+
+                        address.push( array[i].value );
+                    }
+
+                    return address.join(", ");
+                }
+            });
 
 			function drawPreview( place ){
 				$("#selected_place_json").val( JSON.stringify( place ) );
@@ -217,7 +228,7 @@
 									if (data.predictions){
 										$.each(data.predictions, function(i, item){
 										    if ( $.inArray("route", item.types) < 0 ){
-											    $("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" data-ref="'+ item.reference + '" >'+ item.description + '</a></li>');
+											    $("ul#recent_places").append( $( "#googlePlaceTemplate" ).render( item ) );
 										    }
 										});
 									}
@@ -244,12 +255,9 @@
 								$("ul#recent_places li").remove();	
 							},
 							success: function( data ) {
-								$("ul#recent_places li").remove();
-								if (data.places) {
-									$.each(data.places, function(i, item){
-										$("ul#recent_places").append('<li class="place_option"><a href="#" data-id="'+ item.id + '" >'+ item.name + ',' + item.vicinity + '</a></li>');  
-									});
-								}	
+								$( "#recent_places" ).html(
+                                		$( "#placeTemplate" ).render( data.places )
+                                );
 							}
 						});
 					}
@@ -314,43 +322,62 @@
 		</script>
     </head>
     <body>
-    
-    <div id='placeling_popup_main' class="wrap mapEnabled">
-	
-        <h3 class='pick_header'>Attach Place to Post</h2>
-        <div class="place_pick" style="display:block;width:600px">
-        		<div id="search_top">
-        			<input id="searchTextField" type="text" class="search_box" autofocus>
-        		</div>
-        		<div id="search_results">
-				    <ul id="recent_places">
-        			</ul>   
-        		</div>
-        	</div>
+        <div id='placeling_popup_main' class="wrap mapEnabled">
+            <script id="placeTemplate" type="text/x-jsrender">
+                <li class="place_option">
+                    <div class="place_image">
+                        <img src="{{>thumb_url}}" class="place_icon" />
+                    </div>
+                    <div class="place_data">
+                        <a class="place_link" data-id='{{>id}}' href="#">{{>name}}</a><br>
+                        <span class="place_address">{{>street_address}}</span>
+                    </div>
+                </li>
+            </script>
+
+            <script id="googlePlaceTemplate" type="text/x-jsrender">
+                <li class="place_option">
+                    <div class="place_image">
+                        <img class="place_icon" src="https://www.placeling.com/assets/quickpicks/EverythingPick.png"/>
+                    </div>
+                    <div class="place_data">
+                        <a class="place_link" href="#" data-id="{{>id}}" data-ref="{{>reference}}">{{>terms[0].value}}</a><br>
+                        <span class="place_address">{{placeAddress:terms}}</span>
+                    </div>
+                </li>
+            </script>
+
+            <h3 class='pick_header'>Attach Place to Post</h2>
+            <div class="place_pick" style="display:block;width:600px">
+                <div id="search_top">
+                    <input id="searchTextField" type="text" class="search_box" autofocus>
+                </div>
+                <div id="search_results">
+                    <ul id="recent_places">
+                    </ul>
+                </div>
+            </div>
 
             <div id="addplace" style="display:none;"><a id="add_place_click" target="_blank" href="https://www.placeling.com/places/new">Can't find <span id="placeling_search_name">your place</span>? Add it as a new place.</a></div>
-        	<div id="spinwait"><img height='91px' src="../img/spinner.gif"/></div>
-        	<?php
-        		if ( isset( $meta_values ) ){
-        	?>
-        		<input type="hidden" id="selected_place_json" name="selected_place_json" value="<?php echo $meta_values; ?>"/>
-        	<?php 
-        		} else{
-        	?>
-        		<input type="hidden" id="selected_place_json" name="selected_place_json"/>
-        	<?php 
-        		}
-        	
-        		include_once("../footer.php");
-		  		echo placelingFooterHtml( null, "" );
-		  	?>
-	        
-	        <div id="actions">
-	        	<input class="button-primary" type="button" name="Save" value="Save" id="submitbutton" style="float:right;" />
-	        </div>
-        </div>
-        
-    </div>
+            <div id="spinwait"><img height='91px' src="../img/spinner.gif"/></div>
+            <?php
+                if ( isset( $meta_values ) ){
+            ?>
+                <input type="hidden" id="selected_place_json" name="selected_place_json" value="<?php echo $meta_values; ?>"/>
+            <?php
+                } else{
+            ?>
+                <input type="hidden" id="selected_place_json" name="selected_place_json"/>
+            <?php
+                }
 
-</body>
+                include_once("../footer.php");
+                echo placelingFooterHtml( null, "" );
+            ?>
+
+            <div id="actions">
+                <input class="button-primary" type="button" name="Save" value="Save" id="submitbutton" style="float:right;" />
+            </div>
+        </div>
+    </body>
 </html>

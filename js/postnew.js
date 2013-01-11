@@ -12,21 +12,6 @@ window.get_placeling_json = function(json) {
 jQuery(document).ready(function(){
     jQuery("#placeling_js_warning").remove();
 
-     jQuery("form[name=post]").validate({
-         wrapper: "div",
-         onsubmit: false
-     });
-
-
-    jQuery("input#publish").click(function(event){
-        if ( !jQuery("form[name=post]").valid() ){
-            event.preventDefault();
-            jQuery("#placeling_placemark_memo").focus();
-            alert("We need a brief summary (20 character minimum) to be displayed on your placeling map");
-            return false;
-        }
-    });
-
     renderPlaceAdmin( );
 
     jQuery("a#placeling_remove_place").live('click', function(){
@@ -77,15 +62,6 @@ function renderPlaceAdmin( ){
 	    
 	    jQuery("#placeling_empty_place").hide();
 	    jQuery("#placeling_tagged_place").show();
-
-	    jQuery("#placeling_placemark_memo").rules("add", {
-            required: true,
-            minlength: 20,
-            messages: {
-                required: jQuery.format("You need to add a summary that's at least 20 characters long"),
-                minlength: jQuery.format("You need to add a summary that's at least 20 characters long")
-            }
-	    });
 	    
 	} else {
 	    jQuery("#placeling_add_place_metabox .placeling_place_name").html( "" );

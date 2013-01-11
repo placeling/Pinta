@@ -26,12 +26,40 @@
 
 #search_top #searchTextField{
 	width:100%;
+    height: 30px;
+    font-size: 18px;
 }
 
 
 #recent_places li{
     font-family: sans-serif, Arial;
 }
+
+.place_link{
+    font-size: 14pt;
+    font-family: museoSlab;
+    color: #36757C;
+}
+
+.place_data {
+    height: 36px;
+}
+
+.place_image{
+    float: left;
+    height: 36px;
+    width: 36px;
+}
+
+.place_option{
+    width:520px;
+    list-style-type:none;
+}
+
+.place_icon{
+    height: 36px;
+}
+
 
 #submitbutton{
 	border-color: #BBB;
@@ -60,7 +88,7 @@
 }
 
 .place_option:hover {
-	background: #ff0;
+	background: #fff9b4;
 }
 
 .place_option a{

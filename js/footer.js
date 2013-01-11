@@ -35,7 +35,7 @@ jQuery(document).ready(function(){
 
     jQuery(window).resize( function(){
         clearTimeout( placeling_t );
-        placeling_t = setTimeout("resizePlacelingMap()",500);
+        placeling_t = setTimeout("resizePlacelingMap()",1000);
     })
 
     resizePlacelingMap()
