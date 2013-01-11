@@ -278,7 +278,6 @@ if (!class_exists("Placeling")) {
 			global $post_ID;
 
 			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'jquery-validate',  plugins_url( 'js/jquery.validate.min.js' , __FILE__ ), array('jquery') );
 			wp_enqueue_script( 'postnew', plugins_url( 'js/postnew.js', __FILE__ ), array('jquery'), "1.2" );
 
 			wp_enqueue_style( 'pinta', plugins_url( 'css/pinta.css' , __FILE__ ), false, "1.2" );
@@ -321,7 +320,7 @@ if (!class_exists("Placeling")) {
                     <hr>
                     <div id='placeling_placemark'>
                         <fieldset>
-                            <div id='placeling_memo_label'><label for='placeling_placemark_memo'>Add a brief summary. This will appear in Placeling</label></div>
+                            <div id='placeling_memo_label'><label for='placeling_placemark_memo'>You can add a brief summary to appear on Placeling, otherwise a default will be generated.</label></div>
                             <textarea id='placeling_placemark_memo' rows='5' cols='50' name='placeling_placemark_memo'></textarea>
                             <div id='placeling_photo_label'><label for='placeling_placemark_photos'><input name='placeling_placemark_photos' type='checkbox' id='placeling_placemark_photos' checked='checked'>Copy blog post photos to Placeling?</label></div>
                         </fieldset>
