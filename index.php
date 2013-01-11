@@ -44,13 +44,57 @@ if (!class_exists("Placeling")) {
             $wp_rewrite->flush_rules();
         }
 
+        function is_mobile() {
+            static $is_mobile;
+
+            if ( isset($is_mobile) )
+                return $is_mobile;
+
+            if ( empty($_SERVER['HTTP_USER_AGENT']) ) {
+                $is_mobile = false;
+            } elseif ( strpos($_SERVER['HTTP_USER_AGENT'], 'Mobile') !== false // many mobile devices (all iPhone, iPad, etc.)
+                || strpos($_SERVER['HTTP_USER_AGENT'], 'Android') !== false
+                || strpos($_SERVER['HTTP_USER_AGENT'], 'Silk/') !== false
+                || strpos($_SERVER['HTTP_USER_AGENT'], 'Kindle') !== false
+                || strpos($_SERVER['HTTP_USER_AGENT'], 'BlackBerry') !== false
+                || strpos($_SERVER['HTTP_USER_AGENT'], 'Opera Mini') !== false
+                || strpos($_SERVER['HTTP_USER_AGENT'], 'Opera Mobi') !== false ) {
+                    $is_mobile = true;
+            } else {
+                $is_mobile = false;
+            }
+
+            return $is_mobile;
+        }
+
         function getContent()
         {
             global $SERVICE_HOSTNAME;
             $username = get_site_option( '_placeling_username', false, true);
 
+            if ( self::is_mobile() ){
+                wp_enqueue_script( 'jquery' );
+                $scrollhtml= "
+                    <script type=\"text/javascript\">
+                    jQuery(document).ready(function() {
+                         jQuery('html, body').animate({
+                             scrollTop: jQuery('#placeling_iframe').offset().top-10
+                         }, 1000);
+                     });
+                     </script>
+                 ";
+             } else {
+               $scrollhtml = "";
+             }
+
             if ( isset( $username )  && isset( $SERVICE_HOSTNAME ) ) {
-                return "<iframe src=\"$SERVICE_HOSTNAME/users/$username/pinta?lat=49.268991905470884&amp;lng=-123.13450887298586\" frameborder=\"0\"  height=\"300\" width=\"100%\">You need iframes enabled to view the map</iframe>";
+                if ( isset( $_GET["placelinglat"]) && isset( $_GET["placelinglng"] ) ){
+                    $lat = $_GET["placelinglat"];
+                    $lng = $_GET["placelinglng"];
+                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$SERVICE_HOSTNAME/users/$username/pinta?lat=$lat&amp;lng=$lng\" frameborder=\"0\"  height=\"400\" width=\"100%\">You need iframes enabled to view the map</iframe>";
+                } else {
+                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$SERVICE_HOSTNAME/users/$username/pinta\" frameborder=\"0\"  height=\"400\" width=\"100%\">You need iframes enabled to view the map</iframe>";
+                }
             } else {
                 return "<p>Placeling has not yet been setup, please contact the site's administrator</p>";
             }
@@ -285,11 +329,9 @@ if (!class_exists("Placeling")) {
 			$empty_marker_button = plugins_url( 'img/EmptyMarker.png' , __FILE__ );
 			
 			$meta_value = get_post_meta($post_ID, '_placeling_place_json', true);
-			$placemarker_memo = get_post_meta( $post_ID, '_placeling_placemark_memo', true );
 			
 			?>
 				<input id="placeling_place_json" name="placeling_place_json" type="hidden" value="<?php echo $meta_value ; ?>" />
-                <input id="placeling_placemarker_initial_memo" name="placeling_placemarker_initial_memo" type="hidden" value="<?php echo htmlentities( $placemarker_memo );?>" />
 				
 				<div id="placeling_dialog_form" title="Post to Placeling">
 			
@@ -320,8 +362,6 @@ if (!class_exists("Placeling")) {
                     <hr>
                     <div id='placeling_placemark'>
                         <fieldset>
-                            <div id='placeling_memo_label'><label for='placeling_placemark_memo'>You can add a brief summary to appear on Placeling, otherwise a default will be generated.</label></div>
-                            <textarea id='placeling_placemark_memo' rows='5' cols='50' name='placeling_placemark_memo'></textarea>
                             <div id='placeling_photo_label'><label for='placeling_placemark_photos'><input name='placeling_placemark_photos' type='checkbox' id='placeling_placemark_photos' checked='checked'>Copy blog post photos to Placeling?</label></div>
                         </fieldset>
                     </div>
@@ -334,11 +374,23 @@ if (!class_exists("Placeling")) {
 			global $SERVICE_HOSTNAME;
 			global $SIGNATURES;
 
-			if ( !array_key_exists( 'placeling_placemark_memo', $_POST ) ){
-				return; //no placeling memo to post
+            $postObj = get_post( $post_ID );
+
+            error_log( serialize( $postObj ) );
+
+			if ( !array_key_exists( 'placeling_place_json', $_POST ) ){
+				return; //no placeling data to post
 			}
 
-			$placemark_memo = stripslashes( $_POST['placeling_placemark_memo'] );
+            $placemark_memo = "";
+            if ( strlen( $postObj->post_excerpt ) >0 ){
+                $placemark_memo = $postObj->post_excerpt."\n\n";
+            }
+
+            $tags = wp_get_post_tags( $post_ID );
+            foreach( $tags as $tag ){
+                $placemark_memo . "#".$tag->slug.", ";
+            }
 			
 			$permalink = get_permalink( $post_ID );
 			$current_user = wp_get_current_user();
@@ -352,8 +404,6 @@ if (!class_exists("Placeling")) {
 			$placemarker_json = rawurldecode( $_POST['placeling_place_json'] );
 			$placemarker_json = preg_replace('/\\\\\'/', '\'', $placemarker_json);
 			$placemarker = json_decode( $placemarker_json );
-
-            update_post_meta( $post_ID, '_placeling_placemark_memo', $placemark_memo );
 			
 			if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {
 				//this is a weird state that probably shouldn't happen, but I don't want it to break their post
