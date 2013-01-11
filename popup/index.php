@@ -158,7 +158,6 @@
                     var address=[];
 
                     for (i=1;i<array.length;i++) {
-
                         address.push( array[i].value );
                     }
 
