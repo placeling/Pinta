@@ -60,6 +60,10 @@
     height: 36px;
 }
 
+#placeling_footer{
+    margin-left: auto;
+    margin-right: auto;
+}
 
 #submitbutton{
 	border-color: #BBB;
@@ -93,25 +97,6 @@
 
 .place_option a{
 	text-decoration: none;
-}
-
-.pick_header{
-	font-size: 15px;
-	font-weight: normal;
-	padding: 7px 10px;
-	margin: 0;
-	line-height: 1;
-	font-family: Georgia,"Times New Roman";
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-	
-	border-bottom-color:#DFDFDF;
-	text-shadow: white 0 1px 0;
-	-moz-box-shadow: 0 1px 0 #fff;
-	-webkit-box-shadow: 0 1px 0 white;
-	box-shadow: 0 1px 0 white;
 }
 
 #spinwait {

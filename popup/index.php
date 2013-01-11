@@ -178,6 +178,7 @@
 					$("#placeling_footer").hide();
 				}
 				resizePlacelingMap();
+				$("html, body").animate({ scrollTop: $(document).height() }, "slow");
 			}
 			
 			var $recent_places;
@@ -347,10 +348,9 @@
                 </li>
             </script>
 
-            <h3 class='pick_header'>Attach Place to Post</h2>
             <div class="place_pick" style="display:block;width:600px">
                 <div id="search_top">
-                    <input id="searchTextField" type="text" class="search_box" autofocus>
+                    <input id="searchTextField" type="text" class="search_box" placeholder="Start typing the name of the place you want to attach"  autofocus>
                 </div>
                 <div id="search_results">
                     <ul id="recent_places">
