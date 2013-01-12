@@ -376,8 +376,6 @@ if (!class_exists("Placeling")) {
 
             $postObj = get_post( $post_ID );
 
-            error_log( serialize( $postObj ) );
-
 			if ( !array_key_exists( 'placeling_place_json', $_POST ) ){
 				return; //no placeling data to post
 			}
@@ -388,9 +386,13 @@ if (!class_exists("Placeling")) {
             }
 
             $tags = wp_get_post_tags( $post_ID );
+            $memotags = array();
+
             foreach( $tags as $tag ){
-                $placemark_memo . "#".$tag->slug.", ";
+                $memotags[] = "#".$tag->slug;
             }
+
+            $placemark_memo .= join(", ", $memotags);
 			
 			$permalink = get_permalink( $post_ID );
 			$current_user = wp_get_current_user();
@@ -404,7 +406,7 @@ if (!class_exists("Placeling")) {
 			$placemarker_json = rawurldecode( $_POST['placeling_place_json'] );
 			$placemarker_json = preg_replace('/\\\\\'/', '\'', $placemarker_json);
 			$placemarker = json_decode( $placemarker_json );
-			
+
 			if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {
 				//this is a weird state that probably shouldn't happen, but I don't want it to break their post
 			} else {
