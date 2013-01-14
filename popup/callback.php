@@ -11,6 +11,7 @@
 
 	$requestTokenSecret = get_user_meta($current_user->ID, '_oauth_token_secret', true);
 	$requestTokenSecretTimeout = get_user_meta($current_user->ID, '_oauth_token_secret_timeout', true);
+	$requestTokenDest = get_user_meta($current_user->ID, '_oauth_token_dest', true);
 
 	$oauthObject = new OAuthSimple();
 
@@ -24,7 +25,7 @@
 	
 	// Build the request-URL...
 	$result = $oauthObject->sign(array(
-	    'path'      => $SERVICE_HOSTNAME.'/oauth/access_token',
+	    'path'      => $SERVICE_HOSTNAME.'/oauth/access_token_new',
 	    'parameters'=> array(
 		'oauth_verifier' => $_GET['oauth_verifier'],
 		'oauth_token'    => $_GET['oauth_token']),
@@ -37,11 +38,13 @@
 	$r = curl_exec($ch);
     
 	// Voila, we've got a long-term access token.
-	parse_str($r, $returned_items);     
-	  
-	$access_token = $returned_items['oauth_token'];
-	$access_token_secret = $returned_items['oauth_token_secret'];
-	
+
+	$returned_items = json_decode( $r );
+
+	$access_token = $returned_items->token->token;
+	$access_token_secret = $returned_items->token->secret;
+	$username = $returned_items->user->username;
+
 	// We can use this long-term access token to request Google API data,
 	// for example, a list of calendars. 
 	// All Google API data requests will have to be signed just as before,
@@ -56,6 +59,12 @@
 	$oauthObject->reset();
 	update_site_option( '_placeling_access_token', $access_token);
 	update_site_option( '_placeling_access_secret', $access_token_secret);
-	
-	header( 'Location:index.php' ) ;	
+	update_site_option( '_placeling_username', $username);
+
+	if ( isset( $requestTokenDest ) && $requestTokenDest == "admin" ){
+	    $placeling_url = admin_url("options-general.php?page=placeling_options");
+        header( "Location:$placeling_url" ) ;
+	} else {
+	    header( 'Location:index.php' ) ;
+	}
 ?>

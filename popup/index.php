@@ -50,8 +50,15 @@
 	    // We will need the request token and secret after the authorization.
 	    // Google will forward the request token, but not the secret.
 	    // Set a cookie, so the secret will be available once we return to this page.
+
+	    delete_user_meta( $current_user->ID, '_oauth_token_secret' );
+        delete_user_meta( $current_user->ID, '_oauth_token_secret_timeout' );
+        delete_user_meta($current_user->ID, '_oauth_token_dest');
         update_user_meta( $current_user->ID, '_oauth_token_secret', $request_token_secret);
-	    update_user_meta( $current_user->ID, '_oauth_token_secret_timeout', time()+3600);
+	    update_user_meta( $current_user->ID, '_oauth_token_secret_timeout', time()+60*30);
+	    if ( isset( $_GET['placelingsrc'] ) ){
+	        update_user_meta($current_user->ID, '_oauth_token_dest', $_GET['placelingsrc']);
+	    }
 	    //
 	    //////////////////////////////////////////////////////////////////////
 	    
@@ -89,7 +96,7 @@
 			delete_site_option('_placeling_access_token');
 			delete_site_option('_placeling_access_secret');
 			//die("no good access_key");	
-			header("Location:index.php");
+			header("got 401, kill access keys");
 		} else if ( $info['http_code'] != 200 ){
 			die("can't connect to Placeling server");
 		}

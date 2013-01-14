@@ -42,7 +42,6 @@ function placeling_settings_page() {
     <?php submit_button(); ?>
 
 </form>
-</div>
 <br>
 <?php
     $username = get_site_option( '_placeling_username', false, true);
@@ -50,19 +49,18 @@ function placeling_settings_page() {
 	$secretToken = get_site_option('_placeling_access_secret', false, true);
 
 	if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {
+     ?>
+        <p>You haven't connected a placeling account, <a href='<?php echo plugins_url( 'popup/index.php?placelingsrc=admin' , __FILE__ ); ?>' class='thickbox' alt='foo' title='Tag Place'> connect now.</a></p>
 
-        echo "You haven't connected a placeling account";
+<?php
     } else {
  ?>
 
     <form method="post" action="<?php echo plugins_url( 'clear_credentials.php' , __FILE__ ) ?>">
         <h3>Logged in as <?php echo $username; ?></h3>
         <?php submit_button("Logout", "secondary"); ?>
-
     </form>
-
-
-</div>
 <?php }
+    echo "</div>";
 }
 ?>

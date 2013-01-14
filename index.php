@@ -34,6 +34,7 @@ if (!class_exists("Placeling")) {
             add_filter( 'the_posts',array(&$this,'detectPost'));
             add_filter( 'admin_init', array(&$this, 'flush_rewrite_rules'));
             add_action( 'init', array(&$this, 'add_rewrites_init' ) );
+            add_shortcode( 'placeling_map', array(&$this, 'placeling_map_widget' ) );
 		}
 		
 		function install() {
@@ -68,12 +69,12 @@ if (!class_exists("Placeling")) {
             return $is_mobile;
         }
 
-        function getContent()
+        function getContent($height, $width, $autoscroll)
         {
             global $SERVICE_HOSTNAME;
             $username = get_site_option( '_placeling_username', false, true);
 
-            if ( self::is_mobile() ){
+            if ( self::is_mobile() && $autoscroll){
                 wp_enqueue_script( 'jquery' );
                 $scrollhtml= "
                     <script type=\"text/javascript\">
@@ -88,16 +89,16 @@ if (!class_exists("Placeling")) {
                $scrollhtml = "";
              }
 
-            if ( isset( $username )  && isset( $SERVICE_HOSTNAME ) ) {
+            if ( isset( $username ) && $username != ""  && isset( $SERVICE_HOSTNAME ) ) {
                 if ( isset( $_GET["placelinglat"]) && isset( $_GET["placelinglng"] ) ){
                     $lat = $_GET["placelinglat"];
                     $lng = $_GET["placelinglng"];
-                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$SERVICE_HOSTNAME/users/$username/pinta?lat=$lat&amp;lng=$lng\" frameborder=\"0\"  height=\"400\" width=\"100%\">You need iframes enabled to view the map</iframe>";
+                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$SERVICE_HOSTNAME/users/$username/pinta?lat=$lat&amp;lng=$lng\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
                 } else {
-                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$SERVICE_HOSTNAME/users/$username/pinta\" frameborder=\"0\"  height=\"400\" width=\"100%\">You need iframes enabled to view the map</iframe>";
+                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$SERVICE_HOSTNAME/users/$username/pinta\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
                 }
             } else {
-                return "<p>Placeling has not yet been setup, please contact the site's administrator</p>";
+                return "<p>Placeling has not yet been setup, please contact the site's administrator to see the map</p>";
             }
 
         }
@@ -141,6 +142,17 @@ if (!class_exists("Placeling")) {
                 return $posts;
             }
 
+        // [placeling_map height="height" width="width" mobile_auto_scroll=true]
+        function placeling_map_widget( $atts ){
+            extract( shortcode_atts( array(
+            		'height' => '400px',
+            		'width' => '100%',
+            		'mobile_auto_scroll' => true )
+            	, $atts ) );
+
+            return $this->getContent($height, $width, $mobile_auto_scroll);
+        }
+
         function createPost(){
 
             /**
@@ -177,7 +189,7 @@ if (!class_exists("Placeling")) {
              * your plugin should go.  Just store the output from all your
              * plugin function calls, and put the output into this var.
              */
-            $post->post_content = $this->getContent();
+            $post->post_content = $this->getContent("400px", "100%", true);
 
             /**
              * Fake post ID to prevent WP from trying to show comments for
