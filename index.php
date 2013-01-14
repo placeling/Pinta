@@ -17,14 +17,17 @@ if (!class_exists("Placeling")) {
 	class Placeling {
 
 		function Placeling() {
-			// Add Options Page
 			add_action( 'admin_menu',  array(&$this, 'admin_menu') );
 			add_action( 'save_post', array( &$this, 'save_post') );
 			add_action( 'publish_post', array( &$this, 'postToPlaceling') );
 			add_action( 'publish_page', array( &$this, 'postToPlaceling') );
+            add_action( 'admin_init', array( &$this, 'upgrade_check' ) );
+
 			add_filter( 'media_buttons_context', array(&$this, 'placeling_media_button') );
 			add_filter( 'the_content', array(&$this, 'addPlacelingFooter') );
+
             add_shortcode( 'placeling_map', array(&$this, 'placeling_map_widget' ) );
+
             register_activation_hook( __FILE__, array(&$this, 'install') );
 		}
 		
@@ -32,6 +35,7 @@ if (!class_exists("Placeling")) {
 			//there isn't anything we need to do, this just is to prevent an error on activation
 			//don't generate output
 			$page_slug = 'placeling-map';
+			update_site_option( '_placeling_version', "2.0.0");
 
             foreach (get_pages( array() ) as $page ){
                 if ( $page->post_name == $page_slug ){
@@ -56,6 +60,14 @@ if (!class_exists("Placeling")) {
             update_option( 'placeling_linking_page',$post_id);
 		}
 
+        function upgrade_check(){
+            $version = get_site_option( '_placeling_version', false, true);
+
+            if ( !$version ){
+                $this->install();
+            }
+
+        }
 
         function is_mobile() {
             static $is_mobile;
