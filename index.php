@@ -33,18 +33,12 @@ if (!class_exists("Placeling")) {
 			//don't generate output
 			$page_slug = 'placeling-map';
 
-            error_log("placeling install");
-
             foreach (get_pages( array() ) as $page ){
-                error_log("see page: $page->post_name ");
                 if ( $page->post_name == $page_slug ){
-                    error_log("page found");
-                    update_site_option( '_placeling_default_page',$page->ID);
+                    update_option( 'placeling_linking_page',$page->ID);
                     return;
                 }
             }
-
-            error_log("didn't find, generating default post");
 
             global $user_ID;
             $new_post = array(
@@ -59,8 +53,7 @@ if (!class_exists("Placeling")) {
             'post_type' => 'page'
             );
             $post_id = wp_insert_post($new_post);
-            error_log("posted with return: $post_id" );
-            update_site_option( '_placeling_default_page',$post_id);
+            update_option( 'placeling_linking_page',$post_id);
 		}
 
 
@@ -275,7 +268,7 @@ if (!class_exists("Placeling")) {
 
             $postObj = get_post( $post_ID );
 
-			if ( !array_key_exists( 'placeling_place_json', $_POST ) ){
+			if ( !array_key_exists( 'placeling_place_json', $_POST ) ||  $_POST['placeling_place_json'] == "" ){
 				return; //no placeling data to post
 			}
 
