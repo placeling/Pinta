@@ -9,7 +9,7 @@ function placeling_plugin_menu(){
 
 function register_placelingsettings() {
 	//register our settings
-	register_setting( 'placeling-settings-group', 'linking_page' );
+	register_setting( 'placeling-settings-group', 'placeling_linking_page' );
 }
 
 function plugin_options_validate($input) {
@@ -34,8 +34,23 @@ function placeling_settings_page() {
 
     <table class="form-table">
         <tr valign="top">
-        <th scope="row">Linking Page</th>
-        <td><input type="text" name="linking_page" value="<?php echo get_option('linking_page'); ?>" /></td>
+        <th scope="row">Placeling Footers Link to Page:</th>
+        <td>
+
+        <select type="text" name="placeling_linking_page"  />
+            <?php
+                $page_id = get_option('placeling_linking_page');
+                foreach (get_pages( array() ) as $page ){
+                    if ( $page->ID == $page_id ){
+                        echo "<option value='$page->ID' SELECTED>$page->post_title</option>";
+                    }else {
+                        echo "<option value='$page->ID'>$page->post_title</option>";
+                    }
+                }
+            ?>
+        </select>
+
+        </td>
         </tr>
     </table>
 
