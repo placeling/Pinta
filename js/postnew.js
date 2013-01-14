@@ -16,8 +16,6 @@ jQuery(document).ready(function(){
 
     jQuery("a#placeling_remove_place").live('click', function(){
         jQuery("#placeling_place_json").val("");
-        jQuery("#placeling_placemarker_initial_memo").val("")
-        jQuery("textarea[name=placeling_placemark_memo]").val("");
         renderPlaceAdmin( );		
         return false;
     });
@@ -52,13 +50,6 @@ function renderPlaceAdmin( ){
 	    jQuery("#placeling_add_place_metabox .placeling_place_name").html( place.name );
 	    jQuery("#placeling_add_place_metabox #placeling_tagged").show();
 	    jQuery("#placeling_add_place_metabox #placeling_untagged").hide();
-	    
-        if ( jQuery("#placeling_placemarker_initial_memo").val() != ""){
-            jQuery("textarea[name=placeling_placemark_memo]").val( jQuery("#placeling_placemarker_initial_memo").val() );
-	    } else if ( undefined != place.referring_perspectives && place.referring_perspectives.length > 0){
-            jQuery("textarea[name=placeling_placemark_memo]").val( place.referring_perspectives[0].memo );
-	    }
-        
 	    
 	    jQuery("#placeling_empty_place").hide();
 	    jQuery("#placeling_tagged_place").show();
