@@ -15,7 +15,8 @@ function placelingFooterHtml( $place ){
 		$place_url = $WEB_HOSTNAME."/places/$place->slug";
 		$name = $place->name;
 
-		$action_url = get_bloginfo('url')."/placeling/map?placelinglat=".$lat."&placelinglng=".$lng;
+		$page_id = get_site_option( '_placeling_default_page',0, true);
+		$action_url = get_page_link($page_id)."?placelinglat=".$lat."&placelinglng=".$lng;
 	} else {
 		$lat = 0;
 		$lng = 0;

@@ -16,12 +16,6 @@ include_once('placeling-options.php');
 if (!class_exists("Placeling")) {
 	class Placeling {
 
-	    var $page_slug = 'placeling-map';
-
-        var $page_title = 'Map';
-
-        var $ping_status = 'open';
-
 		function Placeling() {
 			// Add Options Page
 			add_action( 'admin_menu',  array(&$this, 'admin_menu') );
@@ -30,21 +24,45 @@ if (!class_exists("Placeling")) {
 			add_action( 'publish_page', array( &$this, 'postToPlaceling') );
 			add_filter( 'media_buttons_context', array(&$this, 'placeling_media_button') );
 			add_filter( 'the_content', array(&$this, 'addPlacelingFooter') );
-
-            add_filter( 'the_posts',array(&$this,'detectPost'));
-            add_filter( 'admin_init', array(&$this, 'flush_rewrite_rules'));
-            add_action( 'init', array(&$this, 'add_rewrites_init' ) );
             add_shortcode( 'placeling_map', array(&$this, 'placeling_map_widget' ) );
+            register_activation_hook( __FILE__, array(&$this, 'install') );
 		}
 		
 		function install() {
 			//there isn't anything we need to do, this just is to prevent an error on activation
+			//don't generate output
+			$page_slug = 'placeling-map';
+
+            error_log("placeling install");
+
+            foreach (get_pages( array() ) as $page ){
+                error_log("see page: $page->post_name ");
+                if ( $page->post_name == $page_slug ){
+                    error_log("page found");
+                    update_site_option( '_placeling_default_page',$page->ID);
+                    return;
+                }
+            }
+
+            error_log("didn't find, generating default post");
+
+            global $user_ID;
+            $new_post = array(
+            'post_title' => 'Map',
+            'post_content' => '[placeling_map height="400px" mobile_auto_scroll=true]',
+            'post_status' => 'publish',
+            'post_date' => date('Y-m-d H:i:s'),
+            'post_name' => $page_slug,
+            'post_author' => $user_ID,
+            'comment_status' => "closed",
+            'ping_status' => "closed",
+            'post_type' => 'page'
+            );
+            $post_id = wp_insert_post($new_post);
+            error_log("posted with return: $post_id" );
+            update_site_option( '_placeling_default_page',$post_id);
 		}
 
-        function flush_rewrite_rules(){
-            global $wp_rewrite;
-            $wp_rewrite->flush_rules();
-        }
 
         function is_mobile() {
             static $is_mobile;
@@ -103,45 +121,6 @@ if (!class_exists("Placeling")) {
 
         }
 
-        function add_rewrites_init(){
-            add_rewrite_rule(
-                'placeling/map?$',
-                'index.php?pagename=placeling-map',
-                'top' );
-        }
-
-        function detectPost($posts){
-                global $wp;
-                global $wp_query;
-
-                /**
-                 * Check if the requested page matches our target
-                 */
-                if ( isset( $wp->query_vars ) && array_key_exists('pagename', $wp->query_vars) && $wp->query_vars['pagename'] == $this->page_slug ){
-                    //Add the fake post
-                    $posts=NULL;
-                    $posts[]=$this->createPost();
-
-                    /**
-                     * Trick wp_query into thinking this is a page (necessary for wp_title() at least)
-                     * Not sure if it's cheating or not to modify global variables in a filter
-                     * but it appears to work and the codex doesn't directly say not to.
-                     */
-                    $wp_query->is_page = true;
-                    //Not sure if this one is necessary but might as well set it like a true page
-                    $wp_query->is_singular = true;
-                    $wp_query->is_home = false;
-                    $wp_query->is_archive = false;
-                    $wp_query->is_category = false;
-                    //Longer permalink structures may not match the fake post slug and cause a 404 error so we catch the error here
-                    unset($wp_query->query["error"]);
-                    $wp_query->query_vars["error"]="";
-                    $wp_query->is_404=false;
-
-                }
-                return $posts;
-            }
-
         // [placeling_map height="height" width="width" mobile_auto_scroll=true]
         function placeling_map_widget( $atts ){
             extract( shortcode_atts( array(
@@ -152,99 +131,6 @@ if (!class_exists("Placeling")) {
 
             return $this->getContent($height, $width, $mobile_auto_scroll);
         }
-
-        function createPost(){
-
-            /**
-             * Create a fake post.
-             */
-            $post = new stdClass;
-
-            /**
-             * The author ID for the post.  Usually 1 is the sys admin.  Your
-             * plugin can find out the real author ID without any trouble.
-             */
-            $post->post_author = 1;
-
-            /**
-             * The safe name for the post.  This is the post slug.
-             */
-            $post->post_name = $this->page_slug;
-
-            /**
-             * Not sure if this is even important.  But gonna fill it up anyway.
-             */
-            $post->guid = get_bloginfo('wpurl') . '/' . $this->page_slug;
-
-
-            /**
-             * The title of the page.
-             */
-            $post->post_title = $this->page_title;
-            $post->post_type = "page";
-            $post->post_parent = null;
-
-            /**
-             * This is the content of the post.  This is where the output of
-             * your plugin should go.  Just store the output from all your
-             * plugin function calls, and put the output into this var.
-             */
-            $post->post_content = $this->getContent("400px", "100%", true);
-
-            /**
-             * Fake post ID to prevent WP from trying to show comments for
-             * a post that doesn't really exist.
-             */
-            $post->ID = -134;
-
-            /**
-             * Static means a page, not a post.
-             */
-            $post->post_status = 'static';
-
-            /**
-             * Turning off comments for the post.
-             */
-            $post->comment_status = 'closed';
-
-            /**
-             * Let people ping the post?  Probably doesn't matter since
-             * comments are turned off, so not sure if WP would even
-             * show the pings.
-             */
-            $post->ping_status = $this->ping_status;
-
-            $post->comment_count = 0;
-
-            /**
-             * You can pretty much fill these up with anything you want.  The
-             * current date is fine.  It's a fake post right?  Maybe the date
-             * the plugin was activated?
-             */
-            $post->post_date = current_time('mysql');
-            $post->post_date_gmt = current_time('mysql', 1);
-
-            return($post);
-        }
-
-        function dev4press_debug_rewrite_rules() {
-          global $wp_rewrite;
-          echo '<div>';
-          if (!empty($wp_rewrite->rules)) {
-            echo '<h5>Rewrite Rules</h5>';
-            echo '<table><thead><tr>';
-            echo '<td>Rule</td><td>Rewrite</td>';
-            echo '</tr></thead><tbody>';
-            foreach ($wp_rewrite->rules as $name => $value) {
-              echo '<tr><td>'.$name.'</td><td>'.$value.'</td></tr>';
-            }
-            echo '</tbody></table>';
-          } else {
-            echo 'No rules defined.';
-          }
-          echo '</div>';
-        }
-
 
 		function admin_menu() {
 			add_meta_box( 'WPPlaceling', 'Placeling', array(&$this,'draw_placeling'), 'post', 'normal', 'high' );
