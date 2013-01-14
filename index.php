@@ -27,8 +27,6 @@ if (!class_exists("Placeling")) {
 			add_filter( 'the_content', array(&$this, 'addPlacelingFooter') );
 
             add_shortcode( 'placeling_map', array(&$this, 'placeling_map_widget' ) );
-
-            register_activation_hook( __FILE__, array(&$this, 'install') );
 		}
 		
 		function install() {
