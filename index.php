@@ -11,6 +11,7 @@ Author URI: https://www.placeling.com
 include_once('OAuthSimple.php');
 include_once('simple_html_dom.php');
 include_once('pinta-config.php');
+include_once('placeling-options.php');
 
 if (!class_exists("Placeling")) {
 	class Placeling {
