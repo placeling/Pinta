@@ -13,6 +13,7 @@ function placeling_plugin_menu(){
 function register_placelingsettings() {
 	//register our settings
 	register_setting( 'placeling-settings-group', 'placeling_linking_page' );
+	register_setting( 'placeling-settings-group', 'placeling_marker_new_window' );
 }
 
 function plugin_options_validate($input) {
@@ -55,6 +56,12 @@ function placeling_settings_page() {
 
         </td>
         </tr>
+        <tr valign="top">
+            <th scope="row">Open Map Marker Clicks in New Window:</th>
+            <td style="border:none;">
+                <input type="checkbox" name="placeling_marker_new_window" value="1"<?php checked( 1 == get_option( 'placeling_marker_new_window', 1 ) ); ?> />
+            </td>
+            </tr>
     </table>
 
     <?php submit_button(); ?>
