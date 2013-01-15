@@ -1,5 +1,7 @@
 <?php
 
+require_once('pinta-config.php');
+
 add_action( 'admin_menu', 'placeling_plugin_menu' );
 
 function placeling_plugin_menu(){
@@ -81,7 +83,7 @@ function placeling_settings_page() {
 
 <br>
 <h2>Plugin Upgrade Options</h2>
-   <iframe src="https://www.placeling.com/bloggers/matrix" width="800px" height="600px">You need iFrames enabled to see this</iframe>
+   <iframe src="<?php echo $GLOBALS['WEB_HOSTNAME'] ?>/bloggers/matrix" width="800px" height="600px">You need iFrames enabled to see this</iframe>
 <?php
 }
 ?>
