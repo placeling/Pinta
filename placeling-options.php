@@ -75,13 +75,13 @@ function placeling_settings_page() {
     } else {
         $accessToken = get_site_option('_placeling_access_token', false, true);
         $secretToken = get_site_option('_placeling_access_secret', false, true);
-        $GLOBALS['SIGNATURES']['oauth_token'] = $accessToken;
-        $GLOBALS['SIGNATURES']['oauth_secret'] = $secretToken;
+        $GLOBALS['PLACELING_SIGNATURES']['oauth_token'] = $accessToken;
+        $GLOBALS['PLACELING_SIGNATURES']['oauth_secret'] = $secretToken;
         $oauthObject = new OAuthSimple();
 
         $result = $oauthObject->sign(array(
-            'path'      => $GLOBALS['SERVICE_HOSTNAME'].'/v1/users/me.json',
-            'signatures'=> $GLOBALS['SIGNATURES']));
+            'path'      => $GLOBALS['PLACELING_SERVICE_HOSTNAME'].'/v1/users/me.json',
+            'signatures'=> $GLOBALS['PLACELING_SIGNATURES']));
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -117,7 +117,7 @@ function placeling_settings_page() {
                     Home Location
                 </th>
                 <td><img style="max-height: 64px" src="http://maps.googleapis.com/maps/api/staticmap?center=<?php echo $user->lat ?>,<?php echo $user->lng ?>&zoom=12&sensor=false&size=300x100"><br>
-<a target="_blank" href="<?php echo $GLOBALS['WEB_HOSTNAME'] ?>/users/<?php echo $user->username?>/location">Update home location</a>
+<a target="_blank" href="<?php echo $GLOBALS['PLACELING_WEB_HOSTNAME'] ?>/users/<?php echo $user->username?>/location">Update home location</a>
                 </td>
             </tr>
         </table>
@@ -128,7 +128,7 @@ function placeling_settings_page() {
 
 <br>
 <h2>Plugin Upgrade Options</h2>
-   <iframe src="<?php echo $GLOBALS['WEB_HOSTNAME'] ?>/bloggers/matrix" width="800px" height="600px">You need iFrames enabled to see this</iframe>
+   <iframe src="<?php echo $GLOBALS['PLACELING_WEB_HOSTNAME'] ?>/bloggers/matrix" width="800px" height="600px">You need iFrames enabled to see this</iframe>
 <?php
 }
 ?>

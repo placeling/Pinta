@@ -21,10 +21,10 @@
 	    //
 	    $callback_url = plugins_url( 'popup/callback.php' , dirname(__FILE__) );
 	    $result = $oauthObject->sign(array(
-	        'path'      =>$SERVICE_HOSTNAME . '/oauth/request_token',
+	        'path'      =>$PLACELING_SERVICE_HOSTNAME . '/oauth/request_token',
 	        'parameters'=> array(
 	            'oauth_callback'=> $callback_url),
-	        'signatures'=> $SIGNATURES));
+	        'signatures'=> $PLACELING_SIGNATURES));
 	
 	    // The above object generates a simple URL that includes a signature, the 
 	    // needed parameters, and the web page that will handle our request.  I now
@@ -69,21 +69,21 @@
 	    // so the user can authorize our access request.  The user could also deny
 	    // the request, so don't forget to add something to handle that case.
 	    $result = $oauthObject->sign(array(
-	        'path'      => $SERVICE_HOSTNAME . '/oauth/authorize',
+	        'path'      => $PLACELING_SERVICE_HOSTNAME . '/oauth/authorize',
 	        'parameters'=> array(
 	            'oauth_token' => $request_token),
-	        'signatures'=> $SIGNATURES));
+	        'signatures'=> $PLACELING_SIGNATURES));
 	
 	    // See you in a sec in step 3.
 	    header("Location:$result[signed_url]");
 	    exit;			
 	} else {
-		$SIGNATURES['oauth_token'] = $accessToken;
-		$SIGNATURES['oauth_secret'] = $secretToken;
+		$PLACELING_SIGNATURES['oauth_token'] = $accessToken;
+		$PLACELING_SIGNATURES['oauth_secret'] = $secretToken;
     	
 		$result = $oauthObject->sign(array(
-			'path'      => $SERVICE_HOSTNAME.'/v1/users/me.json',
-			'signatures'=> $SIGNATURES));
+			'path'      => $PLACELING_SERVICE_HOSTNAME.'/v1/users/me.json',
+			'signatures'=> $PLACELING_SIGNATURES));
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -148,7 +148,7 @@
 			var lat = "<?php echo $lat;?>";
 			var lng = "<?php echo $lng;?>";
 			var username = "<?php echo $username; ?>";
-			var hostname = "<?php echo $SERVICE_HOSTNAME;?>";
+			var hostname = "<?php echo $PLACELING_SERVICE_HOSTNAME;?>";
 			var places_dictionary;
 			var autocomplete;
 			varxhrPool = [];
@@ -253,7 +253,7 @@
 							url: hostname + "/v1/places/search.json",
 							dataType: "jsonp",
 							data: {
-								key: "<?php echo $SIGNATURES['consumer_key']; ?>",
+								key: "<?php echo $PLACELING_SIGNATURES['consumer_key']; ?>",
 								query: text,
 								lat: lat,
 								lng: lng
@@ -284,7 +284,7 @@
 						dataType: "jsonp",
 						data: {
 							google_ref:data_ref, 
-							key: "<?php echo $SIGNATURES['consumer_key']; ?>",
+							key: "<?php echo $PLACELING_SIGNATURES['consumer_key']; ?>",
 							rf: username
 						},
 						success: function( data ) {	

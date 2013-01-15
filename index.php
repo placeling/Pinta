@@ -92,7 +92,7 @@ if (!class_exists("Placeling")) {
 
         function getContent($height, $width, $autoscroll)
         {
-            global $SERVICE_HOSTNAME;
+            global $PLACELING_SERVICE_HOSTNAME;
             $username = get_site_option( '_placeling_username', false, true);
 
             if ( self::is_mobile() && $autoscroll){
@@ -110,13 +110,13 @@ if (!class_exists("Placeling")) {
                $scrollhtml = "";
              }
 
-            if ( isset( $username ) && $username != ""  && isset( $SERVICE_HOSTNAME ) ) {
+            if ( isset( $username ) && $username != ""  && isset( $PLACELING_SERVICE_HOSTNAME ) ) {
                 if ( isset( $_GET["placelinglat"]) && isset( $_GET["placelinglng"] ) ){
                     $lat = $_GET["placelinglat"];
                     $lng = $_GET["placelinglng"];
-                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$SERVICE_HOSTNAME/users/$username/pinta?lat=$lat&amp;lng=$lng\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
+                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$PLACELING_SERVICE_HOSTNAME/users/$username/pinta?lat=$lat&amp;lng=$lng\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
                 } else {
-                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$SERVICE_HOSTNAME/users/$username/pinta\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
+                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$PLACELING_SERVICE_HOSTNAME/users/$username/pinta\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
                 }
             } else {
                 return "<p>Placeling has not yet been setup, please contact the site's administrator to see the map</p>";
@@ -141,8 +141,8 @@ if (!class_exists("Placeling")) {
 		}
 
 		function update_place( $post_ID ){
-			global $SIGNATURES;
-			global $SERVICE_HOSTNAME;
+			global $PLACELING_SIGNATURES;
+			global $PLACELING_SERVICE_HOSTNAME;
 			
 			$oauthObject = new OAuthSimple();
 			
@@ -156,13 +156,13 @@ if (!class_exists("Placeling")) {
 			$place_json = preg_replace('/\\\\\'/', '\'', $place_json);
 			$place = json_decode( $place_json );
 			
-			$url = $SERVICE_HOSTNAME.'/v1/places/'.$place->id;
+			$url = $PLACELING_SERVICE_HOSTNAME.'/v1/places/'.$place->id;
 			
 			$result = $oauthObject->sign(array(
 				'path'      => $url,
                 'parameters'=> array(
                     'rf' => $username ),
-				'signatures'=> $SIGNATURES));
+				'signatures'=> $PLACELING_SIGNATURES));
 			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $result['signed_url'] );
@@ -182,7 +182,7 @@ if (!class_exists("Placeling")) {
 		}
 		
 		function addPlacelingFooter( $content ){
-			global $RELOAD_INTERVAL;
+			global $PLACELING_RELOAD_INTERVAL;
 
 			if ( !is_singular() ){
 				//we only want to show on single views, for now,  so as not to crowd
@@ -197,7 +197,7 @@ if (!class_exists("Placeling")) {
 				
 				$timestamp = get_post_meta($post_ID, '_placeling_place_json_timestamp', true);
 			
-				if ( $timestamp =="" || $timestamp < time() - $RELOAD_INTERVAL ){
+				if ( $timestamp =="" || $timestamp < time() - $PLACELING_RELOAD_INTERVAL ){
 					update_post_meta( $post_ID, '_placeling_place_json_timestamp', time() );
 					try{
 						$this->update_place( $post_ID );	
@@ -273,8 +273,8 @@ if (!class_exists("Placeling")) {
 		}
 		
 		function postToPlaceling( $post_ID ){
-			global $SERVICE_HOSTNAME;
-			global $SIGNATURES;
+			global $PLACELING_SERVICE_HOSTNAME;
+			global $PLACELING_SIGNATURES;
 
             $postObj = get_post( $post_ID );
 
@@ -312,10 +312,10 @@ if (!class_exists("Placeling")) {
 			if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {
 				//this is a weird state that probably shouldn't happen, but I don't want it to break their post
 			} else {
-				$SIGNATURES['oauth_token'] = $accessToken;
-				$SIGNATURES['oauth_secret'] = $secretToken;
+				$PLACELING_SIGNATURES['oauth_token'] = $accessToken;
+				$PLACELING_SIGNATURES['oauth_secret'] = $secretToken;
 				
-				$url = $SERVICE_HOSTNAME.'/v1/places/'.$placemarker->id.'/perspectives';
+				$url = $PLACELING_SERVICE_HOSTNAME.'/v1/places/'.$placemarker->id.'/perspectives';
 				
 				if ( array_key_exists( 'placeling_placemark_photos', $_POST) && $_POST['placeling_placemark_photos'] =="on" ){
 					$content = $_POST['content'];
@@ -343,7 +343,7 @@ if (!class_exists("Placeling")) {
 				$result = $oauthObject->sign(array(
 					'path'      => $url,
 					'parameters'=> $data,
-					'signatures'=> $SIGNATURES));
+					'signatures'=> $PLACELING_SIGNATURES));
 				
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_POST, true);

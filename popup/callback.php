@@ -20,8 +20,8 @@
 	    header("Location:index.php");
 	    exit;
 	}
-	$SIGNATURES['oauth_secret'] = $requestTokenSecret;
-	$SIGNATURES['oauth_token'] = $_GET['oauth_token'];
+	$PLACELING_SIGNATURES['oauth_secret'] = $requestTokenSecret;
+	$PLACELING_SIGNATURES['oauth_token'] = $_GET['oauth_token'];
 	
 	// Build the request-URL...
 	$result = $oauthObject->sign(array(
@@ -29,7 +29,7 @@
 	    'parameters'=> array(
 		'oauth_verifier' => $_GET['oauth_verifier'],
 		'oauth_token'    => $_GET['oauth_token']),
-	    'signatures'=> $SIGNATURES));
+	    'signatures'=> $PLACELING_SIGNATURES));
     
 	// ... and grab the resulting string again. 
 	$ch = curl_init();
@@ -50,8 +50,8 @@
 	// All Google API data requests will have to be signed just as before,
 	// but we can now bypass the authorization process and use the long-term
 	// access token you hopefully stored somewhere permanently.
-	$SIGNATURES['oauth_token'] = $access_token;
-	$SIGNATURES['oauth_secret'] = $access_token_secret;
+	$PLACELING_SIGNATURES['oauth_token'] = $access_token;
+	$PLACELING_SIGNATURES['oauth_secret'] = $access_token_secret;
 	//////////////////////////////////////////////////////////////////////
 	
 	// Example Google API Access:

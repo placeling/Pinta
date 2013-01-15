@@ -3,7 +3,7 @@
 include_once('pinta-config.php');
 
 function placelingFooterHtml( $place ){
-	global $WEB_HOSTNAME;
+	global $PLACELING_WEB_HOSTNAME;
 
 	if ( isset( $place ) ){
 		$lat = $place->lat;
@@ -12,7 +12,7 @@ function placelingFooterHtml( $place ){
 		$url = $place->map_url;
 		$map_url = str_replace( "size=100x100", "size=550x150", $url );
 		$thirdparty_url = $place->google_url;
-		$place_url = $WEB_HOSTNAME."/places/$place->slug";
+		$place_url = $PLACELING_WEB_HOSTNAME."/places/$place->slug";
 		$name = $place->name;
 
 		$page_id = get_option( 'placeling_linking_page',0 );
