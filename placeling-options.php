@@ -1,6 +1,7 @@
 <?php
 
 require_once('pinta-config.php');
+include_once('OAuthSimple.php');
 
 add_action( 'admin_menu', 'placeling_plugin_menu' );
 
@@ -60,6 +61,7 @@ function placeling_settings_page() {
 
 </form>
 <br>
+<h2>Account Options</h2>
 <?php
     $username = get_site_option( '_placeling_username', false, true);
 	$accessToken = get_site_option('_placeling_access_token', false, true);
@@ -71,11 +73,54 @@ function placeling_settings_page() {
 
 <?php
     } else {
+        $accessToken = get_site_option('_placeling_access_token', false, true);
+        $secretToken = get_site_option('_placeling_access_secret', false, true);
+        $GLOBALS['SIGNATURES']['oauth_token'] = $accessToken;
+        $GLOBALS['SIGNATURES']['oauth_secret'] = $secretToken;
+        $oauthObject = new OAuthSimple();
+
+        $result = $oauthObject->sign(array(
+            'path'      => $GLOBALS['SERVICE_HOSTNAME'].'/v1/users/me.json',
+            'signatures'=> $GLOBALS['SIGNATURES']));
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $result['signed_url']);
+        $r = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        curl_close($ch);
+
+        if ( $info['http_code'] != 200 ){
+            die("can't connect to Placeling server");
+        }
+
+        $user = json_decode( $r );
+
+        $lat = $user->lat;
+        $lng = $user->lng;
  ?>
 
     <form method="post" action="<?php echo plugins_url( 'clear_credentials.php' , __FILE__ ) ?>">
-        <h3>Logged in as <?php echo $username; ?></h3>
-        <?php submit_button("Logout", "secondary"); ?>
+        <table class="form-table">
+            <tr>
+                <th scope="row">
+                    Login
+                </th>
+                <td>
+                <img style="max-width: 64px" src="<?php echo $user->picture->thumb_url ?>">
+                <b><?php echo $user->username; ?></b>
+                    <?php submit_button("Logout", "secondary"); ?>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    Home Location
+                </th>
+                <td><img style="max-height: 64px" src="http://maps.googleapis.com/maps/api/staticmap?center=<?php echo $user->lat ?>,<?php echo $user->lng ?>&zoom=12&sensor=false&size=300x100"><br>
+<a target="_blank" href="<?php echo $GLOBALS['WEB_HOSTNAME'] ?>/users/<?php echo $user->username?>/location">Update home location</a>
+                </td>
+            </tr>
+        </table>
     </form>
 <?php } ?>
 
