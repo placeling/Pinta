@@ -47,7 +47,6 @@ if (!class_exists("Placeling")) {
             'post_title' => 'Map',
             'post_content' => '[placeling_map height="400px" mobile_auto_scroll=true]',
             'post_status' => 'publish',
-            'post_date' => date('Y-m-d H:i:s'),
             'post_name' => $page_slug,
             'post_author' => $user_ID,
             'comment_status' => "closed",
