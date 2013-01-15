@@ -6,25 +6,27 @@ Tested up to: 3.3.1
 Stable tag: 1.2.5
 
 
-Placeling is the easiest way to put a map in your blog and turn blog posts into map pins.
+Placeling turns your blog into a mobile guide.
 
 == Description ==
 
-Placeling lets you put a map in your blog and turns your blog posts into pins on that map.
+Placeling turns your blog into a mobile guide to the world.
 
-When readers click on a pin it opens up the corresponding blog post in a new window.
+Tag any post or page with a location.
 
-This map can also be seen on an iPhone (via the free Placeling app) so that your readers can literally see nearby places you've written about.
+See them all on an automatically created map.
+
+Click or tap on a pin to open up the corresponding post or page in a new window.
+
+Open the map on your phone and the "nearby" button will show blog posts around your current location.
 
 A few specifics:
 
-*   The plugin allows you to tag a location to your post
-*   You add a snippet summarizing the location
-*   When you publish, the snippet, a link to your post and (optionally) all the photos in the post are sent to Placeling
-*   Each blog post includes a footer showing the location and a small map
-*   At Placeling.com you can get an embed code to put your map in your blog
-*   When a reader clicks a pin an info window opens showing your snippet. Clicking the title of the info window opens that post
-*   The [Placeling app](http://itunes.apple.com/ca/app/placeling/id465502398?mt=8 "Placeling app") is available for free in the iTunes app store
+*   The plugin allows you to tag a location to any post or page. When you publish, a link to your post, a description and (optionally) all the photos in the post are sent to Placeling
+*   We create a new page on your blog at the URL /placeling-map/. It contains a map of all your places; you can customize the page and change the URL
+*   Each tagged post/page includes a footer showing the location and a small map. Clicking the small map opens the /placeling-map/ page, centered on that location
+*   When a reader clicks a pin on the map an info window opens. Clicking the title of the info window opens that post
+*   On the map page, clicking the "nearby" button will ask the user for permission to use their location. If granted, the map will pan to their current location
 
 == Installation ==
 
@@ -40,9 +42,15 @@ Now start sharing your world!
 
 Go to [Placeling](https://www.placeling.com "Placeling") and sign up.
 
-= How do I get an embed code for my map? =
+= How do I make the plugin work? =
 
-Got to [Placeling](https://www.placeling.com "Placeling") and log in. Then go to your account and click the link at the bottom of the page next to "embed"
+Go to the "Settings" section of your blog and select Placeling. Log in using your Placeling account.
+
+= Why can't I see the map page? =
+
+If you haven't activated the plugin and logged into Placeling we can't create the map page.
+
+Once you've logged into Placeling, you'll see the new page in the Pages section off your admin console.
 
 = How do I get more support? =
 
