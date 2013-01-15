@@ -25,7 +25,7 @@
 	
 	// Build the request-URL...
 	$result = $oauthObject->sign(array(
-	    'path'      => $SERVICE_HOSTNAME.'/oauth/access_token_new',
+	    'path'      => $PLACELING_SERVICE_HOSTNAME.'/oauth/access_token_new',
 	    'parameters'=> array(
 		'oauth_verifier' => $_GET['oauth_verifier'],
 		'oauth_token'    => $_GET['oauth_token']),
