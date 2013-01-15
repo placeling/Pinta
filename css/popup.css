@@ -1,5 +1,15 @@
 
 
+@font-face {
+    font-family: Museo;
+    src: url('fonts/Museo.otf');
+}
+
+@font-face {
+    font-family: MuseoSlab;
+    src: url('fonts/MuseoSlab.otf');
+}
+
 .waitload{
 	list-style-type: none;
 	text-align: center;
@@ -49,6 +59,12 @@
     float: left;
     height: 36px;
     width: 36px;
+}
+
+.place_address {
+    font-family: Museo, Rockwell, Courier-Bold;
+    font-size: 14px;
+    color: #888;
 }
 
 .place_option{
@@ -103,5 +119,5 @@
 
 #add_place_click {
     color: #36757c;
-    font-family: Helvetica;
+    font-family:  Museo, Rockwell, Courier-Bold;
 }
