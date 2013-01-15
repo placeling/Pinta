@@ -24,6 +24,68 @@ function plugin_options_validate($input) {
 
 function placeling_settings_page() {
 ?>
+    <style type="text/css">
+      .wrap {
+        font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",sans-serif;
+        color: #464646;
+        padding: 0px;
+        margin: 0px;
+
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+
+      th {
+        padding: 10px 0px;
+      }
+
+      td {
+        border: 1px solid #464646;
+      }
+
+      .noborder {
+        border: none;
+      }
+
+      ul {
+        list-style-position:inside;
+        margin: 0px 0px 0px 15px;
+        padding: 0px;
+      }
+
+      li {
+        padding: 0px;
+        margin: 0px;
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .embiggen {
+        font-size: 24px;
+      }
+
+      .title {
+        width: 120px;
+      }
+
+      .feature {
+        width: 180px;
+        padding: 5px;
+      }
+
+      .upgrade {
+        padding-top: 5px;
+      }
+
+      .upgrade a {
+        font-size: 18px;
+        font-weight: 800;
+      }
+    </style>
 
 <div class="wrap">
 <?php screen_icon(); ?>
@@ -35,7 +97,7 @@ function placeling_settings_page() {
     <table class="form-table">
         <tr valign="top">
         <th scope="row">Placeling Footers Link to Page:</th>
-        <td>
+        <td style="border:none;">
 
         <select type="text" name="placeling_linking_page"  />
             <?php
@@ -75,7 +137,88 @@ function placeling_settings_page() {
         <h3>Logged in as <?php echo $username; ?></h3>
         <?php submit_button("Logout", "secondary"); ?>
     </form>
-<?php }
-    echo "</div>";
+<?php } ?>
+
+
+
+<br>
+<h2>Plugin Upgrade Options</h2>
+    <table>
+          <tr>
+            <th class="noborder"></td>
+            <th class="center embiggen title">Basic</td>
+            <th class="center embiggen title">Simple</td>
+            <th class="center embiggen title">Premiere</td>
+          </tr>
+          <tr>
+            <td class="noborder feature">Tag any post or page with a place</td>
+            <td class="center">&#10003;</td>
+            <td class="center">&#10003;</td>
+            <td class="center">&#10003;</td>
+          </tr>
+          <tr>
+            <td class="noborder feature">Mobile optimized</td>
+            <td class="center">&#10003;</td>
+            <td class="center">&#10003;</td>
+            <td class="center">&#10003;</td>
+          </tr>
+          <tr>
+            <td class="noborder feature">View nearby places as</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="noborder feature"><ul><li>Map</li></ul></td>
+            <td class="center">&#10003;</td>
+            <td class="center">&#10003;</td>
+            <td class="center">&#10003;</td>
+          </tr>
+          <tr>
+            <td class="noborder feature"><ul><li>List</li></ul></td>
+            <td></td>
+            <td class="center">&#10003;</td>
+            <td class="center">&#10003;</td>
+          </tr>
+          <tr>
+            <td class="noborder feature"><ul><li>Photos</ul></li></td>
+            <td></td>
+            <td></td>
+            <td class="center">&#10003;</td>
+          </tr>
+          <tr>
+            <td class="noborder feature">Daily nearby places views</td>
+            <td class="center">1,000</td>
+            <td class="center">Unlimited<sup>1</sup></td>
+            <td class="center">Unlimited<sup>1</sup></td>
+          </tr>
+          <tr>
+            <td class="noborder feature">Full CSS control</td>
+            <td></td>
+            <td></td>
+            <td class="center">&#10003;</td>
+          </tr>
+          <tr>
+            <td class="noborder feature">Custom map pins</td>
+            <td></td>
+            <td></td>
+            <td class="center">&#10003;</td>
+          </tr>
+          <tr>
+            <td class="noborder feature">Price</td>
+            <td class="center">Free</td>
+            <td class="center">$10/month</td>
+            <td class="center">$20/month</td>
+          </tr>
+          <tr>
+            <td class="noborder"></td>
+            <td class="noborder"></td>
+            <td class="noborder center upgrade"><a href="https://www.placeling.com/bloggers/plans?click=10" target="_blank">Upgrade</a></td>
+            <td class="noborder center upgrade"><a href="https://www.placeling.com/bloggers/plans?click=20" target="_blank">Upgrade</a></td>
+          </tr>
+        </table>
+        <p>1. Congrats on having such a popular site. We'll help you get your own Google Maps key for unlimited maps views</p>
+   </div>
+<?php
 }
 ?>
