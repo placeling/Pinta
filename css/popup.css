@@ -100,3 +100,8 @@
 	text-align:center;
 	display:none;
 }
+
+#add_place_click {
+    color: #36757c;
+    font-family: Helvetica;
+}
