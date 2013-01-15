@@ -93,7 +93,7 @@
 }
 
 #placeling_place_title{
-	margin: 5px 0 0 0;
+	margin: 8px 0 0 0;
     width:100%;
     white-space: nowrap;
 	overflow: hidden;
@@ -104,7 +104,6 @@
 	font-family: Museo, Rockwell, Courier-Bold;
     line-height: 10px;
     font-size: 12px;
-    margin: 3px auto;
 }
 
 #placeling_contact_info a{
