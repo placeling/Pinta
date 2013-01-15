@@ -380,10 +380,10 @@
                 include_once("../footer.php");
                 echo placelingFooterHtml( null, "" );
             ?>
-
-            <div id="actions">
-                <input class="button-primary" type="button" name="Save" value="Save" id="submitbutton" style="float:right;" />
-            </div>
         </div>
+        <div id="actions" style="padding-top:10px">
+            <input class="button-primary" type="button" name="Save" value="Save" id="submitbutton" style="float:right;" />
+        </div>
+
     </body>
 </html>
