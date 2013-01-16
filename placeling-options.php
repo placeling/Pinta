@@ -97,9 +97,13 @@ function placeling_settings_page() {
         $info = curl_getinfo($ch);
         curl_close($ch);
 
-        if ( $info['http_code'] != 200 ){
-            die("can't connect to Placeling server");
-        }
+		if ( $info['http_code'] == 401 ){
+			delete_site_option('_placeling_access_token');
+			delete_site_option('_placeling_access_secret');
+			//die("no good access_key");
+		} else if ( $info['http_code'] != 200 ){
+			die("can't connect to Placeling server");
+		}
 
         $user = json_decode( $r );
 

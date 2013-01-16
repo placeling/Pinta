@@ -95,8 +95,7 @@
 		if ( $info['http_code'] == 401 ){
 			delete_site_option('_placeling_access_token');
 			delete_site_option('_placeling_access_secret');
-			//die("no good access_key");	
-			header("got 401, kill access keys");
+			//die("no good access_key");
 		} else if ( $info['http_code'] != 200 ){
 			die("can't connect to Placeling server");
 		}
