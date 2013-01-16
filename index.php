@@ -209,8 +209,8 @@ if (!class_exists("Placeling")) {
 				$place_json = urldecode( $meta_value );
 				$place = json_decode( $place_json );
 
-				wp_enqueue_style( 'footer', plugins_url( 'css/footer.css', __FILE__ ),false, "1.2" );
-				wp_enqueue_script( 'footer', plugins_url( 'js/footer.js', __FILE__ ), array('jquery'), "1.2" );
+				wp_enqueue_style( 'footer', plugins_url( 'css/footer.css', __FILE__ ),false, "2.0.0" );
+				wp_enqueue_script( 'footer', plugins_url( 'js/footer.js', __FILE__ ), array('jquery'), "2.0.0" );
 				
 				include("footer.php");
 		  		$content = $content .placelingFooterHtml( $place );
@@ -223,9 +223,9 @@ if (!class_exists("Placeling")) {
 			global $post_ID;
 
 			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'postnew', plugins_url( 'js/postnew.js', __FILE__ ), array('jquery'), "1.2" );
+			wp_enqueue_script( 'postnew', plugins_url( 'js/postnew.js', __FILE__ ), array('jquery'), "2.0.0" );
 
-			wp_enqueue_style( 'pinta', plugins_url( 'css/pinta.css' , __FILE__ ), false, "1.2" );
+			wp_enqueue_style( 'pinta', plugins_url( 'css/pinta.css' , __FILE__ ), false, "2.0.0" );
 
 			$empty_marker_button = plugins_url( 'img/EmptyMarker.png' , __FILE__ );
 			
