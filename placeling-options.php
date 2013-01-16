@@ -76,7 +76,7 @@ function placeling_settings_page() {
 
 	if ( empty($accessToken) || empty($secretToken) || $accessToken == "" || $secretToken == "" ) {
      ?>
-        <p>You haven't connected a placeling account, <a href='<?php echo plugins_url( 'popup/index.php?placelingsrc=admin' , __FILE__ ); ?>' class='thickbox' alt='foo' title='Tag Place'> connect now.</a></p>
+        <p>You haven't connected a Placeling account, <a href='<?php echo plugins_url( 'popup/index.php?placelingsrc=admin' , __FILE__ ); ?>' class='thickbox' alt='foo' title='Tag Place'> connect now.</a></p>
 
 <?php
     } else {
