@@ -3,7 +3,7 @@
 Plugin Name: Placeling
 Plugin URI: https://www.placeling.com
 Description: Placeling turns your blog into an iPhone- and map-based guide to the world. Simply use this plugin to tag your posts with a location and we'll convert each post into a point on a map at placeling.com. Your readers can use their iPhone to see nearby places you've recommended (and they'll be driven to your blog to read your post) or explore a web-based map of all your posts.
-Version: 2.0.0
+Version: 2.0.1
 Author: Placeling (Internet Services) Inc.
 Author URI: https://www.placeling.com
 */
@@ -30,6 +30,15 @@ if (!class_exists("Placeling")) {
 		}
 		
 		function install() {
+
+            if( !function_exists('curl_exec') ){
+                // Deactivate the plugin
+                deactivate_plugins(__FILE__);
+
+                // Show the error page, Maybe this shouldn't happen?
+                die("You must enable cURL support in your PHP installation to use Placeling. Please contact your hosting provider, or get more <a target='_blank' href='http://stackoverflow.com/questions/1347146/how-to-enable-curl-in-php-xampp'>help here</a>");
+            }
+
 			//there isn't anything we need to do, this just is to prevent an error on activation
 			//don't generate output
 			$page_slug = 'placeling-map';
