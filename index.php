@@ -221,7 +221,7 @@ if (!class_exists("Placeling")) {
 				wp_enqueue_style( 'footer', plugins_url( 'css/footer.css', __FILE__ ),false, "2.0.0" );
 				wp_enqueue_script( 'footer', plugins_url( 'js/footer.js', __FILE__ ), array('jquery'), "2.0.0" );
 				
-				include("footer.php");
+				include_once("footer.php");
 		  		$content = $content .placelingFooterHtml( $place );
 		  	}
 		  	
