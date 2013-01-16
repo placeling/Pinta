@@ -3,7 +3,7 @@ Contributors: imack
 Tags: map, maps, google maps, geo, local, location, places, place, placeling, guide, guides, mobile
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 1.2.5
+Stable tag: 2.0.0
 
 
 Placeling turns Wordpress into a location-based, mobile guide.
@@ -72,6 +72,12 @@ We maintain an extensive help section on [our blogger page](https://www.placelin
 5. Tap the "nearby" button to use your phone to see nearby blog posts
 
 == Changelog ==
+
+= 2.0.0 =
+* Major update
+* Integrated Map page
+* Cleanup up footers, which now link to your Map page
+* Adding settings page to login/logout Placeling account
 
 = 1.2.5 =
 * Bug Fixes around login
