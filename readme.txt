@@ -6,7 +6,7 @@ Tested up to: 3.3.1
 Stable tag: 1.2.5
 
 
-Placeling turns your blog into a mobile guide.
+Placeling turns Wordpress into a location-based, mobile guide.
 
 == Description ==
 
@@ -23,8 +23,8 @@ Open the map on your phone and the "nearby" button will show blog posts around y
 A few specifics:
 
 *   The plugin allows you to tag a location to any post or page. When you publish, a link to your post, a description and (optionally) all the photos in the post are sent to Placeling
-*   We create a new page on your blog at the URL /placeling-map/. It contains a map of all your places; you can customize the page and change the URL
-*   Each tagged post/page includes a footer showing the location and a small map. Clicking the small map opens the /placeling-map/ page, centered on that location
+*   We create a new page on your blog at the URL /placeling-map/. It contains a map of all the places you've blogged about; you can customize the page and change the URL
+*   Each tagged post/page includes a footer showing the location and a small map. Clicking the small map opens the /placeling-map/ page, centred on that location
 *   When a reader clicks a pin on the map an info window opens. Clicking the title of the info window opens that post
 *   On the map page, clicking the "nearby" button will ask the user for permission to use their location. If granted, the map will pan to their current location
 
@@ -40,17 +40,21 @@ Now start sharing your world!
 
 = How do I get a Placeling account? =
 
-Go to [Placeling](https://www.placeling.com "Placeling") and sign up.
+Go to [Placeling](https://www.placeling.com/users/sign_up/ "Placeling") and sign up.
 
 = How do I make the plugin work? =
 
-Go to the "Settings" section of your blog and select Placeling. Log in using your Placeling account.
+First, make sure the plugin is active.
+
+Then, go to the "Settings" section of your blog and select Placeling. Log in using your Placeling account.
+
+Now you're ready to tag places and add pins to your map.
 
 = Why can't I see the map page? =
 
 If you haven't activated the plugin and logged into Placeling we can't create the map page.
 
-Once you've logged into Placeling, you'll see the new page in the Pages section off your admin console.
+Once you've logged into Placeling, you'll see the new page in the Pages section off your admin console. It's automatically created; you don't need to do anything.
 
 = How do I get more support? =
 
