@@ -3,7 +3,7 @@ Contributors: imack
 Tags: map, maps, google maps, geo, local, location, places, place, placeling, guide, guides, mobile
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 
 
 Placeling turns Wordpress into a location-based, mobile guide.
@@ -29,6 +29,8 @@ A few specifics:
 *   On the map page, clicking the "nearby" button will ask the user for permission to use their location. If granted, the map will pan to their current location
 
 == Installation ==
+
+Please note that Placeling depends on the cURL extension for PHP
 
 Note that in order to make this plugin work, you must have an account at Placeling.com. Drop everything and [get one now](https://www.placeling.com "Get an account") or you won't be able to use the plugin properly.
 
@@ -72,6 +74,9 @@ We maintain an extensive help section on [our blogger page](https://www.placelin
 5. Tap the "nearby" button to use your phone to see nearby blog posts
 
 == Changelog ==
+
+= 2.0.1 =
+* Add notice if you try and use without cURL support rather than giving server error
 
 = 2.0.0 =
 * Major update
