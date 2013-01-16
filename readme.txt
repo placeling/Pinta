@@ -1,6 +1,6 @@
 === Placeling ===
 Contributors: imack
-Tags: map, maps, google maps, geo, location, places, place, placeling, guide, guides
+Tags: map, maps, google maps, geo, local, location, places, place, placeling, guide, guides, mobile
 Requires at least: 3.0
 Tested up to: 3.3.1
 Stable tag: 1.2.5
@@ -61,13 +61,11 @@ We maintain an extensive help section on [our blogger page](https://www.placelin
 
 == Screenshots ==
 
-1. Tag a location by clicking the marker next to the photo uploader
+1. Tag a location by clicking the "Add Place" link in the Placeling module
 2. Just type in the name of the location you want to tag. When you pick a place, a preview of the footer is shown
-3. A sample summary. The text will appear at Placeling.com
-4. Your place will appear on a map at Placeling.com...
-5. ...and appear within the Placeling iPhone app
-6. An example of an embedded map
-
+3. A confirmation that you've tagged the right place to your post/page
+4. Your place will appear on a map on your blog
+5. Tap the "nearby" button to use your phone to see nearby blog posts
 
 == Changelog ==
 
