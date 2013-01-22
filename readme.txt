@@ -6,7 +6,7 @@ Tested up to: 3.5
 Stable tag: 2.0.1
 
 
-Placeling turns Wordpress into a location-based, mobile guide.
+Placeling turns WordPress into a location-based, mobile guide.
 
 == Description ==
 
@@ -34,7 +34,7 @@ Please note that Placeling depends on the cURL extension for PHP
 
 Note that in order to make this plugin work, you must have an account at Placeling.com. Drop everything and [get one now](https://www.placeling.com "Get an account") or you won't be able to use the plugin properly.
 
-Activate the plugin through through the 'Plugins' menu in Wordpress
+Activate the plugin through through the 'Plugins' menu in WordPress
 
 Now start sharing your world!
 
