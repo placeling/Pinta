@@ -119,7 +119,7 @@
             $displayusername = $username . "'s";
         }
 
-
+        $recent_perspectives = array_slice( $recent_perspectives, 0, 8);
 		foreach ( $recent_perspectives as $perspective){
 		    $recent_places[] = $perspective->place;
 		}   
@@ -196,7 +196,7 @@
 				$.xhrPool = new Array();
 				$.xhrPool.abortAll = function() {
 				    $(this).each(function(idx, jqXHR) {
-					jqXHR.abort();
+					    jqXHR.abort();
 				    });
 				    $.xhrPool = [];
 				};
@@ -233,7 +233,7 @@
 									$("ul#recent_places li").remove();
 									if (data.predictions){
 										$.each(data.predictions, function(i, item){
-										    if ( $.inArray("route", item.types) < 0 ){
+										    if ( $.inArray("route", item.types) < 0 && i < 8){
 											    $("ul#recent_places").append( $( "#googlePlaceTemplate" ).render( item ) );
 										    }
 										});
@@ -261,8 +261,9 @@
 								$("ul#recent_places li").remove();	
 							},
 							success: function( data ) {
+							    data.places.splice(7);
 								$( "#recent_places" ).html(
-                                		$( "#placeTemplate" ).render( data.places )
+                                	$( "#placeTemplate" ).render( data.places )
                                 );
 							}
 						});
