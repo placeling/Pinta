@@ -117,14 +117,15 @@ if (!class_exists("Placeling")) {
              } else {
                $scrollhtml = "";
              }
-
+            $zoom = get_option('placeling_default_zoom', 14);
             if ( isset( $username ) && $username != ""  && isset( $PLACELING_SERVICE_HOSTNAME ) ) {
                 if ( isset( $_GET["placelinglat"]) && isset( $_GET["placelinglng"] ) ){
                     $lat = $_GET["placelinglat"];
                     $lng = $_GET["placelinglng"];
-                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$PLACELING_SERVICE_HOSTNAME/users/$username/pinta?lat=$lat&amp;lng=$lng&amp;newwin=".(1 == get_option( 'placeling_marker_new_window', 1 ) )."\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
+
+                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$PLACELING_SERVICE_HOSTNAME/users/$username/pinta?lat=$lat&amp;lng=$lng&amp;zoom=$zoom&amp;newwin=".(1 == get_option( 'placeling_marker_new_window', 1 ) )."\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
                 } else {
-                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$PLACELING_SERVICE_HOSTNAME/users/$username/pinta?newwin=".( 1 == get_option( 'placeling_marker_new_window', 1 ) )."\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
+                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$PLACELING_SERVICE_HOSTNAME/users/$username/pinta?zoom=$zoom&amp;newwin=".( 1 == get_option( 'placeling_marker_new_window', 1 ) )."\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
                 }
             } else {
                 return "<p>Placeling has not yet been setup, please contact the site's administrator to see the map</p>";
