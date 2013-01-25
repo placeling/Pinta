@@ -78,24 +78,21 @@
 }
 
 #submitbutton{
-	border-color: #BBB;
-	color: #464646;
-	border-color: #DFDFDF;
-	background-color: white;
-	min-width: 80px;
-	text-decoration: none;
-	font-size: 12px!important;
-	line-height: 13px;
-	padding: 3px 8px;
-	cursor: pointer;
-	border-width: 1px;
-	border-style: solid;
-	-webkit-border-radius: 11px;
-	border-radius: 11px;
-	-moz-box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	box-sizing: content-box;
-	font-weight: bold;	
+    border-color: #298cba;
+    font-weight: bold;
+    color: #fff;
+    background: #21759B url(../img/button-grad.png) repeat-x scroll left top;
+    text-shadow: rgba(0,0,0,0.3) 0 -1px 0;
+
+    text-decoration: none;
+    font-size: 12px!important;
+    line-height: 13px;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-border-radius: 11px;
+    border-radius: 11px;
 }
 
 .place_option{
