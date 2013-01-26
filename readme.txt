@@ -3,7 +3,7 @@ Contributors: imack
 Tags: map, maps, google maps, geo, local, location, places, place, placeling, guide, guides, mobile
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 2.0.1
+Stable tag: 2.1.0
 
 
 Placeling turns WordPress into a location-based, mobile guide.
@@ -74,6 +74,10 @@ We maintain an extensive help section on [our blogger page](https://www.placelin
 5. Tap the "nearby" button to use your phone to see nearby blog posts
 
 == Changelog ==
+
+= 2.1.0 =
+* Set default zoom for shared map
+* UI improvements
 
 = 2.0.1 =
 * Add notice if you try and use without cURL support rather than giving server error
