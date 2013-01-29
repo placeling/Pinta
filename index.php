@@ -47,7 +47,6 @@ if (!class_exists("Placeling")) {
             foreach (get_pages( array() ) as $page ){
                 if ( $page->post_name == $page_slug ){
                     update_option( 'placeling_linking_page',$page->ID);
-                    return;
                 }
             }
 
