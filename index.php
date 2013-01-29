@@ -63,7 +63,23 @@ if (!class_exists("Placeling")) {
             'post_type' => 'page'
             );
             $post_id = wp_insert_post($new_post);
-            update_option( 'placeling_linking_page',$post_id);
+            update_option( 'placeling_linking_page',$post_id );
+
+            // Ping Placeling with notification of activation
+            $url = $GLOBALS['PLACELING_WEB_HOSTNAME'].'/vanity/pinta';
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+                    'blog_name' => get_bloginfo( 'name' ),
+                    'blog_url' => get_bloginfo( 'url' ),
+                    'blog_description' => get_bloginfo( 'description' ),
+                    'blog_email' => get_bloginfo( 'admin_email' ),
+                    'blog_version' => get_bloginfo('version')
+            ) );
+            $r = curl_exec($ch);
+
 		}
 
         function upgrade_check(){
@@ -399,9 +415,9 @@ if (!class_exists("Placeling")) {
 
 if ( class_exists('Placeling') ) :
 	
-	$Placeling = new Placeling();
-	if (isset($Placeling)) {
-		register_activation_hook( __FILE__, array(&$Placeling, 'install') );
+	$placeling = new Placeling();
+	if (isset($placeling)) {
+		register_activation_hook( __FILE__, array(&$placeling, 'install') );
 	}
 endif;
 
