@@ -3,7 +3,7 @@
 Plugin Name: Placeling
 Plugin URI: https://www.placeling.com
 Description: Placeling turns your blog into an iPhone- and map-based guide to the world. Simply use this plugin to tag your posts with a location and we'll convert each post into a point on a map at placeling.com. Your readers can use their iPhone to see nearby places you've recommended (and they'll be driven to your blog to read your post) or explore a web-based map of all your posts.
-Version: 2.1.1
+Version: 2.1.2
 Author: Placeling (Internet Services) Inc.
 Author URI: https://www.placeling.com
 */

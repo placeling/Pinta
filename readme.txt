@@ -3,7 +3,7 @@ Contributors: imack
 Tags: map, maps, google maps, geo, local, location, places, place, placeling, guide, guides, mobile
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 
 
 Placeling turns WordPress into a location-based, mobile guide.
