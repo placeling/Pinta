@@ -74,7 +74,6 @@ if (!class_exists("Placeling")) {
                     'blog_name' => get_bloginfo( 'name' ),
                     'blog_url' => get_bloginfo( 'url' ),
                     'blog_description' => get_bloginfo( 'description' ),
-                    'blog_email' => get_bloginfo( 'admin_email' ),
                     'blog_version' => get_bloginfo('version')
             ) );
             $r = curl_exec($ch);
