@@ -119,17 +119,7 @@ if (!class_exists("Placeling")) {
 
             if ( self::is_mobile() && $autoscroll){
                 wp_enqueue_script( 'jquery' );
-                $scrollhtml= "
-                    <script type=\"text/javascript\">
-                    jQuery(document).ready(function() {
-                         jQuery('html, body').animate({
-                             scrollTop: jQuery('#placeling_iframe').offset().top-10
-                         }, 1000);
-                     });
-                     </script>
-                 ";
-             } else {
-               $scrollhtml = "";
+                wp_enqueue_script( 'placeling_scroll', plugins_url( 'js/placeling_scroll.js', __FILE__ ), array('jquery'), "2.2.0" );
              }
             $zoom = get_option('placeling_default_zoom', 14);
             if ( isset( $username ) && $username != ""  && isset( $PLACELING_SERVICE_HOSTNAME ) ) {
@@ -137,9 +127,9 @@ if (!class_exists("Placeling")) {
                     $lat = $_GET["placelinglat"];
                     $lng = $_GET["placelinglng"];
 
-                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$PLACELING_SERVICE_HOSTNAME/users/$username/pinta?lat=$lat&amp;lng=$lng&amp;zoom=$zoom&amp;newwin=".(1 == get_option( 'placeling_marker_new_window', 1 ) )."\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
+                    return "<iframe id=\"placeling_iframe\" src=\"$PLACELING_SERVICE_HOSTNAME/users/$username/pinta?lat=$lat&amp;lng=$lng&amp;zoom=$zoom&amp;newwin=".(1 == get_option( 'placeling_marker_new_window', 1 ) )."\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
                 } else {
-                    return $scrollhtml."<iframe id=\"placeling_iframe\" src=\"$PLACELING_SERVICE_HOSTNAME/users/$username/pinta?zoom=$zoom&amp;newwin=".( 1 == get_option( 'placeling_marker_new_window', 1 ) )."\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
+                    return "<iframe id=\"placeling_iframe\" src=\"$PLACELING_SERVICE_HOSTNAME/users/$username/pinta?zoom=$zoom&amp;newwin=".( 1 == get_option( 'placeling_marker_new_window', 1 ) )."\" frameborder=\"0\"  height=\"$height\" width=\"$width\">You need iframes enabled to view the map</iframe>";
                 }
             } else {
                 return "<p>Placeling has not yet been setup, please contact the site's administrator to see the map</p>";
